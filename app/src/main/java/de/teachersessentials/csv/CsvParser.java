@@ -5,35 +5,38 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.teachersessentials.timetable.Lesson;
 
 public class CsvParser {
-    private void Read() {
-        InputStream is;
+    private static ArrayList<String[]> read(String path) {
+        // InputStream und Dateipfad definieren
+        InputStream is = new InputStream() {
+            @Override
+            public int read() throws IOException {
+                return 0;
+            }
+        };
+
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        // Zweidimensionales Ausgangsobjekt definieren
+        ArrayList<String[]> data = new ArrayList<>();
+
         try {
             String line;
+            // Die Datei Zeilenweise einlesen
             while ((line = reader.readLine()) != null) {
-                String[] RowData = line.split(",");
-                int id = Integer.parseInt(RowData[0]);
-                int day = Integer.parseInt(RowData[0]);
-                int lesson = Integer.parseInt(RowData[0]);
-                int subject = Integer.parseInt(RowData[0]);
-                int class_ = Integer.parseInt(RowData[0]);
-                int room = Integer.parseInt(RowData[0]);
-
-                Lesson lesson1 = new Lesson(id, day, lesson, subject, class);
-                ArrayList<Lesson> LessonStor = new ArrayList<Lesson>;
-                LessonStor.add(lesson1);
-                String value = RowData[1];
-                int temp = Integer.parseInt(value);
-
-                // do something with "data" and "value"
+                // Jede Zeile in einzelne Werte der Spalten auftrennen
+                String[] rowData = line.split(",");
+                //
+                data.add(rowData);
             }
         }
+        // Wenn E/A-Lesefehler auftreten, hier fangen und reagieren:
         catch (IOException ex) {
             // handle exception
         }
+        return data;
     }
 }
