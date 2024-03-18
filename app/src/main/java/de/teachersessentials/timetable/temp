@@ -1,0 +1,40 @@
+Stundenplan abrufen:
+return all -> dann foreach
+getLesson() -> nach Tag/Stunde
+
+Frontend
+ - Stunde ausgeben
+ - Stunde erstellen
+ - Stunde bearbeiten
+ - Autovervollständigung:
+    - Fächerliste
+    - Raumliste
+    - Klassenliste
+
+Schnittstelle
+ - Timetable
+    - Week
+       > getLesson(at index)
+       > getAll() -> array
+       > setLesson(at index)
+          - Existiert : Room?
+             > create/modify
+          - Existiert : Class?
+             > create/modify
+    - RoomList
+       > getAll() -> array
+    - ClassList
+       > getAll() -> array
+ - Lesson
+    - Subject
+    - Class
+    - Room
+    - Color
+
+Datenbank
+ > load()
+ > save()
+ - Woche
+ - Fächer
+ - Räume
+ - Klassen
