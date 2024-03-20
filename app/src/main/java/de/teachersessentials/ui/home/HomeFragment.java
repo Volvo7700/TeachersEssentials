@@ -1,6 +1,8 @@
 package de.teachersessentials.ui.home;
 
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -52,18 +54,27 @@ public class HomeFragment extends Fragment {
             clockText = dateFormat.format(new Date());
             //Zeit wird ins Widget gefüllt
             clockTextView.setText(clockText);
-            //updateClock wird wieder aufgerufen, damit die Uhr jede Sekunde weitertickt
-            updateClock();
             //progress bar wird aufgefüllt
             updateProgress();
+            //updateClock wird wieder aufgerufen, damit die Uhr jede Sekunde weitertickt
+            updateClock();
         }, 1000); //Uhr updated jede Sekunde
     }
 
     private void updateProgress() {
         //Zeit zur nächsten vollen Stunde in millis
         long progressTime = System.currentTimeMillis() % 3600000;
-        //Progress bar wird aufgefüllt
+        //Progress bar wird aufgefüllt bzw. leert sich
         showProgress.setProgress(3600000 - (int) progressTime);
+        if (progressTime > 3300000) {
+            //Progress bar wird rot
+            ColorStateList colorStateList = new ColorStateList(
+                    new int[][] { new int[] {} },
+                    new int[] { Color.RED }
+            );
+            showProgress.setProgressTintList(colorStateList);
+            //Hier möglciherweise Benachrictigung schicken
+        }
     }
 
     @Override
