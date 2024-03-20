@@ -25,7 +25,7 @@ public class Database {
             int subject = Integer.parseInt(item[3]);
             int class_ = Integer.parseInt(item[4]);
             int room = Integer.parseInt(item[5]);
-            Lesson lesson = new Lesson(id, day, lesson, subject, class_, room);
+            //Lesson lesson = new Lesson(id, day, lesson, subject, class_, room);
         }
         
     }

@@ -10,7 +10,7 @@ import java.util.List;
 import de.teachersessentials.timetable.Lesson;
 
 public class CsvParser {
-    private static ArrayList<String[]> read(String path) {
+    public static ArrayList<String[]> read(String path) {
         // InputStream und Dateipfad definieren
         InputStream is = new InputStream() {
             @Override
