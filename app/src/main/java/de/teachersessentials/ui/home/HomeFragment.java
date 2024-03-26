@@ -16,9 +16,8 @@ import androidx.fragment.app.Fragment;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
-import de.teachersessentials.Fontsize;
+import de.teachersessentials.Shared;
 import de.teachersessentials.databinding.FragmentHomeBinding;
 import de.teachersessentials.R;
 
@@ -26,9 +25,9 @@ public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
     private TextView clockTextView;
+    private TextView timeLeftView;
     private Handler handler;
     private ProgressBar showProgress;
-    private SimpleDateFormat dateFormat;
     private final ColorStateList colorRed = new ColorStateList(new int[][] {new int[] {} }, new int[] {Color.RED});
     private final ColorStateList colorBlue = new ColorStateList(new int[][] {new int[] {} }, new int[] {Color.parseColor("#1414B8")});
 
@@ -38,29 +37,46 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        //anzeige der Uhrzeit
         clockTextView = root.findViewById(R.id.clock_text_view);
-        clockTextView.setTextSize((float) (Fontsize.fontsize*2));
-        showProgress = root.findViewById(R.id.progress_bar);
-        handler = new Handler();
+        clockTextView.setTextSize((float) (Shared.fontsize)); //Schriftgröße Uhr wird angepasst
 
+        //Anzeige der verbleibenden Zeit
+        timeLeftView = root.findViewById(R.id.time_left_view);
+        timeLeftView.setTextSize((float) (Shared.fontsize*2)); //Schriftgröße des Timers wird angepasst
+
+        //ProgressBar
+        showProgress = root.findViewById(R.id.progress_bar);
+
+        handler = new Handler();
         updateClock();
+        updateTimeLeft();
 
         return root;
     }
 
     private void updateClock() {
-            //Zeit wird abgerufen
-            dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-            dateFormat.setTimeZone(TimeZone.getDefault());
-        String clockText = dateFormat.format(new Date());
-            //Zeit wird ins Widget gefüllt
-            clockTextView.setText(clockText);
-            //progress bar wird aufgefüllt
-            updateProgress();
-        handler.postDelayed(() -> { //handler erst hier, damit beim ersten erstellen kein delay auftritt
-            //updateClock wird wieder aufgerufen, damit die Uhr jede Sekunde weitertickt
-            updateClock();
-        }, 1000); //Uhr updated jede Sekunde
+        //Zeit wird abgerufen
+        SimpleDateFormat dateFormatClock = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        String clockText = dateFormatClock.format(new Date());
+        //Zeit wird ins Widget gefüllt
+        clockTextView.setText(clockText);
+
+        //progress bar wird aufgefüllt
+        updateProgress();
+        //updateClock wird wieder aufgerufen, damit die Uhr jede Sekunde weitertickt
+        handler.postDelayed(this::updateClock, 1000); //Uhr updated jede Sekunde
+    }
+
+    private void updateTimeLeft() { //noch nicht fertig
+        SimpleDateFormat timeLeftFormat = new SimpleDateFormat("mm:ss", Locale.getDefault());
+        String TimeLeftText = timeLeftFormat.format(new Date());
+
+        timeLeftView.setText(TimeLeftText);
+        //progress bar wird aufgefüllt
+        updateProgress();
+        //updateClock wird wieder aufgerufen, damit die Uhr jede Sekunde weitertickt
+        handler.postDelayed(this::updateTimeLeft, 1000); //Uhr updated jede Sekunde
     }
 
     private void updateProgress() {

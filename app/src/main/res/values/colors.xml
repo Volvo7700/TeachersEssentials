@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
     <color name="blue">#1414b8</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-<!--    <color name="dark_1">#F121212</color>-->
-<!--    <color name="dark_2">#F282828</color>
-    <color name="dark_3">#F3f3f3f</color>
-    <color name="light_3">#F575757</color>
-    <color name="light_2">#F717171</color>
-    <color name="light_1">#F8b8b8b</color>-->
+    <color name="black">#000000</color>
+    <color name="dark_1">#121212</color>
+    <color name="dark_2">#282828</color>
+    <color name="dark_3">#3f3f3f</color>
+    <color name="light_3">#575757</color>
+    <color name="light_2">#717171</color>
+    <color name="light_1">#8b8b8b</color>
+    <color name="white_darken">#E6E6E6</color>
     <color name="white">#FFFFFFFF</color>
-<!--    <color name="white_darken">#E6E6E6</color>
-    <color name="effner_blue">#F2860AA</color>
-    <color name="effner_green">#F2EA23D</color>
-    <color name="effner_yellow">#F2EA23d</color>-->
-
+    <color name="effner_blue">#2860AA</color>
+    <color name="effner_green">#2EA23D</color>
+    <color name="effner_yellow">#2EA23d</color>
+    <color name="red">#FF0000</color>
     <color name="primaryColor">#c51162</color>
     <color name="primaryLightColor">#fd558f</color>
     <color name="primaryDarkColor">#8e0038</color>

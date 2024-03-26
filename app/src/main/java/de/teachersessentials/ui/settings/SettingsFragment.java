@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 
-import de.teachersessentials.Fontsize;
+import de.teachersessentials.Shared;
 import de.teachersessentials.R;
 import de.teachersessentials.databinding.FragmentSettingsBinding;
 
@@ -48,15 +48,15 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) { //auswahl winzig
-                    Fontsize.fontsize = 15;
+                    Shared.fontsize = 15;
                 } else if (position == 1) { //Auswahl klein
-                    Fontsize.fontsize = 20;
+                    Shared.fontsize = 20;
                 } else if (position == 3) { //Auswahl groß
-                    Fontsize.fontsize = 30;
+                    Shared.fontsize = 30;
                 } else if (position == 4) { //Auswahl riesig
-                    Fontsize.fontsize = 40;
+                    Shared.fontsize = 40;
                 } else { //Keine Auswahl oder normal
-                    Fontsize.fontsize = 25;
+                    Shared.fontsize = 25;
                 }
             }
             @Override
