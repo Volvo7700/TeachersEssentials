@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -26,6 +27,8 @@ public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private TextView clockTextView;
     private TextView timeLeftView;
+    private TextView nextSubject;
+    private TextView currentSubject;
     private Handler handler;
     private ProgressBar showProgress;
     private final ColorStateList colorRed = new ColorStateList(new int[][] {new int[] {} }, new int[] {Color.RED});
@@ -37,7 +40,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //anzeige der Uhrzeit
+        //Anzeige der aktuellen Uhrzeit
         clockTextView = root.findViewById(R.id.clock_text_view);
         clockTextView.setTextSize((float) (Shared.fontsize)); //Schriftgröße Uhr wird angepasst
 
@@ -45,8 +48,18 @@ public class HomeFragment extends Fragment {
         timeLeftView = root.findViewById(R.id.time_left_view);
         timeLeftView.setTextSize((float) (Shared.fontsize*2)); //Schriftgröße des Timers wird angepasst
 
+        //Aktuelles Fach
+        currentSubject = root.findViewById(R.id.current_subject);
+        currentSubject.setTextSize((float) (Shared.fontsize*0.75));
+        //Anzeige des aktuellen Fachs einbauen (Timetable Database)
+
         //ProgressBar
         showProgress = root.findViewById(R.id.progress_bar);
+
+        //Nächstes Fach
+        nextSubject = root.findViewById((R.id.next_subject));
+        nextSubject.setTextSize((float) (Shared.fontsize*0.75)); //Schriftgröße
+        //Anzeige des nächsten Fachs einbauen (Timetable Database) und evt. Raum
 
         handler = new Handler();
         updateClock();
@@ -64,28 +77,32 @@ public class HomeFragment extends Fragment {
 
         //progress bar wird aufgefüllt
         updateProgress();
-        //updateClock wird wieder aufgerufen, damit die Uhr jede Sekunde weitertickt
+
         handler.postDelayed(this::updateClock, 1000); //Uhr updated jede Sekunde
     }
 
-    private void updateTimeLeft() { //noch nicht fertig
-        SimpleDateFormat timeLeftFormat = new SimpleDateFormat("mm:ss", Locale.getDefault());
-        String TimeLeftText = timeLeftFormat.format(new Date());
 
-        timeLeftView.setText(TimeLeftText);
-        //progress bar wird aufgefüllt
-        updateProgress();
-        //updateClock wird wieder aufgerufen, damit die Uhr jede Sekunde weitertickt
+    private int getTimeUntilNextHour() {  //Zeit bis zur nächsten vollen Stunde in Millisekunden
+        Calendar calendar = Calendar.getInstance();
+
+        return ((60 - calendar.get(Calendar.MINUTE)) * 60 - calendar.get(Calendar.SECOND)) * 1000;
+    }
+
+    private void updateTimeLeft() {
+        SimpleDateFormat timeLeftFormat = new SimpleDateFormat("mm:ss", Locale.getDefault());
+        Date date = new Date(getTimeUntilNextHour());
+
+        String TimeLeftText = timeLeftFormat.format(date);
+        timeLeftView.setText(TimeLeftText); //Zeit wird ins Widget gefüllt
+
         handler.postDelayed(this::updateTimeLeft, 1000); //Uhr updated jede Sekunde
     }
 
     private void updateProgress() {
-        //Zeit zur nächsten vollen Stunde in millis
-        long progressTime = System.currentTimeMillis() % 3600000;
         //Progress bar wird aufgefüllt bzw. leert sich
-        showProgress.setProgress(3600000 - (int) progressTime);
+        showProgress.setProgress(getTimeUntilNextHour());
 
-        if (progressTime > 3300000) { //wahrscheinlich nicht effizient jedes mal neu abzufragen, müssen wir sowieso ändern, wenn eine Nachricht gesendet werden soll
+        if (getTimeUntilNextHour() < 300000) { //wahrscheinlich nicht effizient jedes mal neu abzufragen, müssen wir sowieso ändern, wenn eine Nachricht gesendet werden soll
             //Progress bar wird rot
             showProgress.setProgressTintList(colorRed);
             //Hier möglicherweise Benachrictigung schicken

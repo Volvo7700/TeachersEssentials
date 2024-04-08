@@ -1,11 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/clock_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:textSize="25sp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/time_left_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center" />
+
+            <TextView
+                android:id="@+id/current_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="54dp"
+                android:text="Aktuelles Fach"
+                android:layout_gravity="center" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:max="3600000"
+                android:progressTint="@color/blue"
+                android:rotation="-90"
+                android:scaleY="50"
+                android:layout_marginTop="66dp"
+                android:layout_gravity="center" />
+            <!--        bei manchen Seitenlängen wird die Progressbar nicht richtig zentriert-->
+
+            <TextView
+                android:id="@+id/next_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="66dp"
+                android:text="Nächstes Fach"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </ScrollView>
+    <!-- Auskommentierter Code vom Constraint Layout
     <TextView
         android:id="@+id/clock_text_view"
         android:layout_width="wrap_content"
@@ -26,6 +80,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clock_text_view" />
 
+    <TextView
+        android:id="@+id/current_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:text="Aktuelles Fach"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_left_view" />
+
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -36,15 +100,14 @@
         android:progressTint="@color/blue"
         android:rotation="-90"
         android:scaleY="50"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="66dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.644" />
-    <!--        bei manchen Seitenlängen wird die Progressbar nicht richtig zentriert-->
+        app:layout_constraintTop_toBottomOf="@+id/current_subject" />
+            bei manchen Seitenlängen wird die Progressbar nicht richtig zentriert
 
     <TextView
-        android:id="@+id/naechstes_fach"
+        android:id="@+id/next_subject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="66dp"
@@ -52,8 +115,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_bar" /> -->
 
-    <!--ist bischen komisch, die progressBar zu zentrieren-->
+    <!--Generell alle Fragments so machen, dass sie auf allen Handys gut aussehen-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

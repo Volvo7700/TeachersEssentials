@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -30,7 +31,8 @@ public class SettingsFragment extends Fragment {
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        Spinner spinner = root.findViewById(R.id.select_font_size);
+        Spinner selectFontSize = root.findViewById(R.id.select_font_size);
+
         //Liste mit Auswahlmöglichkeiten
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("winzig");
@@ -42,9 +44,9 @@ public class SettingsFragment extends Fragment {
         //Liste wird in Spinner geladen
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, arrayList);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(2);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //jenachdem, was ausgewählt ist wird fonsize angepasst
+        selectFontSize.setAdapter(adapter);
+        selectFontSize.setSelection(2);
+        selectFontSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //jenachdem, was ausgewählt ist wird fonsize angepasst
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) { //auswahl winzig
@@ -63,6 +65,13 @@ public class SettingsFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+        });
+
+        //App schließen
+        Button closeApp = root.findViewById(R.id.close_app);
+        closeApp.setOnClickListener(v -> {
+            requireActivity().finish();
+            requireActivity().finishAffinity();
         });
 
         return root;
