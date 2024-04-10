@@ -1,5 +1,5 @@
 
-# Teacher's Essentials [![active](https://raster.shields.io/badge/status-In Entwicklung-lime.png)]
+# Teacher's Essentials ![Build Status](https://raster.shields.io/badge/status-InEntwicklung-lime.png)
 
 ## Beschreibung
 Dies ist die Repository der **supertollen** Lehrer-App
