@@ -21,6 +21,7 @@ import java.util.Locale;
 import de.teachersessentials.Shared;
 import de.teachersessentials.databinding.FragmentHomeBinding;
 import de.teachersessentials.R;
+import de.teachersessentials.timetable.Timetable;
 
 public class HomeFragment extends Fragment {
 
