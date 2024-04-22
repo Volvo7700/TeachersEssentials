@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.ArrayList;
 
 import de.teachersessentials.Shared;
 import de.teachersessentials.R;
@@ -22,6 +21,8 @@ import de.teachersessentials.databinding.FragmentSettingsBinding;
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
+    private final String[] font_select_size = {"winzig", "klein", "normal", "groß", "riesig"};
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,19 +34,12 @@ public class SettingsFragment extends Fragment {
 
         Spinner selectFontSize = root.findViewById(R.id.select_font_size);
 
-        //Liste mit Auswahlmöglichkeiten
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("winzig");
-        arrayList.add("klein");
-        arrayList.add("normal");
-        arrayList.add("groß");
-        arrayList.add("riesig");
-
         //Liste wird in Spinner geladen
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, arrayList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, font_select_size);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         selectFontSize.setAdapter(adapter);
         selectFontSize.setSelection(2);
+
         selectFontSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //jenachdem, was ausgewählt ist wird fonsize angepasst
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -62,9 +56,7 @@ public class SettingsFragment extends Fragment {
                 }
             }
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         //App schließen
