@@ -20,7 +20,7 @@ public class CsvParser {
         try {
             // InputStream und Dateipfad definieren
             // Standardpfad: /storage/.../Android/de.teachersessentials/[Dateiname]
-            String filePath = context.getApplicationInfo().dataDir + "fileName";
+            String filePath = context.getApplicationInfo().dataDir + fileName;
             FileInputStream fis = context.openFileInput(filePath);
             InputStreamReader inputStreamReader = new InputStreamReader(fis, StandardCharsets.UTF_8);
 
@@ -74,7 +74,7 @@ public class CsvParser {
             // Überprüfen, ob Array Werte enthält
             if (lineData.length > 0) {
                 // Zeilenumbruch einfügen
-                String line = System.getProperty("line.seperator");
+                String line = "\n";
                 // Zeilenwerte mit Komma zusammenfügen
                 line += lineData[0];
                 for (int i = 1; i < lineData.length; i++) {
