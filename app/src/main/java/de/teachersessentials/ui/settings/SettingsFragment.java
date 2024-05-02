@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import de.teachersessentials.Shared;
 import de.teachersessentials.R;
 import de.teachersessentials.databinding.FragmentSettingsBinding;
+import de.teachersessentials.ConfigFile;
 
 public class SettingsFragment extends Fragment {
 
