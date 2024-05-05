@@ -1,22 +1,26 @@
 package de.teachersessentials.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimerTask;
 
 import de.teachersessentials.Shared;
 import de.teachersessentials.databinding.FragmentHomeBinding;
@@ -31,7 +35,6 @@ public class HomeFragment extends Fragment {
     private TextView nextSubject;
     private TextView currentSubject;
     private Handler handler;
-    private int lesson;
     private ProgressBar showProgress;
     private long timeInDay;
     private final ColorStateList colorRed = new ColorStateList(new int[][] {new int[] {} }, new int[] {Color.RED});
@@ -64,11 +67,6 @@ public class HomeFragment extends Fragment {
         nextSubject.setTextSize((float) (Shared.fontsize*0.75)); //Schriftgröße
         //Anzeige des nächsten Fachs einbauen (Timetable Database) und evt. Raum
 
-        Button TestButton = root.findViewById(R.id.test);
-        TestButton.setOnClickListener((v -> {
-            System.out.println("lesson: " + lesson + "; timeInDay: " + timeInDay + "; timeInDayPlus: " + "return: " + ((int) (Timetable.getStart(lesson).getTime() - timeInDay)));
-        }));
-
         handler = new Handler();
         updateClock();
         updateTimeLeft();
@@ -90,22 +88,23 @@ public class HomeFragment extends Fragment {
     }
 
 
-    private long getTimeUntilNextLesson() {  //Zeit bis zur nächsten vollen Stunde in Millisekunden
-        timeInDay = (System.currentTimeMillis() + 7200000) % 86400000 - 1000; //Zeit des Tages (nur Uhr ohne Datum oder andere Tage); 2 Stunden extra wegen Zeitzonen
-        //timeInDay = 34506000;
-        lesson = Timetable.getLessonNumber(timeInDay);
+    private int getTimeUntilNextLesson() {  //Zeit bis zur nächsten vollen Stunde in Millisekunden
+        timeInDay = System.currentTimeMillis() % 86400000; //Zeit des Tages (nur Uhr ohne Datum oder andere Tage)
 
-        if (lesson == 12) { //Erst am nächsten Tag wieder Schule
-            return -1;
-        } else if (lesson == 11) { //Vor 8 oder Pause
+        int lesson = Timetable.getLessonNumber(timeInDay);
+
+        if (lesson == 11) { //Vor 8 oder Pause
             long timeInDayPlus = timeInDay;
             while (lesson == 11) { //solange wiederholt bis nächste Stunde feststeht
                 timeInDayPlus = timeInDayPlus + 900000;
-                lesson = Timetable.getLessonNumber(timeInDayPlus);
+                lesson = Timetable.getLessonNumber(timeInDayPlus); 
             }
-            return Timetable.getStart(lesson).getTime() - timeInDay; //Zeit bis zum Start der nächsten Stunde
+            return (int) (Timetable.getStart(lesson).getTime() - timeInDay); //Zeit bis zum Start der nächsten Stunde
+
+        } else if (lesson == 12) { //Erst am nächsten Tag wieder Schule
+            return -1;
         } else {
-            return Timetable.getEnd(lesson).getTime() - timeInDay; //Zeit bis zum Ende der aktuellen Stunde
+            return (int) (Timetable.getEnd(lesson).getTime() - timeInDay); //Zeit bis zum Ende der aktuellen Stunde
         }
     }
 
@@ -124,7 +123,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateProgress() { //Progress bar wird aufgefüllt bzw. leert sich
-        long timeUntilNextLesson = getTimeUntilNextLesson();
+        int timeUntilNextLesson = getTimeUntilNextLesson();
         if (Timetable.getLessonNumber(timeInDay) == 11) {
             if (timeInDay < 30000000) { //vor 8
                 showProgress.setMax(28800000); //Zeit von 0 bis 8 Uhr bestimmt Größe der ProgressBar
@@ -132,14 +131,15 @@ public class HomeFragment extends Fragment {
                 showProgress.setMax(900000); //Pausenlänge als Größe der Progressbar
             }
         } else {
-            showProgress.setMax(2700000); //Länge der Stunde bestimmt Größe der ProgressBar
+            showProgress.setMax(2700000); //Länge der Stunde/Pause bestimmtgröße der ProgressBar
         }
-        showProgress.setProgress((int) timeUntilNextLesson);
+        showProgress.setProgress(timeUntilNextLesson);
 
         if (timeUntilNextLesson < 300000) { //wahrscheinlich nicht effizient jedes mal neu abzufragen, müssen wir sowieso ändern, wenn eine Nachricht gesendet werden soll
             //Progress bar wird rot
             showProgress.setProgressTintList(colorRed);
-            //Hier möglicherweise Benachrictigung schicken
+            //spielt sound
+            playSound();
         }
         else {
             //progress bar ist sonst blau
@@ -147,9 +147,23 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private MediaPlayer mediaPlayer;
+    //erstellt sound
+    public void playSound() {
+        if (mediaPlayer == null) {
+            //zum ändern von sound neue file in res/raw einfügen und sound_notification ändern
+            mediaPlayer = MediaPlayer.create(getContext(), R.raw.sound_notification);
+        }
+        mediaPlayer.start();
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (mediaPlayer != null){
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
         binding = null;
     }
 }
