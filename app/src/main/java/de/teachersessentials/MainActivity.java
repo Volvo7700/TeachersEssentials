@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        ConfigFile.createFile(this, "config.properties");
+        ConfigFile.createFile(this); //Erstellt ein Config File, falls es nnoch keins gibt
     }
 
     @Override
