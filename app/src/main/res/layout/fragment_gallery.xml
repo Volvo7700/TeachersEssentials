@@ -36,12 +36,176 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/textView_0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="08:00 - 08:45"
+                />
+
+            <Button
+                android:id="@+id/button_0"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Einstellen des Stundenplanes hier" />
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="08:45 - 09:30"
+                />
+
+            <Button
+                android:id="@+id/button_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="09:45 - 10:30"
+                />
+
+            <Button
+                android:id="@+id/button_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:30 - 11:15"
+                />
+
+            <Button
+                android:id="@+id/button_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11:30 - 12:15"
+                />
+            <Button
+                android:id="@+id/button_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:15 - 13:00"
+                />
+
+            <Button
+                android:id="@+id/button_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="13:45 - 14:30"
+                />
+
+            <Button
+                android:id="@+id/button_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14:30 - 15:15"
+                />
+
+            <Button
+                android:id="@+id/button_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15:30 - 16:15"
+                 />
+
+            <Button
+                android:id="@+id/button_8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
+            <TextView
+                android:id="@+id/textView_9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="16:15 - 17:00" />
+
+            <Button
+                android:id="@+id/button_9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="Stunde einfügen"
+                android:visibility="visible"
+                android:textColor="@color/black"
+                android:background=""
+                />
 
         </LinearLayout>
 
