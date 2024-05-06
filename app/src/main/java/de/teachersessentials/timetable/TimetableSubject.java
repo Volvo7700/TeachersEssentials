@@ -1,11 +1,11 @@
 package de.teachersessentials.timetable;
 
 public class TimetableSubject {
-    int id;
-    int day;
-    int time;
-    int subject_id;
-    int class_id;
-    int room_id;
+    TimetableSubject(int id_,int shortage_,int name_,int color_) {
+    int id = id_;
+    int shortage = shortage_;
+    int name = name_;
+    int color = color_;
 
+    }
 }
