@@ -22,10 +22,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/schriftgr_e"
+                    android:text="@string/schriftgroesse"
                     android:textSize="16sp"
                     android:layout_alignParentStart="true"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    tools:ignore="RelativeOverlap" />
 
                 <Spinner
                     android:id="@+id/select_font_size"
@@ -61,9 +62,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="App schließen"
+                android:text="@string/app_schliessen"
                 android:textColor="@color/white"
                 android:layout_marginTop="16dp"/>
+
+            <Button
+                android:id="@+id/reset_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/einstellungen_zuruecksetzen"
+                android:textColor="@color/white"
+                android:layout_marginTop="8dp"/>
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
