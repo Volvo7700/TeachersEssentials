@@ -2,10 +2,9 @@ package de.teachersessentials.timetable;
 
 import android.graphics.Color;
 
-public class Lesson {
+public class Rooms {
     int id;
-    int day;
-    int time;
+    int room;
     String subject_id;
     String class_id;
     String room_id;
