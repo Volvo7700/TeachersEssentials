@@ -1,7 +1,10 @@
 package de.teachersessentials.timetable;
 
 public class TimetableClass {
-    int id;
-    int class_id;
+    TimetableClass(int id_,int timetableclass_){
+        int id = id_;
+
+        int timetableclass = timetableclass_;
+    }
 
 }
