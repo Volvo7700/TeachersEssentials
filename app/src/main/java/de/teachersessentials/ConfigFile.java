@@ -29,6 +29,8 @@ public class ConfigFile {
     }
 
     public static void writeToFile(String data) throws IOException { //löscht alles in der Datei und speichert nur neue Daten
+        //String dataOld = getConfigData();
+
         FileWriter fileWriter = new FileWriter(file, false);
         PrintWriter printWriter = new PrintWriter(fileWriter);
 
