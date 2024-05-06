@@ -50,13 +50,13 @@ public class Database {
         }
 
         ArrayList<String[]> rawRooms = CsvParser.read("room",context);
-        ArrayList<Room> rooms = new ArrayList<>();
+        ArrayList<TimetableRoom> rooms = new ArrayList<>();
         for (String[] item : rawRooms) {
 
             int id = Integer.parseInt(item[0]);
             String name = item[1];
 
-            Room room = new TimetableClass(id, name);
+            TimetableRoom room = new TimetableRoom(id, name);
             rooms.add(room);
         }
 
