@@ -4,9 +4,7 @@ import android.graphics.Color;
 
 public class Lesson {
     int id;
-    int day;
-    int time;
-    int subject_id;
-    int class_id;
-    int room_id;
+    int shortage;
+    int name;
+    int color;
 }
