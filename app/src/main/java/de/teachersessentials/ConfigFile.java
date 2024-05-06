@@ -19,7 +19,7 @@ public class ConfigFile {
             if (!file.exists()) { //wenn die Datei noch nicht existiert
                 file.createNewFile();
                 System.out.println("File created successfully: " + file.getAbsolutePath());
-                writeToFile("25"); //Standardschriftgröße 25
+                writeToFile("25", 1, context); //Standardschriftgröße 25
             } else {
                 System.out.println("File already exists: " + file.getAbsolutePath());  //schon vorhanden
             }
@@ -28,8 +28,17 @@ public class ConfigFile {
         }
     }
 
-    public static void writeToFile(String data) throws IOException { //löscht alles in der Datei und speichert nur neue Daten
-        //String dataOld = getConfigData();
+    public static void writeToFile(String data, int line, Context context) throws IOException { //löscht alles in der Datei und speichert nur neue Daten
+        String dataOld = getConfigData(context); //alter Inhalt wird ausgelesen
+        String[] dataOldList = dataOld.split("\n"); //jede zeile einzeln
+
+        for(int i = dataOldList.length; i > 0; i --) {
+            if(i == line) {
+                dataOldList[i - 1] = data;
+            }
+        }
+
+        data = joinString(dataOldList);
 
         FileWriter fileWriter = new FileWriter(file, false);
         PrintWriter printWriter = new PrintWriter(fileWriter);
@@ -56,6 +65,16 @@ public class ConfigFile {
         }
 
         return stringBuilder.toString();
+    }
+
+    public static String joinString(String[] listToJoin) { //fügt alle Strings in einem Array aneinander
+        StringBuilder together = new StringBuilder();
+
+        for (int i = listToJoin.length; i > 0; i--) {
+                together.append(listToJoin[i - 1]).append("\n");
+        }
+
+        return together.toString();
     }
 
     public static void resetConfigFile(Context context) {

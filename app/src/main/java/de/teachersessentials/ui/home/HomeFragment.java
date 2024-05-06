@@ -45,15 +45,15 @@ public class HomeFragment extends Fragment {
 
         //Anzeige der aktuellen Uhrzeit
         clockTextView = root.findViewById(R.id.clock_text_view);
-        clockTextView.setTextSize((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", "")));
+        clockTextView.setTextSize((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", ""))); //Schriftgröße
 
         //Anzeige der verbleibenden Zeit
         timeLeftView = root.findViewById(R.id.time_left_view);
-        timeLeftView.setTextSize((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", "")) * 2); //Schriftgröße des Timers wird angepasst
+        timeLeftView.setTextSize((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", "")) * 2); //Schriftgröße
 
         //Aktuelles Fach
         currentSubject = root.findViewById(R.id.current_subject);
-        currentSubject.setTextSize((float) ((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", "")) * 0.75));
+        currentSubject.setTextSize((float) ((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", "")) * 0.75)); //Schriftgröße
         //Anzeige des aktuellen Fachs einbauen (Timetable Database)
 
         //ProgressBar
