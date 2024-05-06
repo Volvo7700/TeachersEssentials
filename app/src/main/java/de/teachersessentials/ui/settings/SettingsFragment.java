@@ -78,7 +78,7 @@ public class SettingsFragment extends Fragment {
 
     private void writeFontsizeToConfig(String fontsize) {
         try {
-            ConfigFile.writeToFile(fontsize); //Schriftgröße ins ConfigFile
+            ConfigFile.writeToFile(fontsize, 1, requireActivity()); //Schriftgröße ins ConfigFile
             System.out.println("Written succesfully");
         } catch (IOException e) { //Fehler
             throw new RuntimeException(e);
