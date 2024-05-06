@@ -1,10 +1,10 @@
 package de.teachersessentials.timetable;
 
 public class TimetableClass {
-    TimetableClass(int id_,int timetableclass_){
+    TimetableClass(int id_,String name_){
         int id = id_;
 
-        int timetableclass = timetableclass_;
+        String name = name_;
     }
 
 }
