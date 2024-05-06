@@ -6,8 +6,7 @@ public class Lesson {
     int id;
     int day;
     int time;
-    String subject_id;
-    String class_id;
-    String room_id;
-    Color color;
+    int subject_id;
+    int class_id;
+    int room_id;
 }
