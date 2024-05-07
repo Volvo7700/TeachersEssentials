@@ -16,4 +16,5 @@
     <string name="feierabend">Feierabend</string>
     <string name="app_schliessen">App schließen</string>
     <string name="einstellungen_zuruecksetzen">Einstellungen zurücksetzen</string>
+    <string name="stunde_einfuegen">Stunde einfügen</string>
 </resources>

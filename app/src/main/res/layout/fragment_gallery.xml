@@ -25,8 +25,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_day"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp">
 
         <LinearLayout
@@ -50,10 +50,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_1"
@@ -67,10 +67,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_2"
@@ -84,10 +84,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_3"
@@ -101,10 +101,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_4"
@@ -117,10 +117,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_5"
@@ -134,10 +134,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_6"
@@ -151,10 +151,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_7"
@@ -168,10 +168,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_8"
@@ -185,10 +185,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
             <TextView
                 android:id="@+id/textView_9"
@@ -201,10 +201,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Stunde einfügen"
+                android:text="@string/stunde_einfuegen"
                 android:visibility="visible"
                 android:textColor="@color/black"
-                android:background=""
+                android:background="@color/white"
                 />
 
         </LinearLayout>

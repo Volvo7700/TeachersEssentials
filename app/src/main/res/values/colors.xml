@@ -12,9 +12,9 @@
     <color name="light_1">#8b8b8b</color>
     <color name="white_darken">#E6E6E6</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="effner_blue">#2860AA</color>
+    <color name="effner_blue">#2760AA</color>
     <color name="effner_green">#2EA23D</color>
-    <color name="effner_yellow">#2EA23d</color>
+    <color name="effner_yellow">#E0AB14</color>
     <color name="red">#FF0000</color>
     <color name="primaryColor">#c51162</color>
     <color name="primaryLightColor">#fd558f</color>

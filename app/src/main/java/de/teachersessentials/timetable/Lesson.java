@@ -11,4 +11,8 @@ public class Lesson {
         int class_id = class_id_;
         int room_id = room_id_;
     }
+
+    public Lesson() {
+
+    }
 }

@@ -43,17 +43,19 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        int fontsize = Integer.parseInt(ConfigFile.getConfigData(requireActivity(), 1));
+
         //Anzeige der aktuellen Uhrzeit
         clockTextView = root.findViewById(R.id.clock_text_view);
-        clockTextView.setTextSize((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", ""))); //Schriftgröße
+        clockTextView.setTextSize((float) fontsize); //Schriftgröße
 
         //Anzeige der verbleibenden Zeit
         timeLeftView = root.findViewById(R.id.time_left_view);
-        timeLeftView.setTextSize((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", "")) * 2); //Schriftgröße
+        timeLeftView.setTextSize((float) fontsize * 2); //Schriftgröße
 
         //Aktuelles Fach
         currentSubject = root.findViewById(R.id.current_subject);
-        currentSubject.setTextSize((float) ((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", "")) * 0.75)); //Schriftgröße
+        currentSubject.setTextSize((float) ((float) fontsize * 0.75)); //Schriftgröße
         //Anzeige des aktuellen Fachs einbauen (Timetable Database)
 
         //ProgressBar
@@ -61,11 +63,11 @@ public class HomeFragment extends Fragment {
 
         //Nächstes Fach
         nextSubject = root.findViewById((R.id.next_subject));
-        nextSubject.setTextSize((float) ((float) Integer.parseInt(ConfigFile.getConfigData(requireActivity()).replace("\n", "")) * 0.75)); //Schriftgröße
+        nextSubject.setTextSize((float) ((float) fontsize * 0.75)); //Schriftgröße
         //Anzeige des nächsten Fachs einbauen (Timetable Database) und evt. Raum
 
         Button TestButton = root.findViewById(R.id.test); //Test Buttop links unten
-        TestButton.setOnClickListener((v -> {}));
+        TestButton.setOnClickListener((v -> System.out.println("Dieser Button kann zum Testen benutzt werden")));
 
         handler = new Handler();
         updateClock();

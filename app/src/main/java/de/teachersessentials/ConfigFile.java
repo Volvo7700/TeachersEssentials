@@ -2,12 +2,10 @@ package de.teachersessentials;
 
 import android.content.Context;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class ConfigFile {
 
@@ -19,7 +17,7 @@ public class ConfigFile {
             if (!file.exists()) { //wenn die Datei noch nicht existiert
                 file.createNewFile();
                 System.out.println("File created successfully: " + file.getAbsolutePath());
-                writeToFile("25", 1, context); //Standardschriftgröße 25
+                writeToFile("25\n12\n14", 1, context); //Defaulteinstellungen
             } else {
                 System.out.println("File already exists: " + file.getAbsolutePath());  //schon vorhanden
             }
@@ -28,57 +26,55 @@ public class ConfigFile {
         }
     }
 
-    public static void writeToFile(String data, int line, Context context) throws IOException { //löscht alles in der Datei und speichert nur neue Daten
-        String dataOld = getConfigData(context); //alter Inhalt wird ausgelesen
-        String[] dataOldList = dataOld.split("\n"); //jede zeile einzeln
+    public static void writeToFile(String data, int line, Context context) throws IOException {
+        String dataOld = getAllData(context); //alter Inhalt wird ausgelesen
+        String[] dataOldList = dataOld.split("\n"); //jede Zeile einzeln
 
-        for(int i = dataOldList.length; i > 0; i --) {
-            if(i == line) {
-                dataOldList[i - 1] = data;
+        if (line >= 1 && line <= dataOldList.length) { //angegebene Zeile existiert im Config file
+            dataOldList[line - 1] = data; //neue Daten werden eingesetzt
+
+            StringBuilder newContent = new StringBuilder();
+            for (String lineData : dataOldList) { //Liste wird wieder zusamengefügt
+                newContent.append(lineData).append("\n");
+            }
+
+            try {
+                Files.write(file.toPath(), newContent.toString().getBytes()); //Datei wird mit zusammengesetztem String überschrieben
+            } catch (IOException e) {
+                System.err.println("Error writing to file: " + e.getMessage()); //Fehler
             }
         }
-
-        data = joinString(dataOldList);
-
-        FileWriter fileWriter = new FileWriter(file, false);
-        PrintWriter printWriter = new PrintWriter(fileWriter);
-
-        printWriter.print(data); //Daten werde in der Datei gespeichert
-        printWriter.close();
-        fileWriter.close();
-
-        System.out.println("Data written to file: " + file.getAbsolutePath());
     }
 
-    public static String getConfigData(Context context) { //liest alle Daten aud dem ConfigFile
+    public static String getConfigData(Context context, int line) { //liest alle Daten aud dem ConfigFile
         file = new File(context.getCacheDir(), "config.txt");
-        StringBuilder stringBuilder = new StringBuilder();
+        String output = "";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuilder.append(line);
-                stringBuilder.append("\n");
-            }
-        } catch (IOException e) { //Fehler
-            System.err.println("Error reading file: " + e.getMessage());
+        try {
+            output = new String(Files.readAllBytes(Paths.get(file.toURI()))); //Daten werden gelesen
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage()); //Fehler
         }
 
-        return stringBuilder.toString();
+        String[] contentList = output.split("\n"); //output wird am Zeilenumbruch in Liste aufgeteilt
+        return contentList[line - 1]; //nur geforderte Zeile wird zurückgegeben
     }
 
-    public static String joinString(String[] listToJoin) { //fügt alle Strings in einem Array aneinander
-        StringBuilder together = new StringBuilder();
+    public static String getAllData(Context context) {
+        file = new File(context.getCacheDir(), "config.txt");
+        String content = null;
 
-        for (int i = listToJoin.length; i > 0; i--) {
-                together.append(listToJoin[i - 1]).append("\n");
+        try {
+            content = new String(Files.readAllBytes(Paths.get(file.toURI()))); //Daten werden gelesen
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage()); //Fehler
         }
 
-        return together.toString();
+        return content;
     }
 
     public static void resetConfigFile(Context context) {
-        file.delete(); //löscht Datei
+            file.delete(); //löscht Datei
         createFile(context); //erstellt neue Datei
     }
 }
