@@ -83,12 +83,18 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
                 ArrayList<String[]> data = new ArrayList<>();
-                String[] line = new String[4];
-                line[0] = "hallo";
-                line[1] = "test";
-                line[2] = "hier";
-                line[3] = "CSV";
-                data.add(line);
+                String[] line0 = new String[4];
+                line0[0] = "hallo";
+                line0[1] = "test";
+                line0[2] = "hier";
+                line0[3] = "CSV";
+                data.add(line0);
+                String[] line1 = new String[4];
+                line1[0] = "und eine supertolle";
+                line1[1] = "zweite Zeile";
+                line1[2] = "mit Sonderzeichen:";
+                line1[3] = "!\"§$%&/()=?²³{[]}\\@€+*~#'-_,.;:<>|^°";
+                data.add(line1);
 
                 String[] headers = new String[1];
                 headers[0] = "test";
@@ -97,12 +103,21 @@ public class SettingsFragment extends Fragment {
                 textView_test.setText("Speichervorgang erfolgreich: " + saveresult.toString());
 
                 ArrayList<String[]> loadedData = CsvParser.read("test.csv", getContext());
-                String text = "" + saveresult;
-                for (String s : loadedData.get(0) )
-                {
-                    text += s;
+
+                if (loadedData != null) {
+                    for (String[] row : loadedData) {
+                        String text = "";
+                        for (String s : row)
+                        {
+                            text += " | ";
+                            text += s;
+                        }
+                        textView_test.setText(textView_test.getText() + "\n" + text);
+                    }
                 }
-                textView_test.setText(textView_test.getText() + "\n" + text);
+                else {
+                    textView_test.setText(textView_test.getText() + "\n" + "NULL");
+                }
             }
         });
 
