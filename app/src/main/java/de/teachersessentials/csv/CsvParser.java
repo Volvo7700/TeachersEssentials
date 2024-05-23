@@ -2,7 +2,10 @@ package de.teachersessentials.csv;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -13,15 +16,19 @@ import java.util.ArrayList;
 
 
 public class CsvParser {
-    public static ArrayList<String[]> read(String fileName, Context context) {
+    public static ArrayList<String[]> read(String fileName, @NonNull Context context) {
         // Ausgabeobjekt definieren
         ArrayList<String[]> data = new ArrayList<>();
 
         try {
             // InputStream und Dateipfad definieren
-            // Standardpfad: /storage/.../Android/de.teachersessentials/[Dateiname]
-            String filePath = context.getApplicationInfo().dataDir + fileName;
-            FileInputStream fis = context.openFileInput(filePath);
+            // Standardpfad: /data/data/de.teachersessentials/[Dateiname]
+
+            // openFileInput() nimmt automatisch das files-Verzeichnis
+            // Im Falle das dieses manuell benötigt wird, kann es wie folgt abgerufen werden:
+            // String filePath = context.getFilesDir();
+
+            FileInputStream fis = context.openFileInput(fileName);
             InputStreamReader inputStreamReader = new InputStreamReader(fis, StandardCharsets.UTF_8);
 
             try (BufferedReader reader = new BufferedReader(inputStreamReader)) {
@@ -30,11 +37,11 @@ public class CsvParser {
                 // Die Datei Zeilenweise einlesen
                 String line = reader.readLine();
                 while (line != null) {
-                    line = reader.readLine();
                     // Die Zeile in einzelne Werte der Spalten auftrennen
-                    String[] lineData = line.split(",");
+                    String[] lineData = line.split("\\|");
                     // Die Zeile zum Ausgabeobjekt hinzufügen
                     data.add(lineData);
+                    line = reader.readLine();
                 }
             }
             catch (IOException ex) {
@@ -52,7 +59,7 @@ public class CsvParser {
         }
     }
 
-    public static Boolean save(String fileName, ArrayList<String[]> data, String[] headers, String description, Context context) {
+    public static Boolean save(String fileName, ArrayList<String[]> data, @NonNull String[] headers, String description, @NonNull Context context) {
         // Rückgabewert definieren
         Boolean success = false;
         // Ausgabeobjekt definieren
@@ -62,9 +69,9 @@ public class CsvParser {
         // Dateiheader (Überschrift) generieren
         if (headers.length > 0) {
             // Zeilenwerte mit Komma zusammenfügen
-            String line = String.format("{0} - {1}", description, headers[0]);
+            String line = description + " - " + headers[0];
             for (int i = 1; i < headers.length; i++) {
-                line += ", " + headers[i];
+                line += "|" + headers[i];
             }
             output = line;
         }
@@ -75,10 +82,12 @@ public class CsvParser {
             if (lineData.length > 0) {
                 // Zeilenumbruch einfügen
                 String line = "\n";
-                // Zeilenwerte mit Komma zusammenfügen
+                // Zeilenwerte mit senkrechtem Strich zusammenfügen
                 line += lineData[0];
                 for (int i = 1; i < lineData.length; i++) {
-                    line += ", " + lineData[i];
+                    // Da der senkrechte Strich das Trennzeichen ist, darf er in den Werten selbst nicht vorkommen und wird deshalb gelöscht.
+                    lineData[i] = lineData[i].replace("|", "");
+                    line += "|" + lineData[i];
                 }
                 output += line;
             }
@@ -86,13 +95,14 @@ public class CsvParser {
 
         try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
             fos.write(output.getBytes(StandardCharsets.UTF_8));
-            // Weil der Vorgang erfolgreich war, Rückgabewert auf true setzen
+            // Weil der Vorgang offensichtlich erfolgreich war, Rückgabewert auf true setzen
             success = true;
         }
-        catch (FileNotFoundException e) {
+        catch (IOException e) {
 
         }
-        catch (IOException e) {
+        catch (Exception ex)
+        {
 
         }
         finally {
