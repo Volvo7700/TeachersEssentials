@@ -24,7 +24,7 @@ public class Database {
         //
         //}
 
-        ArrayList<String[]> rawLessons = CsvParser.read("timetable",context);
+        ArrayList<String[]> rawLessons = CsvParser.read("timetable.csv",context);
         ArrayList<Lesson> lessons = new ArrayList<>();
         for (String[] item : rawLessons) {
 
@@ -39,33 +39,20 @@ public class Database {
             lessons.add(lesson);
         }
 
-        ArrayList<String[]> rawSubjects = CsvParser.read("subjects",context);
+        ArrayList<String[]> rawSubjects = CsvParser.read("subjects.csv",context);
         ArrayList<TimetableSubject> subjects = new ArrayList<>();
         for (String[] item : rawSubjects) {
 
             int id = Integer.parseInt(item[0]);
             String display_name = item[1];
             String name = item[2];
-            String stringcolor = item[3];
+            int colorint = Color.parseColor(item[3]);
 
-            int colorint = Color.parseColor(stringcolor);
-            Color color = Color.valueOf(colorint);
-
-            //stringcolor.replace("Color(","");
-            //stringcolor.replace(")","");
-            //String[] colorvalues = stringcolor.split(", ");
-            //int color_r = Integer.parseInt(colorvalues[0]);
-            //int color_g = Integer.parseInt(colorvalues[1]);
-            //int color_b = Integer.parseInt(colorvalues[2]);
-            //int color_a = Integer.parseInt(colorvalues[3]);
-            //ColorSpace.Named color_spacename = ColorSpace.Named.valueOf( colorvalues[4]);
-            //Color color = Color.valueOf(color_r,color_g,color_b,color_a);
-
-            TimetableSubject subject = new TimetableSubject(id, display_name, name, color);
+            TimetableSubject subject = new TimetableSubject(id, display_name, name, colorint);
             subjects.add(subject);
         }
 
-        ArrayList<String[]> rawRooms = CsvParser.read("room",context);
+        ArrayList<String[]> rawRooms = CsvParser.read("room.csv",context);
         ArrayList<TimetableRoom> rooms = new ArrayList<>();
         for (String[] item : rawRooms) {
 
@@ -76,7 +63,7 @@ public class Database {
             rooms.add(room);
         }
 
-        ArrayList<String[]> rawClasses = CsvParser.read("class",context);
+        ArrayList<String[]> rawClasses = CsvParser.read("class.csv",context);
         ArrayList<TimetableClass> classes = new ArrayList<>();
         for (String[] item : rawClasses) {
 
