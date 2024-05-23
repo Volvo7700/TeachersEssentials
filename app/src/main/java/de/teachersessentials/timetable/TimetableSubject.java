@@ -3,10 +3,15 @@ package de.teachersessentials.timetable;
 import android.graphics.Color;
 
 public class TimetableSubject {
-    TimetableSubject(int id_,String shortage_,String name_,int color_) {
-    int id = id_;
-    String shortage = shortage_;
-    String name = name_;
-    int color = color_;
+    public int id;
+    public String shortage;
+    public String name;
+    public int color;
+
+    public TimetableSubject(int id_,String shortage_,String name_,int color_) {
+        id = id_;
+        shortage = shortage_;
+        name = name_;
+        color = color_;
     }
 }
