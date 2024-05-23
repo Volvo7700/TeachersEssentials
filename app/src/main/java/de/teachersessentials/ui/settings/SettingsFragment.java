@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,8 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import de.teachersessentials.R;
+import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentSettingsBinding;
 import de.teachersessentials.ConfigFile;
 
@@ -72,6 +75,36 @@ public class SettingsFragment extends Fragment {
         //Einstellungen zurücksetzen
         Button resetSettings = root.findViewById(R.id.reset_settings);
         resetSettings.setOnClickListener(v -> ConfigFile.resetConfigFile(requireActivity()));
+
+        Button testbutton = (Button) root.findViewById(R.id.button_test);
+        testbutton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
+                ArrayList<String[]> data = new ArrayList<>();
+                String[] line = new String[4];
+                line[0] = "hallo";
+                line[1] = "test";
+                line[2] = "hier";
+                line[3] = "CSV";
+                data.add(line);
+
+                String[] headers = new String[1];
+                headers[0] = "test";
+
+                Boolean saveresult = CsvParser.save("test.csv", data, headers, "Testtabelle", getContext());
+                textView_test.setText("Speichervorgang erfolgreich: " + saveresult.toString());
+
+                ArrayList<String[]> loadedData = CsvParser.read("test.csv", getContext());
+                String text = "" + saveresult;
+                for (String s : loadedData.get(0) )
+                {
+                    text += s;
+                }
+                textView_test.setText(textView_test.getText() + "\n" + text);
+            }
+        });
 
         return root;
     }

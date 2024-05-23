@@ -75,6 +75,19 @@
                 android:textColor="@color/white"
                 android:layout_marginTop="8dp"/>
 
+            <Button
+                android:id="@+id/button_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="#FF0000"
+                android:text="[DEV] CSV I/O Test" />
+
+            <TextView
+                android:id="@+id/textView_test"
+                android:layout_width="match_parent"
+                android:layout_height="152dp"
+                android:text="TextView" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
