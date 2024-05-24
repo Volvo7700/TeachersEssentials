@@ -1,6 +1,7 @@
 package de.teachersessentials.ui.settings;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import de.teachersessentials.R;
 import de.teachersessentials.csv.CsvParser;
@@ -167,6 +171,34 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // TODO: Hier noch nen CSV-Speicheraufruf schreiben, mit Pipe als Trennsymbol
                 //String[] lineData = line.split("\\|");
+                if (saveContent.getText() != null){
+                    // Text in Zeilen aufteilen
+                    List<String> lines = Arrays.asList(saveContent.getText().toString().split("\n"));
+
+                    // Die ersten beiden Zeilen rausnehmen und extra vorbereiten als Titel und Headerarray
+                    String title = lines.get(0);
+                    String[] headers = lines.get(1).split("\\|");
+                    String[] linesarr = (String[]) Arrays.copyOfRange(lines.toArray(), 2, lines.size());
+
+                    ArrayList<String[]> data = new ArrayList<>();
+                    for (String line : linesarr) {
+                        String[] values = line.split("\\|");
+                        data.add(values);
+                    }
+                    CsvParser.write(savefilename.getText().toString(), data, headers, title, getContext());
+                }
+            }
+        });
+
+        Button seperatorbutton = (Button) root.findViewById(R.id.button_seperator);
+
+        seperatorbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int s0 = saveContent.getSelectionStart();
+                int s1 = saveContent.getSelectionEnd();
+                saveContent.setText(saveContent.getText().insert(s1, "|"));
+                saveContent.setSelection(s1 + 1);
             }
         });
 
