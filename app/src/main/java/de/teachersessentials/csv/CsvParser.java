@@ -72,7 +72,7 @@ public class CsvParser {
         }
     }
 
-    public static Boolean write(String fileName, ArrayList<String[]> data, String[] headers, String description, Context context) {
+    public static Boolean write(String fileName, ArrayList<String[]> data, String[] headers, String title, Context context) {
         // Überprüfen, ob die Eingabe Werte enthält, sonst Fehler schmeißen
         if (fileName != null && data != null && headers != null && context != null){
             // Rückgabewert definieren
@@ -84,7 +84,7 @@ public class CsvParser {
             // Dateiheader (Überschrift) generieren
             if (headers.length > 0) {
                 // Zeilenwerte mit Komma zusammenfügen
-                String line = description + " - " + headers[0];
+                String line = title + " - " + headers[0];
                 for (int i = 1; i < headers.length; i++) {
                     line += "|" + headers[i];
                 }
