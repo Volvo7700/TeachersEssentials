@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -76,6 +77,10 @@ public class SettingsFragment extends Fragment {
         Button resetSettings = root.findViewById(R.id.reset_settings);
         resetSettings.setOnClickListener(v -> ConfigFile.resetConfigFile(requireActivity()));
 
+
+        // Temporärer Testcode
+
+        // Einfacher Datenbanktest (laden und speichern von ein paar simplen Testdaten automatisiert)
         Button testbutton = (Button) root.findViewById(R.id.button_test);
         testbutton.setOnClickListener(new View.OnClickListener() {
 
@@ -99,7 +104,7 @@ public class SettingsFragment extends Fragment {
                 String[] headers = new String[1];
                 headers[0] = "test";
 
-                Boolean saveresult = CsvParser.save("test.csv", data, headers, "Testtabelle", getContext());
+                Boolean saveresult = CsvParser.write("test.csv", data, headers, "Testtabelle", getContext());
                 textView_test.setText("Speichervorgang erfolgreich: " + saveresult.toString());
 
                 ArrayList<String[]> loadedData = CsvParser.read("test.csv", getContext());
@@ -118,6 +123,50 @@ public class SettingsFragment extends Fragment {
                 else {
                     textView_test.setText(textView_test.getText() + "\n" + "NULL");
                 }
+            }
+        });
+
+
+        // Manuelles Laden und Speichern von Daten
+        // Objekte definieren
+        Button loadbutton = (Button) root.findViewById(R.id.button_loadDev);
+        EditText loadfilename = (EditText) root.findViewById(R.id.editText_loadDev);
+        TextView loadContent = (TextView) root.findViewById(R.id.textView_loadDevContent);
+
+        Button savebutton = (Button) root.findViewById(R.id.button_saveDev);
+        EditText savefilename = (EditText) root.findViewById(R.id.editText_saveDev);
+        EditText saveContent = (EditText) root.findViewById(R.id.editText_saveDevContent);
+
+        // Aktion beim Laden
+        loadbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<String[]> content = CsvParser.read(loadfilename.getText().toString(), getContext());
+
+                // Text ins Interface schreiben
+                loadContent.setText("");
+                if (content != null) {
+                    for (String[] row : content) {
+                        String text = "";
+                        for (String s : row)
+                        {
+                            text += " | ";
+                            text += s;
+                        }
+                        loadContent.setText(loadContent.getText() + "\n" + text);
+                    }
+                }
+                else {
+                    loadContent.setText(loadContent.getText() + "\n" + "NULL");
+                }
+            }
+        });
+
+        savebutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Hier noch nen CSV-Speicheraufruf schreiben, mit Pipe als Trennsymbol
+                //String[] lineData = line.split("\\|");
             }
         });
 
