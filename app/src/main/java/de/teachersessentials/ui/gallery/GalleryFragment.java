@@ -1,6 +1,7 @@
 package de.teachersessentials.ui.gallery;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ public class GalleryFragment extends Fragment {
     private FragmentGalleryBinding binding;
     private final String[] days = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
     private final int[] buttonIds = {
+            R.id.lesson_button_0,
             R.id.lesson_button_1,
             R.id.lesson_button_2,
             R.id.lesson_button_3,
@@ -36,8 +38,35 @@ public class GalleryFragment extends Fragment {
             R.id.lesson_button_7,
             R.id.lesson_button_8,
             R.id.lesson_button_9,
-            R.id.lesson_button_10,
-            R.id.lesson_button_11
+            R.id.lesson_button_10
+    };
+
+    private final int[] subjectIds = {
+            R.id.subject_0,
+            R.id.subject_1,
+            R.id.subject_2,
+            R.id.subject_3,
+            R.id.subject_4,
+            R.id.subject_5,
+            R.id.subject_6,
+            R.id.subject_7,
+            R.id.subject_8,
+            R.id.subject_9,
+            R.id.subject_10
+    };
+
+    private final int[] roomIds = {
+            R.id.room_0,
+            R.id.room_1,
+            R.id.room_2,
+            R.id.room_3,
+            R.id.room_4,
+            R.id.room_5,
+            R.id.room_6,
+            R.id.room_7,
+            R.id.room_8,
+            R.id.room_9,
+            R.id.room_10,
     };
 
     @SuppressLint("NewApi")
@@ -76,18 +105,32 @@ public class GalleryFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        //Buttons zum eintragen des Stundenplans
+        List<Button> buttons = new ArrayList<>(); //Alle Buttons werden in einer Liste gespeichert
 
-
-        List<Button> buttons = new ArrayList<>();
-
-        for (int id : buttonIds) {
+        for (int id : buttonIds) { //für jeden Listenplatz wird der entsprechende Button erzeugt
             Button button = root.findViewById(id);
             buttons.add(button);
-
         }
 
-        for (int x : new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) {
-            buttons.get(x).setOnClickListener(v -> System.out.println(x));
+        for (Button button : buttons) {
+            button.setOnClickListener(v -> startActivity(new Intent(getActivity(), popUp.class))); //jeder Button erhält eigene OnClick
+        }
+
+        //TextViews zur Anzeige der Fächer
+        List<TextView> subjects = new ArrayList<>(); //Alle TextViews werden in einer Liste gespeichert
+
+        for (int id : subjectIds) { //für jeden Listenplatz wird das entsprechende TextView erzeugt
+            TextView subject = root.findViewById(id);
+            subjects.add(subject);
+        }
+
+        //TextViews zur Anzeige der Räume
+        List<TextView> rooms = new ArrayList<>(); //Alle TextViews werden in einer Liste gespeichert
+
+        for (int id : roomIds) { //für jeden Listenplatz wird das entsprechende TextView erzeugt
+            TextView room = root.findViewById(id);
+            rooms.add(room);
         }
 
         Button testbutton = (Button) root.findViewById(R.id.button_test);

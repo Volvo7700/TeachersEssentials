@@ -15,7 +15,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.TeachersEssentials.NoActionBar"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -24,6 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.gallery.popUp"
+            android:theme="@style/AppTheme.pop_up"/>
     </application>
 
 </manifest>
