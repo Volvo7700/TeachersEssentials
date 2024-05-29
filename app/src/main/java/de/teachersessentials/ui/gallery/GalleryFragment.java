@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentGalleryBinding;
@@ -25,6 +26,19 @@ public class GalleryFragment extends Fragment {
 
     private FragmentGalleryBinding binding;
     private final String[] days = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
+    private final int[] buttonIds = {
+            R.id.lesson_button_1,
+            R.id.lesson_button_2,
+            R.id.lesson_button_3,
+            R.id.lesson_button_4,
+            R.id.lesson_button_5,
+            R.id.lesson_button_6,
+            R.id.lesson_button_7,
+            R.id.lesson_button_8,
+            R.id.lesson_button_9,
+            R.id.lesson_button_10,
+            R.id.lesson_button_11
+    };
 
     @SuppressLint("NewApi")
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -62,39 +76,57 @@ public class GalleryFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+
+
+        List<Button> buttons = new ArrayList<>();
+
+        for (int id : buttonIds) {
+            Button button = root.findViewById(id);
+            buttons.add(button);
+
+        }
+
+        for (int x : new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) {
+            buttons.get(x).setOnClickListener(v -> System.out.println(x));
+        }
+
         Button testbutton = (Button) root.findViewById(R.id.button_test);
-        testbutton.setOnClickListener(new View.OnClickListener() {
+        testbutton.setOnClickListener(v -> {
+            TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
+            ArrayList<String[]> data = new ArrayList<>();
+            String[] line = new String[4];
+            line[0] = "hallo";
+            line[1] = "test";
+            line[2] = "hier";
+            line[3] = "CSV";
+            data.add(line);
 
-            @Override
-            public void onClick(View v) {
-                TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
-                ArrayList<String[]> data = new ArrayList<>();
-                String[] line = new String[4];
-                line[0] = "hallo";
-                line[1] = "test";
-                line[2] = "hier";
-                line[3] = "CSV";
-                data.add(line);
-
-                String[] headers = new String[1];
-                headers[0] = "test";
+            String[] headers = new String[1];
+            headers[0] = "test";
 
 
-                //CsvParser.save("test.csv", data, headers, "Testtabelle", getActivity().getApplicationContext());
-                ArrayList<String[]> loadedData = CsvParser.read("test.csv", getActivity().getApplicationContext());
+            //CsvParser.save("test.csv", data, headers, "Testtabelle", getActivity().getApplicationContext());
+            ArrayList<String[]> loadedData = CsvParser.read("test.csv", getActivity().getApplicationContext());
 
 
-                textView_test.setText(loadedData.get(0).toString());
-                String text = new String();
-                for (String s : loadedData.get(0) )
-                {
-                    text += s;
-                }
-                textView_test.setText(text);
+            textView_test.setText(loadedData.get(0).toString());
+            String text = new String();
+            for (String s : loadedData.get(0) )
+            {
+                text += s;
             }
+            textView_test.setText(text);
         });
 
         return root;
+    }
+
+    public void loadData(int day) {
+
+    }
+
+    public void loadLesson(int day, int number) {
+
     }
 
     @Override
