@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import de.teachersessentials.ConfigFile;
+import de.teachersessentials.notifications;
 import de.teachersessentials.databinding.FragmentHomeBinding;
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Timetable;
@@ -69,8 +70,8 @@ public class HomeFragment extends Fragment {
         Button TestButton = root.findViewById(R.id.test); //Test Buttop links unten
         TestButton.setOnClickListener(v -> {
             System.out.println("Dieser Button kann zum Testen benutzt werden");
-            System.out.println(ConfigFile.getAllData(requireActivity()));
-                });
+            notifications.sendNotification(requireActivity());
+        });
 
         handler = new Handler();
         updateClock();

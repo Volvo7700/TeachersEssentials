@@ -25,4 +25,6 @@
     <string name="klasse">Klasse</string>
     <string name="farbe">Farbe</string>
     <string name="test">Test</string>
+    <string name="channel_name">notifications_channel</string>
+    <string name="channel_description">Alle Nachrichten, die die App versendet</string>
 </resources>
