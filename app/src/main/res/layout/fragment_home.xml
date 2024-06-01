@@ -26,8 +26,9 @@
                 android:id="@+id/time_left_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:layout_gravity="center" />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/current_subject"
@@ -65,64 +66,4 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
-    <!-- Auskommentierter Code vom Constraint Layout
-    <TextView
-        android:id="@+id/clock_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="25sp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/time_left_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clock_text_view" />
-
-    <TextView
-        android:id="@+id/current_subject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="54dp"
-        android:text="Aktuelles Fach"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_left_view" />
-
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_alignParentBottom="true"
-        android:max="3600000"
-        android:progressTint="@color/blue"
-        android:rotation="-90"
-        android:scaleY="50"
-        android:layout_marginTop="66dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_subject" />
-            bei manchen Seitenlängen wird die Progressbar nicht richtig zentriert
-
-    <TextView
-        android:id="@+id/next_subject"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="66dp"
-        android:text="Nächstes Fach"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress_bar" /> -->
-
-    <!--Generell alle Fragments so machen, dass sie auf allen Handys gut aussehen-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import de.teachersessentials.ConfigFile;
+import de.teachersessentials.notifications;
 import de.teachersessentials.databinding.FragmentHomeBinding;
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Timetable;
@@ -67,7 +68,10 @@ public class HomeFragment extends Fragment {
         //Anzeige des nächsten Fachs einbauen (Timetable Database) und evt. Raum
 
         Button TestButton = root.findViewById(R.id.test); //Test Buttop links unten
-        TestButton.setOnClickListener((v -> System.out.println("Dieser Button kann zum Testen benutzt werden")));
+        TestButton.setOnClickListener(v -> {
+            System.out.println("Dieser Button kann zum Testen benutzt werden");
+            notifications.sendNotification(requireActivity());
+        });
 
         handler = new Handler();
         updateClock();
@@ -92,7 +96,6 @@ public class HomeFragment extends Fragment {
 
     private long getTimeUntilNextLesson() {  //Zeit bis zur nächsten vollen Stunde in Millisekunden
         timeInDay = (System.currentTimeMillis() + 7200000) % 86400000 - 1000; //Zeit des Tages (nur Uhr ohne Datum oder andere Tage); 2 Stunden extra wegen Zeitzonen
-        //timeInDay = 34506000;
         lesson = Timetable.getLessonNumber(timeInDay);
 
         if (lesson == 12) { //Erst am nächsten Tag wieder Schule

@@ -16,5 +16,15 @@
     <string name="feierabend">Feierabend</string>
     <string name="app_schliessen">App schließen</string>
     <string name="einstellungen_zuruecksetzen">Einstellungen zurücksetzen</string>
-    <string name="stunde_einfuegen">Stunde einfügen</string>
+    <string name="stunde_einfuegen">Stunde bearbeiten</string>
+    <string name="subject">subject</string>
+    <string name="room">room</string>
+    <string name="speichern">Speichern</string>
+    <string name="fach">Fach</string>
+    <string name="raum">Raum</string>
+    <string name="klasse">Klasse</string>
+    <string name="farbe">Farbe</string>
+    <string name="test">Test</string>
+    <string name="channel_name">notifications_channel</string>
+    <string name="channel_description">Alle Nachrichten, die die App versendet</string>
 </resources>

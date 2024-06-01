@@ -8,16 +8,23 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class ConfigFile {
+    //mit einem Config File werden Einstellungen in einem .txt File gespeichert (Cache Ordner)
+    //Die verschiedenen Werte werden als Zahlen in den einzelnen Zeilen gespeichert
+    //Erste Zeile: Schriftgröße als Wert zwischen 15 und 40 (normal 25)
+    //Zweite Zeile: Night theme aktiviert (1) oder deaktiviert (0)
+    //Dritte Zeile: Benachrichtigungen aktiviert (1) oder deaktiviert (0)
+    //die Daten können entweder alle auf einmal mit getAllData() oder nach Zeile mit getConfigData() ausgelesen werden
 
     private static File file;
 
     public static void createFile(Context context) { //erstellt neue Datei, falls noch keine existiert
         file = new File(context.getCacheDir(), "config.txt"); //neue Datei wird im cache ordner erstellt
+
         try {
             if (!file.exists()) { //wenn die Datei noch nicht existiert
                 file.createNewFile();
                 System.out.println("File created successfully: " + file.getAbsolutePath());
-                writeToFile("25\n12\n14", 1, context); //Defaulteinstellungen
+                writeToFile("25\n1\n1", 1, context); //Defaulteinstellungen
             } else {
                 System.out.println("File already exists: " + file.getAbsolutePath());  //schon vorhanden
             }
@@ -73,8 +80,24 @@ public class ConfigFile {
         return content;
     }
 
+    public static void addTrueFalse(boolean isChecked, int line, Context context) { //speichert 1 oder 0 in einer Zeile des ConfigFiles
+        if(isChecked) {
+            try {
+                ConfigFile.writeToFile("1", line, context);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                ConfigFile.writeToFile("0", line, context);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     public static void resetConfigFile(Context context) {
-            file.delete(); //löscht Datei
+        file.delete(); //löscht Datei
         createFile(context); //erstellt neue Datei
     }
 }

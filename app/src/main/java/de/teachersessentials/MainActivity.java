@@ -2,8 +2,6 @@ package de.teachersessentials;
 
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -15,12 +13,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import de.teachersessentials.databinding.ActivityMainBinding;
-import de.teachersessentials.timetable.Lesson;
-import de.teachersessentials.timetable.Timetable;
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private Button Lesson_select_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        ConfigFile.createFile(this);
+        notifications.createNotificationChannel(this); //NotificationChannel wird erstellt
+        // TODO: nach Erlaubnis fragen, Nachrichten senden zu können
 
+        ConfigFile.createFile(this); //config File wird erstellt
     }
 
     @Override
