@@ -2,24 +2,31 @@ package de.teachersessentials.timetable;
 
 import java.util.Date;
 
+// Zugriffsklasse aus dem GUI auf die Datenbank
 public class Timetable {
     private static final int[] lessonGrid = {28800000, 31500000, 35100000, 37800000, 41400000, 44100000, 46800000, 49500000, 52200000, 54900000, 57600000, 60300000};
 
     public static Lesson getLesson(int day, int lesson) {
+
         return new Lesson();
     }
 
     public static Lesson[] getAllLessons() {
+
         return new Lesson[0];
     }
 
-    public static void setLesson(Lesson lesson) {}
+    public static void setLesson(Lesson lesson) {
+
+    }
 
     public static String[] getAllRooms() {
+
         return new String[0];
     }
 
     public static String[] getAllClasses() {
+
         return new String[0];
     }
 
