@@ -13,19 +13,13 @@ import javax.security.auth.Subject;
 import de.teachersessentials.csv.CsvParser;
 
 public class Database {
-    public static void load(Context context) {
-        //private void loadSubjects() {
-        //
-        //}
-        //private void loadClasses() {
-        //
-        //}
-        //private void loadRooms() {
-        //
-        //}
+    public static ArrayList<Lesson> lessons = new ArrayList<>();
+    public static ArrayList<TimetableSubject> subjects = new ArrayList<>();
+    public static ArrayList<TimetableRoom> rooms = new ArrayList<>();
+    public static ArrayList<TimetableClass> classes = new ArrayList<>();
 
+    public static void load(Context context) {
         ArrayList<String[]> rawLessons = CsvParser.read("timetable.csv",context);
-        ArrayList<Lesson> lessons = new ArrayList<>();
         for (String[] item : rawLessons) {
 
             int id = Integer.parseInt(item[0]);
@@ -40,7 +34,6 @@ public class Database {
         }
 
         ArrayList<String[]> rawSubjects = CsvParser.read("subjects.csv",context);
-        ArrayList<TimetableSubject> subjects = new ArrayList<>();
         for (String[] item : rawSubjects) {
 
             int id = Integer.parseInt(item[0]);
@@ -53,7 +46,6 @@ public class Database {
         }
 
         ArrayList<String[]> rawRooms = CsvParser.read("room.csv",context);
-        ArrayList<TimetableRoom> rooms = new ArrayList<>();
         for (String[] item : rawRooms) {
 
             int id = Integer.parseInt(item[0]);
@@ -64,7 +56,6 @@ public class Database {
         }
 
         ArrayList<String[]> rawClasses = CsvParser.read("class.csv",context);
-        ArrayList<TimetableClass> classes = new ArrayList<>();
         for (String[] item : rawClasses) {
 
             int id = Integer.parseInt(item[0]);
