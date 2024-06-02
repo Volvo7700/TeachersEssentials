@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">TeachersEssentials</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -12,6 +12,7 @@
     <string name="menu_settings">Einstellungen</string>
     <string name="night_theme">Night Theme</string>
     <string name="benachrichtigungen">Benachrichtigungen</string>
+    <string name="benachrichtigungen_deaktiviert">Benachrichtigungen deaktiviert</string>
     <string name="schriftgroesse">Schriftgröße</string>
     <string name="feierabend">Feierabend</string>
     <string name="app_schliessen">App schließen</string>
@@ -26,5 +27,9 @@
     <string name="farbe">Farbe</string>
     <string name="test">Test</string>
     <string name="channel_name">notifications_channel</string>
-    <string name="channel_description">Alle Nachrichten, die die App versendet</string>
+    <string name="channel_description" tools:ignore="Typos">Alle Nachrichten, die die App versendet</string>
+    <string name="alertPermissionHeadline">Berechtigung Abgelehnt</string>
+    <string name="alertPermissionText">Um Nachrichten senden zu können benötigt TeachersEssentials die Erlaubnis dazu. Diese können Sie in den Einstellungen geben.</string>
+    <string name="ok">OK</string>
+
 </resources>

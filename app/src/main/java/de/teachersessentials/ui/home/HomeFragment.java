@@ -18,8 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.teachersessentials.ConfigFile;
-import de.teachersessentials.notifications;
+import de.teachersessentials.util.ConfigFile;
+import de.teachersessentials.util.notifications.notifications;
 import de.teachersessentials.databinding.FragmentHomeBinding;
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Timetable;
@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        int fontsize = Integer.parseInt(ConfigFile.getConfigData(requireActivity(), 1));
+        int fontsize = ConfigFile.getConfigData(requireActivity(), 1);
 
         //Anzeige der aktuellen Uhrzeit
         clockTextView = root.findViewById(R.id.clock_text_view);

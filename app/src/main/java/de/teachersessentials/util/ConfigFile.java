@@ -1,4 +1,4 @@
-package de.teachersessentials;
+package de.teachersessentials.util;
 
 import android.content.Context;
 
@@ -13,6 +13,7 @@ public class ConfigFile {
     //Erste Zeile: Schriftgröße als Wert zwischen 15 und 40 (normal 25)
     //Zweite Zeile: Night theme aktiviert (1) oder deaktiviert (0)
     //Dritte Zeile: Benachrichtigungen aktiviert (1) oder deaktiviert (0)
+    //VierteZeile: App schon einmal geöffnet (0) oder erstes mal (1)
     //die Daten können entweder alle auf einmal mit getAllData() oder nach Zeile mit getConfigData() ausgelesen werden
 
     private static File file;
@@ -24,7 +25,7 @@ public class ConfigFile {
             if (!file.exists()) { //wenn die Datei noch nicht existiert
                 file.createNewFile();
                 System.out.println("File created successfully: " + file.getAbsolutePath());
-                writeToFile("25\n1\n1", 1, context); //Defaulteinstellungen
+                writeToFile("25\n1\n1\n1", 1, context); //Defaulteinstellungen
             } else {
                 System.out.println("File already exists: " + file.getAbsolutePath());  //schon vorhanden
             }
@@ -33,7 +34,7 @@ public class ConfigFile {
         }
     }
 
-    public static void writeToFile(String data, int line, Context context) throws IOException {
+    public static void writeToFile(String data, int line, Context context) {
         String dataOld = getAllData(context); //alter Inhalt wird ausgelesen
         String[] dataOldList = dataOld.split("\n"); //jede Zeile einzeln
 
@@ -53,7 +54,7 @@ public class ConfigFile {
         }
     }
 
-    public static String getConfigData(Context context, int line) { //liest alle Daten aud dem ConfigFile
+    public static int getConfigData(Context context, int line) { //liest alle Daten aud dem ConfigFile
         file = new File(context.getCacheDir(), "config.txt");
         String output = "";
 
@@ -64,7 +65,7 @@ public class ConfigFile {
         }
 
         String[] contentList = output.split("\n"); //output wird am Zeilenumbruch in Liste aufgeteilt
-        return contentList[line - 1]; //nur geforderte Zeile wird zurückgegeben
+        return Integer.parseInt(contentList[line - 1]); //nur geforderte Zeile wird zurückgegeben
     }
 
     public static String getAllData(Context context) {
@@ -82,17 +83,9 @@ public class ConfigFile {
 
     public static void addTrueFalse(boolean isChecked, int line, Context context) { //speichert 1 oder 0 in einer Zeile des ConfigFiles
         if(isChecked) {
-            try {
-                ConfigFile.writeToFile("1", line, context);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            ConfigFile.writeToFile("1", line, context);
         } else {
-            try {
-                ConfigFile.writeToFile("0", line, context);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            ConfigFile.writeToFile("0", line, context);
         }
     }
 
