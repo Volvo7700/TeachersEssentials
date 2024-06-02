@@ -1,5 +1,6 @@
 package de.teachersessentials.timetable;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 // Zugriffsklasse aus dem GUI auf die Datenbank
@@ -11,10 +12,24 @@ public class Timetable {
         return new Lesson();
     }
 
-    public static Lesson[] getAllLessons() {
-
-        return new Lesson[0];
+    public static ArrayList<Lesson> getAllLessons() {
+    //gibt uns alle Lessons
+        ArrayList<Lesson> Lesson = Database.lessons;
+        return Lesson;
     }
+
+    public static ArrayList<Lesson> getDayLessons(int day) {
+        //suchen Lessons mit passendem Tag und packen die in ne Liste - dann Liste ausgeben
+        ArrayList<Lesson> Lessons = new ArrayList<>();
+        for (Lesson current : Database.lessons){
+            if(current.day == day){
+                Lessons.add(current);
+            }
+        }
+
+        return Lessons;
+    }
+
 
     public static void setLesson(Lesson lesson) {
 
