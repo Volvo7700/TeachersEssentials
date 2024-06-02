@@ -88,7 +88,7 @@ public class SettingsFragment extends Fragment {
 
             } else {
                 ConfigFile.writeToFile("0", 3, requireActivity()); //ConfigFile änderung
-                Toast.makeText(requireActivity(), R.string.benachrichtigungen_deaktivieret, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireActivity(), R.string.benachrichtigungen_deaktiviert, Toast.LENGTH_SHORT).show();
             }
         });
 

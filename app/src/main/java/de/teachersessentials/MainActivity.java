@@ -16,6 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import de.teachersessentials.databinding.ActivityMainBinding;
+import de.teachersessentials.timetable.Database;
 import de.teachersessentials.util.ConfigFile;
 import de.teachersessentials.util.notifications.notifications;
 
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         notifications.askPermission(this, this); //fragt nach Erlaubnis
         notifications.createNotificationChannel(this); //NotificationChannel wird erstellt
+
+        Database.load(getApplicationContext());
     }
 
     @Override
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             ConfigFile.writeToFile(String.valueOf(granted + 1), 3, this); //ConfigFile wird entsprechend der Auswahl geändert
         }
         if(grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this, R.string.benachrichtigungen_deaktivieret, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.benachrichtigungen_deaktiviert, Toast.LENGTH_SHORT).show();
         }
     }
 
