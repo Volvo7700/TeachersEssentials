@@ -1,24 +1,32 @@
 package de.teachersessentials.ui.settings;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,13 +34,13 @@ import java.util.List;
 import de.teachersessentials.R;
 import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentSettingsBinding;
-import de.teachersessentials.ConfigFile;
+import de.teachersessentials.util.ConfigFile;
 
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
+    private Switch messages;
     private final String[] font_select_size = {"winzig", "klein", "normal", "groß", "riesig"};
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -70,6 +78,20 @@ public class SettingsFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        messages = root.findViewById(R.id.messages);
+        messages.setChecked(ConfigFile.getConfigData(requireActivity(), 3) == 1);
+
+        messages.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                ConfigFile.writeToFile("1", 3, requireActivity()); //ConfigFile änderung
+                alertDialogDismiss();
+
+            } else {
+                ConfigFile.writeToFile("0", 3, requireActivity()); //ConfigFile änderung
+                Toast.makeText(requireActivity(), R.string.benachrichtigungen_deaktiviert, Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //App schließen
         Button closeApp = root.findViewById(R.id.close_app);
         closeApp.setOnClickListener(v -> {
@@ -79,7 +101,16 @@ public class SettingsFragment extends Fragment {
 
         //Einstellungen zurücksetzen
         Button resetSettings = root.findViewById(R.id.reset_settings);
-        resetSettings.setOnClickListener(v -> ConfigFile.resetConfigFile(requireActivity()));
+        resetSettings.setOnClickListener(v -> {
+            ConfigFile.resetConfigFile(requireActivity());
+            selectFontSize.setSelection(2);
+            if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                messages.setChecked(true);
+            } else {
+                messages.setChecked(false);
+                ConfigFile.writeToFile("0", 3, requireActivity());
+            }
+        });
 
 
         // Temporärer Testcode
@@ -205,13 +236,29 @@ public class SettingsFragment extends Fragment {
         return root;
     }
 
-    private void writeFontsizeToConfig(String fontsize) {
-        try {
-            ConfigFile.writeToFile(fontsize, 1, requireActivity()); //Schriftgröße ins ConfigFile
-            System.out.println("Written succesfully");
-        } catch (IOException e) { //Fehler
-            throw new RuntimeException(e);
+    private void alertDialogDismiss() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle(R.string.alertPermissionHeadline);
+                builder.setMessage(R.string.alertPermissionText);
+                builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                    //Weiterleitung in die Einstellungen
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
+                    intent.setData(uri);
+                    startActivity(intent);
+                });
+                builder.setNegativeButton("Abbrechen", (dialog, which) -> messages.setChecked(false));
+                builder.create().show(); //AlertDialog wird gezeigt
+            }
         }
+    }
+
+    private void writeFontsizeToConfig(String fontsize) {
+        ConfigFile.writeToFile(fontsize, 1, requireActivity()); //Schriftgröße ins ConfigFile
+        System.out.println("Written succesfully");
     }
 
     @Override
