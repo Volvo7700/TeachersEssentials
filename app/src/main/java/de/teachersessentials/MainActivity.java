@@ -1,5 +1,6 @@
 package de.teachersessentials;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 
@@ -13,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import de.teachersessentials.databinding.ActivityMainBinding;
+import de.teachersessentials.timetable.Database;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
         // TODO: nach Erlaubnis fragen, Nachrichten senden zu können
 
         ConfigFile.createFile(this); //config File wird erstellt
+
+        Database.load(getApplicationContext());
     }
 
     @Override
