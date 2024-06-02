@@ -32,7 +32,21 @@ public class Timetable {
 
 
     public static void setLesson(Lesson lesson) {
+    int day = lesson.day;
+    int aua = lesson.hour;
 
+    ArrayList<Lesson> Lessons = new ArrayList<>();
+    boolean pen = false;
+        for (Lesson current : Database.lessons) {
+            if (current.day == day && current.hour == aua) {
+                Lessons.remove(current);
+                Lessons.add(lesson);
+                pen = true;
+            }
+        }
+        if(pen = false){
+            Lessons.add(lesson);
+        }
     }
 
     public static String[] getAllRooms() {
