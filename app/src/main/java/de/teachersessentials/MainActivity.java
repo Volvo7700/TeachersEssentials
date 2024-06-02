@@ -1,10 +1,13 @@
 package de.teachersessentials;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -13,6 +16,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import de.teachersessentials.databinding.ActivityMainBinding;
+import de.teachersessentials.timetable.Database;
+import de.teachersessentials.util.ConfigFile;
+import de.teachersessentials.util.notifications.notifications;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ConfigFile.createFile(this); //config File wird erstellt
+        ConfigFile.writeToFile("0", 4, this); //App wurde bereits einmal geöffnet
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -39,10 +48,23 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        notifications.askPermission(this, this); //fragt nach Erlaubnis
         notifications.createNotificationChannel(this); //NotificationChannel wird erstellt
-        // TODO: nach Erlaubnis fragen, Nachrichten senden zu können
 
-        ConfigFile.createFile(this); //config File wird erstellt
+        Database.load(getApplicationContext());
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //sagt dem Config File ob Berechtigung gegeben wurde oder nicht
+        if (requestCode == notifications.REQUEST_POST_NOTIFICATIONS) { //nur wenn es um Berechtigung für Nachrichtengeht
+            int granted = grantResults[0];
+            ConfigFile.writeToFile(String.valueOf(granted + 1), 3, this); //ConfigFile wird entsprechend der Auswahl geändert
+        }
+        if(grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, R.string.benachrichtigungen_deaktiviert, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
