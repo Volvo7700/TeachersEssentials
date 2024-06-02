@@ -49,14 +49,22 @@ public class Timetable {
         }
     }
 
-    public static String[] getAllRooms() {
+    public static ArrayList<TimetableSubject> getAllSubjects() {
 
-        return new String[0];
+        ArrayList<TimetableSubject> Subjects = Database.subjects;
+        return Subjects;
     }
 
-    public static String[] getAllClasses() {
+    public static ArrayList<TimetableRoom> getAllRooms() {
 
-        return new String[0];
+        ArrayList<TimetableRoom> Rooms = Database.rooms;
+        return Rooms;
+    }
+
+    public static ArrayList<TimetableClass> getAllClasses() {
+
+        ArrayList<TimetableClass> Classes = Database.classes;
+        return Classes;
     }
 
     public static Date getStart(int time) { //gibt Startzeit der jeweiligen Stunde zurück
