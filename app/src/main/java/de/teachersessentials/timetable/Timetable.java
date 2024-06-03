@@ -7,9 +7,13 @@ import java.util.Date;
 public class Timetable {
     private static final int[] lessonGrid = {28800000, 31500000, 35100000, 37800000, 41400000, 44100000, 46800000, 49500000, 52200000, 54900000, 57600000, 60300000};
 
-    public static Lesson getLesson(int day, int lesson) {
-
-        return new Lesson();
+    public static Lesson getLesson(int day, int aua) {
+        for (Lesson current : Database.lessons){
+            if (current.day == day && current.hour == aua) {
+                return current;
+            }
+        }
+        return null;
     }
 
     public static ArrayList<Lesson> getAllLessons() {
