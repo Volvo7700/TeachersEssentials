@@ -7,65 +7,138 @@ import java.util.Date;
 public class Timetable {
     private static final int[] lessonGrid = {28800000, 31500000, 35100000, 37800000, 41400000, 44100000, 46800000, 49500000, 52200000, 54900000, 57600000, 60300000};
 
-    public static Lesson getLesson(int day, int lesson) {
-
-        return new Lesson();
+    // FÄCHER FÜR PLAN
+    // Eine bestimmte Lesson ausgeben
+    public static Lesson getLesson(int day, int aua) {
+        for (Lesson current : Database.lessons){
+            if (current.day == day && current.hour == aua) {
+                return current;
+            }
+        }
+        return null;
     }
 
+    // gibt uns alle Lessons
     public static ArrayList<Lesson> getAllLessons() {
-    //gibt uns alle Lessons
         ArrayList<Lesson> Lesson = Database.lessons;
         return Lesson;
     }
 
+    //suchen Lessons mit passendem Tag und packen die in ne Liste - dann Liste ausgeben
     public static ArrayList<Lesson> getDayLessons(int day) {
-        //suchen Lessons mit passendem Tag und packen die in ne Liste - dann Liste ausgeben
         ArrayList<Lesson> Lessons = new ArrayList<>();
         for (Lesson current : Database.lessons){
             if(current.day == day){
                 Lessons.add(current);
             }
         }
-
         return Lessons;
     }
 
-
+    // EINGABE
+    // Lesson bearbeiten
     public static void setLesson(Lesson lesson) {
-    int day = lesson.day;
-    int aua = lesson.hour;
+        int day = lesson.day;
+        int aua = lesson.hour;
 
-    ArrayList<Lesson> Lessons = new ArrayList<>();
-    boolean pen = false;
         for (Lesson current : Database.lessons) {
             if (current.day == day && current.hour == aua) {
-                Lessons.remove(current);
-                Lessons.add(lesson);
-                pen = true;
+                Database.lessons.remove(current);
             }
         }
-        if(pen = false){
-            Lessons.add(lesson);
-        }
+        Database.lessons.add(lesson);
     }
 
+    // AUSGABE
+    // Alle Fächer ausgeben
     public static ArrayList<TimetableSubject> getAllSubjects() {
-
         ArrayList<TimetableSubject> Subjects = Database.subjects;
         return Subjects;
     }
 
+    // Alle Räume ausgeben
     public static ArrayList<TimetableRoom> getAllRooms() {
-
         ArrayList<TimetableRoom> Rooms = Database.rooms;
         return Rooms;
     }
 
+    // Alle Klassen ausgeben
     public static ArrayList<TimetableClass> getAllClasses() {
-
-        ArrayList<TimetableClass> Classes = Database.classes;
-        return Classes;
+        ArrayList<TimetableClass> classes = Database.classes;
+        return classes;
     }
+
+    // EINGABE
+    // Fächer Bearbeiten
+    public static void setSubject(TimetableSubject subject){
+
+        for (TimetableSubject current : Database.subjects) {
+            if (current.id == subject.id) {
+                Database.subjects.remove(current);
+            }
+        }
+        Database.subjects.add(subject);
+    }
+
+    // Klasse Bearbeiten
+    public static void setClass(TimetableClass class_){
+        for (TimetableClass current : Database.classes) {
+            if (current.id == class_.id) {
+                Database.classes.remove(current);
+            }
+        }
+        Database.classes.add(class_);
+    }
+    public static void setClass(String name){
+        for (TimetableClass current : Database.classes) {
+            if (current.name == name) {
+                return;
+            }
+        }
+        int id = Database.classes.get(Database.classes.size() - 1).id;
+        TimetableClass class_ = new TimetableClass(id+1,name);
+        Database.classes.add(class_);
+    }
+    public static void setClass(int id, String name ){
+        for (TimetableClass current : Database.classes) {
+            if (current.id == id) {
+                Database.classes.remove(current);
+            }
+        }
+        TimetableClass class_ = new TimetableClass(id, name);
+        Database.classes.add(class_);
+    }
+
+    // Raum Bearbeiten
+    public static void setRoom(TimetableRoom room){
+        for (TimetableRoom current : Database.rooms) {
+            if (current.id == room.id) {
+                Database.rooms.remove(current);
+            }
+        }
+        Database.rooms.add(room);
+    }
+    //❤❤❤🍔🍕
+    public static void setRoom(String name){
+        for (TimetableRoom current : Database.rooms) {
+            if (current.room == name) {
+                return;
+            }
+        }
+        int id = Database.rooms.get(Database.rooms.size() - 1).id;
+        TimetableRoom room = new TimetableRoom(id+1,name);
+        Database.rooms.add(room);
+    }
+    public static void setRoom(int id, String name ){
+        for (TimetableRoom current : Database.rooms) {
+            if (current.id == id) {
+                Database.rooms.remove(current);
+            }
+        }
+        TimetableRoom room = new TimetableRoom(id, name);
+        Database.rooms.add(room);
+    }
+
 
     public static Date getStart(int time) { //gibt Startzeit der jeweiligen Stunde zurück
         Date start = new Date();
