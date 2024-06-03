@@ -54,13 +54,14 @@ public class MainActivity extends AppCompatActivity {
         notifications.askPermission(this, this); //fragt nach Erlaubnis
         notifications.createNotificationChannel(this); //NotificationChannel wird erstellt
 
-        if(!foregroundServiceRunning()) {
-            Intent serviceIntent = new Intent(this, Background.class);
-            startForegroundService(serviceIntent);
-        }
+        //if(!foregroundServiceRunning()) {
+          //  Intent serviceIntent = new Intent(this, Background.class);
+            //startForegroundService(serviceIntent);
+        //}
 
         Database.load(getApplicationContext());
     }
+
 
     public boolean foregroundServiceRunning() {
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
