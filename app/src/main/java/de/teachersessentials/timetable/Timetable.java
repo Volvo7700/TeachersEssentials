@@ -104,7 +104,7 @@ public class Timetable {
         }
         Database.rooms.add(room);
     }
-
+    //❤❤❤🍔🍕
     public static void setRoom(String name){
         int id = Database.rooms.get(Database.rooms.size() - 1).id;
         TimetableRoom room = new TimetableRoom(id+1,name);
