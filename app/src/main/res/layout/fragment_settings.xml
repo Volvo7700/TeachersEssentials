@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.settings.SettingsFragment">
 
     <ScrollView
@@ -22,10 +23,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="@string/schriftgr_e"
-                    android:textSize="16sp"
                     android:layout_alignParentStart="true"
-                    android:textColor="@color/white" />
+                    android:text="@string/schriftgroesse"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    tools:ignore="RelativeOverlap" />
 
                 <Spinner
                     android:id="@+id/select_font_size"
@@ -38,32 +40,162 @@
                 android:id="@+id/night_theme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/night_theme"
                 android:layout_marginTop="16dp"
-                android:textSize="16sp"
+                android:checked="true"
+                android:text="@string/night_theme"
                 android:textColor="@color/white"
-                tools:ignore="UseSwitchCompatOrMaterialXml"
-                android:checked="true"/>
+                android:textSize="16sp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Switch
                 android:id="@+id/messages"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/benachrichtigungen"
                 android:layout_marginTop="16dp"
-                android:textSize="16sp"
+                android:checked="true"
+                android:text="@string/benachrichtigungen"
                 android:textColor="@color/white"
-                tools:ignore="UseSwitchCompatOrMaterialXml"
-                android:checked="true"/>
+                android:textSize="16sp"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Button
                 android:id="@+id/close_app"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="App schließen"
-                android:textColor="@color/white"
-                android:layout_marginTop="16dp"/>
+                android:layout_marginTop="16dp"
+                android:text="@string/app_schliessen"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/reset_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:text="@string/einstellungen_zuruecksetzen"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/button_test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#009688"
+                android:foregroundTint="#FF0000"
+                android:text="[DEV] CSV I/O Test Einfach"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/textView_test"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:text="Einfacher CSV Test: output hier" />
+
+            <TextView
+                android:id="@+id/textView_loadDevTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="[DEV] Datei laden"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editText_loadDev"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Dateiname"
+                    android:inputType="text|textVisiblePassword|textNoSuggestions" />
+
+                <Button
+                    android:id="@+id/button_loadDev"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="#009688"
+                    android:text="Lesen"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_loadDevContent"
+                android:layout_width="match_parent"
+                android:layout_height="78dp"
+                android:hint="Geladener Inhalt"
+                android:isScrollContainer="true"
+                android:scrollbars="vertical" />
+
+            <TextView
+                android:id="@+id/textView_saveDevTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="[DEV] Datei speichern"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editText_saveDev"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Dateiname"
+                    android:inputType="text|textVisiblePassword|textNoSuggestions" />
+
+                <Button
+                    android:id="@+id/button_saveDev"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="#009688"
+                    android:text="Schreiben"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editText_saveDevContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Speichereingabe\n\nTitel\nHeader (Wertekette getrennt)\nWerte (mehrere Werteketten getrennt)\nWerte nur mit Trennzeichen-\nButton rechts trennen!"
+                    android:inputType="text|textVisiblePassword|textMultiLine|textNoSuggestions"
+                    android:isScrollContainer="true"
+                    android:lines="8"
+                    android:maxLines="50"
+                    android:minLines="5"
+                    android:scrollbarAlwaysDrawVerticalTrack="false"
+                    android:scrollbars="vertical"
+                    android:singleLine="false"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/button_seperator"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="#009688"
+                    android:text="|"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

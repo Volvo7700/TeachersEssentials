@@ -1,0 +1,12 @@
+ --- Frontendteam ---
+
+Background class vervollständigen
+    direkt im File
+Stundenplans
+    Backend muss vorher Fertig sein mit entsprechenden Schnittstellen
+    korrektes Anzeigen der Fächer an den jeweiligen Tagen
+    PopUp Anzeigen und Eintragen ermöglichen
+    eintragen des Stundenplans --> weitergabe Daten ins Backend
+Anzeigen der Stunden im HomeFragment
+
+(Darkmode, Farben, generell schöner machen)

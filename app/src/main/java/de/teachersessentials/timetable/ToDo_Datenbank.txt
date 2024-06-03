@@ -1,0 +1,10 @@
+DATENBANK - Noch zu tun
+-----------------------
+
+SPEICHERN
+Dateien laden am Appstart
+Errorhandling beim Parsen hinzufügen
+Stundenplan
+    Stundenraster speichern
+    Verweise erstellen
+Check für Vermeidung von Doppeleinträgen

@@ -24,6 +24,7 @@ Schnittstelle
     - RoomList
        > getAll() -> array
     - ClassList
+
        > getAll() -> array
  - Lesson
     - Subject

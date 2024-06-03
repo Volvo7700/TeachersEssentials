@@ -18,7 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.teachersessentials.Shared;
+import de.teachersessentials.util.ConfigFile;
+import de.teachersessentials.util.notifications.notifications;
 import de.teachersessentials.databinding.FragmentHomeBinding;
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Timetable;
@@ -43,17 +44,19 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        int fontsize = ConfigFile.getConfigData(requireActivity(), 1);
+
         //Anzeige der aktuellen Uhrzeit
         clockTextView = root.findViewById(R.id.clock_text_view);
-        clockTextView.setTextSize((float) (Shared.fontsize)); //Schriftgröße Uhr wird angepasst
+        clockTextView.setTextSize((float) fontsize); //Schriftgröße
 
         //Anzeige der verbleibenden Zeit
         timeLeftView = root.findViewById(R.id.time_left_view);
-        timeLeftView.setTextSize((float) (Shared.fontsize*2)); //Schriftgröße des Timers wird angepasst
+        timeLeftView.setTextSize((float) fontsize * 2); //Schriftgröße
 
         //Aktuelles Fach
         currentSubject = root.findViewById(R.id.current_subject);
-        currentSubject.setTextSize((float) (Shared.fontsize*0.75));
+        currentSubject.setTextSize((float) ((float) fontsize * 0.75)); //Schriftgröße
         //Anzeige des aktuellen Fachs einbauen (Timetable Database)
 
         //ProgressBar
@@ -61,13 +64,14 @@ public class HomeFragment extends Fragment {
 
         //Nächstes Fach
         nextSubject = root.findViewById((R.id.next_subject));
-        nextSubject.setTextSize((float) (Shared.fontsize*0.75)); //Schriftgröße
+        nextSubject.setTextSize((float) ((float) fontsize * 0.75)); //Schriftgröße
         //Anzeige des nächsten Fachs einbauen (Timetable Database) und evt. Raum
 
-        Button TestButton = root.findViewById(R.id.test);
-        TestButton.setOnClickListener((v -> {
-            System.out.println("lesson: " + lesson + "; timeInDay: " + timeInDay + "; timeInDayPlus: " + "return: " + ((int) (Timetable.getStart(lesson).getTime() - timeInDay)));
-        }));
+        Button TestButton = root.findViewById(R.id.test); //Test Buttop links unten
+        TestButton.setOnClickListener(v -> {
+            System.out.println("Dieser Button kann zum Testen benutzt werden");
+            notifications.sendNotification(requireActivity());
+        });
 
         handler = new Handler();
         updateClock();
@@ -92,7 +96,6 @@ public class HomeFragment extends Fragment {
 
     private long getTimeUntilNextLesson() {  //Zeit bis zur nächsten vollen Stunde in Millisekunden
         timeInDay = (System.currentTimeMillis() + 7200000) % 86400000 - 1000; //Zeit des Tages (nur Uhr ohne Datum oder andere Tage); 2 Stunden extra wegen Zeitzonen
-        //timeInDay = 34506000;
         lesson = Timetable.getLessonNumber(timeInDay);
 
         if (lesson == 12) { //Erst am nächsten Tag wieder Schule
