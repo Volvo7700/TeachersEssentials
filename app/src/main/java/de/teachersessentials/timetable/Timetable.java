@@ -7,6 +7,8 @@ import java.util.Date;
 public class Timetable {
     private static final int[] lessonGrid = {28800000, 31500000, 35100000, 37800000, 41400000, 44100000, 46800000, 49500000, 52200000, 54900000, 57600000, 60300000};
 
+    // FÄCHER FÜR PLAN
+    // Eine bestimmte Lesson ausgeben
     public static Lesson getLesson(int day, int aua) {
         for (Lesson current : Database.lessons){
             if (current.day == day && current.hour == aua) {
@@ -16,25 +18,25 @@ public class Timetable {
         return null;
     }
 
+    // gibt uns alle Lessons
     public static ArrayList<Lesson> getAllLessons() {
-    //gibt uns alle Lessons
         ArrayList<Lesson> Lesson = Database.lessons;
         return Lesson;
     }
 
+    //suchen Lessons mit passendem Tag und packen die in ne Liste - dann Liste ausgeben
     public static ArrayList<Lesson> getDayLessons(int day) {
-        //suchen Lessons mit passendem Tag und packen die in ne Liste - dann Liste ausgeben
         ArrayList<Lesson> Lessons = new ArrayList<>();
         for (Lesson current : Database.lessons){
             if(current.day == day){
                 Lessons.add(current);
             }
         }
-
         return Lessons;
     }
 
-
+    // EINGABE
+    // Lesson bearbeiten
     public static void setLesson(Lesson lesson) {
     int day = lesson.day;
     int aua = lesson.hour;
@@ -53,23 +55,26 @@ public class Timetable {
         }
     }
 
+    // AUSGABE
+    // Alle Fächer ausgeben
     public static ArrayList<TimetableSubject> getAllSubjects() {
-
         ArrayList<TimetableSubject> Subjects = Database.subjects;
         return Subjects;
     }
 
+    // Alle Räume ausgeben
     public static ArrayList<TimetableRoom> getAllRooms() {
-
         ArrayList<TimetableRoom> Rooms = Database.rooms;
         return Rooms;
     }
 
+    // Alle Klassen ausgeben
     public static ArrayList<TimetableClass> getAllClasses() {
-
         ArrayList<TimetableClass> Classes = Database.classes;
         return Classes;
     }
+
+
 
     public static Date getStart(int time) { //gibt Startzeit der jeweiligen Stunde zurück
         Date start = new Date();
