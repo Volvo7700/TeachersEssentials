@@ -90,8 +90,22 @@ public class Timetable {
         Database.classes.add(class_);
     }
     public static void setClass(String name){
+        for (TimetableClass current : Database.classes) {
+            if (current.name == name) {
+                return;
+            }
+        }
         int id = Database.classes.get(Database.classes.size() - 1).id;
         TimetableClass class_ = new TimetableClass(id+1,name);
+        Database.classes.add(class_);
+    }
+    public static void setClass(int id, String name ){
+        for (TimetableClass current : Database.classes) {
+            if (current.id == id) {
+                Database.classes.remove(current);
+            }
+        }
+        TimetableClass class_ = new TimetableClass(id, name);
         Database.classes.add(class_);
     }
 
@@ -106,8 +120,22 @@ public class Timetable {
     }
     //❤❤❤🍔🍕
     public static void setRoom(String name){
+        for (TimetableRoom current : Database.rooms) {
+            if (current.room == name) {
+                return;
+            }
+        }
         int id = Database.rooms.get(Database.rooms.size() - 1).id;
         TimetableRoom room = new TimetableRoom(id+1,name);
+        Database.rooms.add(room);
+    }
+    public static void setRoom(int id, String name ){
+        for (TimetableRoom current : Database.rooms) {
+            if (current.id == id) {
+                Database.rooms.remove(current);
+            }
+        }
+        TimetableRoom room = new TimetableRoom(id, name);
         Database.rooms.add(room);
     }
 
