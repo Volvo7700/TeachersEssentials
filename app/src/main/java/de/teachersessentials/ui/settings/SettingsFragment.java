@@ -1,7 +1,6 @@
 package de.teachersessentials.ui.settings;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -58,6 +56,8 @@ public class SettingsFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         selectFontSize.setAdapter(adapter);
         selectFontSize.setSelection(2); //normale Auswahl
+
+        //TODO: beim Öffnen der Einstellungen wird automatisch die eingestellte Schriftröße ausgewählt
 
         selectFontSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //jenachdem, was ausgewählt ist wird fonsize im ConfigFile angepasst
             @Override

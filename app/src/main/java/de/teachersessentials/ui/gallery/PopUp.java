@@ -11,7 +11,7 @@ import java.util.List;
 
 import de.teachersessentials.R;
 
-public class popUp extends Activity {
+public class PopUp extends Activity {
 
     private final int[] spinnerIds = {
             R.id.select_subject,
