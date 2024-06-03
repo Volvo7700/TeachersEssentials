@@ -28,7 +28,16 @@
                     android:id="@+id/select_subject"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"/>
+                    android:layout_toStartOf="@+id/add_subject"/>
+
+                <Button
+                    android:id="@+id/add_subject"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:text="+"
+                    android:layout_marginTop="-6dp"
+                    android:layout_marginBottom="-6dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -45,7 +54,16 @@
                     android:id="@+id/select_room"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_toStartOf="@+id/add_room" />
+
+                <Button
+                    android:id="@+id/add_room"
+                    android:text="+"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="-6dp"
+                    android:layout_marginBottom="-6dp"
+                    android:layout_alignParentEnd="true"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -63,24 +81,15 @@
                     android:id="@+id/select_class"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/farbe" />
-
-                <Spinner
-                    android:id="@+id/select_color"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true" />
+                    android:layout_toStartOf="@+id/add_class"/>
+                <Button
+                    android:id="@+id/add_class"
+                    android:text="+"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="-6dp"
+                    android:layout_marginBottom="-6dp"
+                    android:layout_alignParentEnd="true"/>
             </RelativeLayout>
 
         <Button

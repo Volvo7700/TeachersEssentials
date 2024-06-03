@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import de.teachersessentials.csv.CsvParser;
@@ -27,6 +28,7 @@ public class GalleryFragment extends Fragment {
 
     private FragmentGalleryBinding binding;
     private final String[] days = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
+    private int selectedDayOfWeek;
     private final int[] buttonIds = {
             R.id.lesson_button_0,
             R.id.lesson_button_1,
@@ -81,24 +83,19 @@ public class GalleryFragment extends Fragment {
         //Spinner zur Auswahl der Tage
         Spinner selectDay = root.findViewById(R.id.select_day);
 
+        Calendar cal = Calendar.getInstance();
+        selectedDayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 2; //Aktueller Wochentag, startet bei 0 (Montag)
+
         //Liste wird in Spinner geladen
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, days);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         selectDay.setAdapter(adapter);
+        selectDay.setSelection(selectedDayOfWeek); //aktueller Tag wird automatisch eingestellt
 
         selectDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //Auswahl der Tage
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) { //Montag
-
-                } else if (position == 1) { //Dienstag
-
-                } else if (position == 2) { //Mittwoch
-
-                } else if (position == 3) { //Donnerstag
-
-                } else if (position == 4) { //Freitag
-                }
+                selectedDayOfWeek = position;
             }
 
             @Override

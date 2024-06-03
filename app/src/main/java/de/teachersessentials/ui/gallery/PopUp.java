@@ -1,6 +1,7 @@
 package de.teachersessentials.ui.gallery;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.Button;
@@ -17,8 +18,14 @@ public class PopUp extends Activity {
             R.id.select_subject,
             R.id.select_room,
             R.id.select_class,
-            R.id.select_color
     };
+
+    private final int[] addButtonIds = {
+            R.id.add_subject,
+            R.id.add_room,
+            R.id.add_class
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,16 @@ public class PopUp extends Activity {
 
         for(Spinner spinner : spinners) {
             spinner.setMinimumWidth((int) (height * 0.15));
+        }
+
+        List<Button> addButtons = new ArrayList<>(); //Alle Buttons werden in einer Liste gespeichert
+
+        for(int id : addButtonIds) {
+            Button button = findViewById(id);
+            button.setOnClickListener(v -> {
+                startActivity(new Intent(PopUp.this, PopUpAdd.class));
+            }); //jeder Button erhält eigene OnClick
+            addButtons.add(button);
         }
 
         Button save = findViewById(R.id.save);
