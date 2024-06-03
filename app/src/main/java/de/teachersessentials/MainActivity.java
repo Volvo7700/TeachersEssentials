@@ -1,5 +1,8 @@
 package de.teachersessentials;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -51,7 +54,22 @@ public class MainActivity extends AppCompatActivity {
         notifications.askPermission(this, this); //fragt nach Erlaubnis
         notifications.createNotificationChannel(this); //NotificationChannel wird erstellt
 
+        if(!foregroundServiceRunning()) {
+            Intent serviceIntent = new Intent(this, Background.class);
+            startForegroundService(serviceIntent);
+        }
+
         Database.load(getApplicationContext());
+    }
+
+    public boolean foregroundServiceRunning() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if(Background.class.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

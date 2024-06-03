@@ -114,7 +114,7 @@ public class GalleryFragment extends Fragment {
         }
 
         for (Button button : buttons) {
-            button.setOnClickListener(v -> startActivity(new Intent(getActivity(), popUp.class))); //jeder Button erhält eigene OnClick
+            button.setOnClickListener(v -> startActivity(new Intent(getActivity(), PopUp.class))); //jeder Button erhält eigene OnClick
         }
 
         //TextViews zur Anzeige der Fächer
@@ -162,14 +162,6 @@ public class GalleryFragment extends Fragment {
         });
 
         return root;
-    }
-
-    public void loadData(int day) {
-
-    }
-
-    public void loadLesson(int day, int number) {
-
     }
 
     @Override
