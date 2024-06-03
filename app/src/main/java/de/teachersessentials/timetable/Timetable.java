@@ -1,5 +1,6 @@
 package de.teachersessentials.timetable;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 // Zugriffsklasse aus dem GUI auf die Datenbank
@@ -11,23 +12,59 @@ public class Timetable {
         return new Lesson();
     }
 
-    public static Lesson[] getAllLessons() {
-
-        return new Lesson[0];
+    public static ArrayList<Lesson> getAllLessons() {
+    //gibt uns alle Lessons
+        ArrayList<Lesson> Lesson = Database.lessons;
+        return Lesson;
     }
+
+    public static ArrayList<Lesson> getDayLessons(int day) {
+        //suchen Lessons mit passendem Tag und packen die in ne Liste - dann Liste ausgeben
+        ArrayList<Lesson> Lessons = new ArrayList<>();
+        for (Lesson current : Database.lessons){
+            if(current.day == day){
+                Lessons.add(current);
+            }
+        }
+
+        return Lessons;
+    }
+
 
     public static void setLesson(Lesson lesson) {
+    int day = lesson.day;
+    int aua = lesson.hour;
 
+    ArrayList<Lesson> Lessons = new ArrayList<>();
+    boolean pen = false;
+        for (Lesson current : Database.lessons) {
+            if (current.day == day && current.hour == aua) {
+                Lessons.remove(current);
+                Lessons.add(lesson);
+                pen = true;
+            }
+        }
+        if(pen = false){
+            Lessons.add(lesson);
+        }
     }
 
-    public static String[] getAllRooms() {
+    public static ArrayList<TimetableSubject> getAllSubjects() {
 
-        return new String[0];
+        ArrayList<TimetableSubject> Subjects = Database.subjects;
+        return Subjects;
     }
 
-    public static String[] getAllClasses() {
+    public static ArrayList<TimetableRoom> getAllRooms() {
 
-        return new String[0];
+        ArrayList<TimetableRoom> Rooms = Database.rooms;
+        return Rooms;
+    }
+
+    public static ArrayList<TimetableClass> getAllClasses() {
+
+        ArrayList<TimetableClass> Classes = Database.classes;
+        return Classes;
     }
 
     public static Date getStart(int time) { //gibt Startzeit der jeweiligen Stunde zurück
