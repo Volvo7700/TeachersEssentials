@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF">
@@ -14,14 +15,23 @@
         android:layout_margin="8dp"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/headline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tag, Stunde"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"/>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
-
-                <TextView
+                android:layout_marginBottom="16dp">
+            <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="18sp"
                     android:text="@string/fach" />
 
                 <Spinner
@@ -32,23 +42,25 @@
 
                 <Button
                     android:id="@+id/add_subject"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="0dp"
                     android:layout_alignParentEnd="true"
-                    android:text="+"
-                    android:layout_marginTop="-6dp"
-                    android:layout_marginBottom="-6dp" />
+                    android:background="@drawable/round_add_button"
+                    android:textColor="@color/white_darken"
+                    android:text="+"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="16dp">
 
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/raum" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/raum" />
 
                 <Spinner
                     android:id="@+id/select_room"
@@ -58,24 +70,27 @@
 
                 <Button
                     android:id="@+id/add_room"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/round_add_button"
+                    android:padding="0dp"
                     android:text="+"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="-6dp"
-                    android:layout_marginBottom="-6dp"
-                    android:layout_alignParentEnd="true"/>
+                    android:textColor="@color/white_darken"
+                    tools:ignore="TouchTargetSizeCheck" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="16dp">
 
 
             <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/klasse" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="@string/klasse" />
 
                 <Spinner
                     android:id="@+id/select_class"
@@ -84,19 +99,21 @@
                     android:layout_toStartOf="@+id/add_class"/>
                 <Button
                     android:id="@+id/add_class"
-                    android:text="+"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_marginTop="-6dp"
-                    android:layout_marginBottom="-6dp"
-                    android:layout_alignParentEnd="true"/>
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="0dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/round_add_button"
+                    android:textColor="@color/white_darken"
+                    android:text="+"/>
             </RelativeLayout>
 
         <Button
             android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/light_3"
+            android:backgroundTint="@color/dark_2"
+            android:textColor="@color/white_darken"
             android:text="@string/speichern"
             android:layout_gravity="center" />
         </LinearLayout>

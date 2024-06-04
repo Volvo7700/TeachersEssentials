@@ -20,15 +20,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentGalleryBinding;
 import de.teachersessentials.R;
 
 public class GalleryFragment extends Fragment {
-
+    private static int selectedLesson;
     private FragmentGalleryBinding binding;
     private final String[] days = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
-    private int selectedDayOfWeek;
+    private static int selectedDayOfWeek;
     private final int[] buttonIds = {
             R.id.lesson_button_0,
             R.id.lesson_button_1,
@@ -80,12 +79,11 @@ public class GalleryFragment extends Fragment {
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        //Spinner zur Auswahl der Tage
-        Spinner selectDay = root.findViewById(R.id.select_day);
-
         Calendar cal = Calendar.getInstance();
         selectedDayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 2; //Aktueller Wochentag, startet bei 0 (Montag)
 
+        //Spinner zur Auswahl der Tage
+        Spinner selectDay = root.findViewById(R.id.select_day);
         //Liste wird in Spinner geladen
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, days);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
@@ -110,8 +108,14 @@ public class GalleryFragment extends Fragment {
             buttons.add(button);
         }
 
+        int number = 0;
         for (Button button : buttons) {
-            button.setOnClickListener(v -> startActivity(new Intent(getActivity(), PopUp.class))); //jeder Button erhält eigene OnClick
+            int finalNumber = number;
+            button.setOnClickListener(v -> {
+                startActivity(new Intent(getActivity(), PopUp.class));
+                selectedLesson = finalNumber;
+            }); //jeder Button erhält eigene OnClick
+            number += 1;
         }
 
         //TextViews zur Anzeige der Fächer
@@ -130,7 +134,7 @@ public class GalleryFragment extends Fragment {
             rooms.add(room);
         }
 
-        Button testbutton = (Button) root.findViewById(R.id.button_test);
+        /*Button testbutton = (Button) root.findViewById(R.id.button_test);
         testbutton.setOnClickListener(v -> {
             TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
             ArrayList<String[]> data = new ArrayList<>();
@@ -156,9 +160,15 @@ public class GalleryFragment extends Fragment {
                 text += s;
             }
             textView_test.setText(text);
-        });
+        });*/
 
         return root;
+    }
+    public static int getSelectedLesson() {
+        return selectedLesson;
+    }
+    public static int getSelectedDayOfWeek() {
+        return selectedDayOfWeek;
     }
 
     @Override
