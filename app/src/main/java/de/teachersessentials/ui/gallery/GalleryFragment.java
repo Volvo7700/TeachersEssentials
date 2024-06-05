@@ -134,8 +134,8 @@ public class GalleryFragment extends Fragment {
             rooms.add(room);
         }
 
-        /*Button testbutton = (Button) root.findViewById(R.id.button_test);
-        testbutton.setOnClickListener(v -> {
+        Button testbutton = (Button) root.findViewById(R.id.button_test);
+        /*testbutton.setOnClickListener(v -> {
             TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
             ArrayList<String[]> data = new ArrayList<>();
             String[] line = new String[4];

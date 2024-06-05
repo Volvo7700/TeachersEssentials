@@ -95,8 +95,13 @@ public class Timetable {
                 return;
             }
         }
-        int id = Database.classes.get(Database.classes.size() - 1).id;
-        TimetableClass class_ = new TimetableClass(id+1,name);
+        int id;
+        if (Database.classes.isEmpty()) { //erst schauen, ob classes leer ist
+            id = -1;
+        } else {
+            id = Database.classes.get(Database.classes.size() - 1).id; //id der letzten Klasse wird ausgelesen
+        }
+        TimetableClass class_ = new TimetableClass(id + 1, name); //id der neuen Klasse ist eins größer
         Database.classes.add(class_);
     }
     public static void setClass(int id, String name ){

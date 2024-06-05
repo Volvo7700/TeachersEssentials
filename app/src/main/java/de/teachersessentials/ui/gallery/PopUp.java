@@ -4,12 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.teachersessentials.R;
@@ -91,7 +91,10 @@ public class PopUp extends Activity {
         }
 
         Button save = findViewById(R.id.save);
-        save.setOnClickListener(v -> finish());
+        save.setOnClickListener(v -> {
+            System.out.println(Arrays.toString(subjectsName));
+            finish();
+        });
     }
 
     public static int getAddId() {

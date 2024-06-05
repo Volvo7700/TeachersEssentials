@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import de.teachersessentials.R;
+import de.teachersessentials.timetable.Timetable;
 
 public class PopUpAdd extends Activity {
     private final int[] addButtonIds = {
@@ -55,9 +56,10 @@ public class PopUpAdd extends Activity {
         } else { //Klasse hinzufügen
             String newClass = String.valueOf(textAdd.getText());
             textAdd.setAutofillHints("Neue Klasse");
-            /*save.setOnClickListener(v -> {
+            save.setOnClickListener(v -> {
                         Timetable.setClass(newClass);
-                    });*/
+                        finish();
+                    });
             head.setText("Klasse hinzufügen");
         }
     }
