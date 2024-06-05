@@ -22,12 +22,18 @@ import java.util.List;
 
 import de.teachersessentials.databinding.FragmentGalleryBinding;
 import de.teachersessentials.R;
+import de.teachersessentials.timetable.Lesson;
+import de.teachersessentials.timetable.Timetable;
 
 public class GalleryFragment extends Fragment {
     private static int selectedLesson;
     private FragmentGalleryBinding binding;
     private final String[] days = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
     private static int selectedDayOfWeek;
+    List<Button> buttons = new ArrayList<>(); //Alle Buttons werden in einer Liste gespeichert
+    List<TextView> subjects = new ArrayList<>(); //Alle TextViews werden in einer Liste gespeichert
+    List<TextView> rooms = new ArrayList<>(); //Alle TextViews werden in einer Liste gespeichert
+
     private final int[] buttonIds = {
             R.id.lesson_button_0,
             R.id.lesson_button_1,
@@ -94,6 +100,8 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedDayOfWeek = position;
+                updateButtons(selectedDayOfWeek);
+                updateTextViews(selectedDayOfWeek);
             }
 
             @Override
@@ -101,8 +109,6 @@ public class GalleryFragment extends Fragment {
         });
 
         //Buttons zum eintragen des Stundenplans
-        List<Button> buttons = new ArrayList<>(); //Alle Buttons werden in einer Liste gespeichert
-
         for (int id : buttonIds) { //für jeden Listenplatz wird der entsprechende Button erzeugt
             Button button = root.findViewById(id);
             buttons.add(button);
@@ -118,22 +124,21 @@ public class GalleryFragment extends Fragment {
             number += 1;
         }
 
-        //TextViews zur Anzeige der Fächer
-        List<TextView> subjects = new ArrayList<>(); //Alle TextViews werden in einer Liste gespeichert
+        updateButtons(selectedDayOfWeek);
 
+        //TextViews zur Anzeige der Fächer
         for (int id : subjectIds) { //für jeden Listenplatz wird das entsprechende TextView erzeugt
             TextView subject = root.findViewById(id);
             subjects.add(subject);
         }
 
         //TextViews zur Anzeige der Räume
-        List<TextView> rooms = new ArrayList<>(); //Alle TextViews werden in einer Liste gespeichert
-
         for (int id : roomIds) { //für jeden Listenplatz wird das entsprechende TextView erzeugt
             TextView room = root.findViewById(id);
             rooms.add(room);
         }
 
+        updateTextViews(selectedDayOfWeek);
         Button testbutton = (Button) root.findViewById(R.id.button_test);
         /*testbutton.setOnClickListener(v -> {
             TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
@@ -164,6 +169,62 @@ public class GalleryFragment extends Fragment {
 
         return root;
     }
+    private void updateButtons(int dayOfWeek) {
+        int n = 0;
+
+        Lesson[] dayLessons = Timetable.getDayLessons(dayOfWeek).toArray(new Lesson[11]); //hier Array benutzen, damit Fächer, die nicht gefüllt sind einen Platz in der Liste haben
+        for(Button button : buttons) {
+            if(dayLessons[n] == null) { //keine Stunde vorhanden
+                //jeder Button wird zurückgestzt
+                button.setText(R.string.stunde_einfuegen);
+                button.setBackgroundColor(getResources().getColor(R.color.light_3));
+            } else {
+                //wie würden Buttons sonst aussehen
+            }
+        n += 1;
+        }
+    }
+
+    private void updateTextViews(int dayOfWeek) {
+        int n = 0;
+
+        Lesson[] dayLessons = Timetable.getDayLessons(dayOfWeek).toArray(new Lesson[11]);
+        String[] daySubjectNames = new String[11];
+        String[] dayRoomNames = new String[11];
+
+        for(Lesson lesson : dayLessons) { //namen der Fächer werden in einer Liste gespeichert
+            if(lesson != null) {
+                daySubjectNames[n] = String.valueOf(lesson.subject); //TODO: namen der Fächer, nicht nur id verwenden
+            }
+            if(lesson != null) {
+                dayRoomNames[n] = String.valueOf(lesson.room); //TODO: das selbe, wie oben
+            }
+            n += 1;
+        }
+
+        n = 0;
+        for(TextView subject : subjects) {
+            if(dayLessons[n] == null) { //keine Stunde vorhanden
+                //jedes Textview wird zurückgestzt
+                subject.setText("");
+            } else {
+                subject.setText(daySubjectNames[n]);
+            }
+            n += 1;
+        }
+
+        n = 0;
+        for(TextView room : rooms) {
+            if(dayLessons[n] == null) { //keine Stunde vorhanden
+                //jedes Textview wird zurückgestzt
+                room.setText("");
+            } else {
+                room.setText(dayRoomNames[n]);
+            }
+            n += 1;
+        }
+    }
+
     public static int getSelectedLesson() {
         return selectedLesson;
     }
