@@ -31,5 +31,9 @@
     <string name="alertPermissionHeadline">Berechtigung Abgelehnt</string>
     <string name="alertPermissionText">Um Nachrichten senden zu können benötigt TeachersEssentials die Erlaubnis dazu. Diese können Sie in den Einstellungen geben.</string>
     <string name="ok">OK</string>
+    <string name="loeschen">Löschen</string>
+    <string name="plus">+</string>
+    <string name="day_lesson">Tag, Stunde</string>
+    <string name="hinzufuegen">Hinzufügen</string>
 
 </resources>

@@ -94,7 +94,11 @@ public class GalleryFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, days);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         selectDay.setAdapter(adapter);
-        selectDay.setSelection(selectedDayOfWeek); //aktueller Tag wird automatisch eingestellt
+        if (selectedDayOfWeek <= 4) {
+            selectDay.setSelection(selectedDayOfWeek); //aktueller Tag wird automatisch eingestellt
+        } else {
+            selectDay.setSelection(0);
+        }
 
         selectDay.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //Auswahl der Tage
             @Override
@@ -105,7 +109,8 @@ public class GalleryFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         //Buttons zum eintragen des Stundenplans
@@ -169,19 +174,21 @@ public class GalleryFragment extends Fragment {
 
         return root;
     }
+
     private void updateButtons(int dayOfWeek) {
         int n = 0;
 
         Lesson[] dayLessons = Timetable.getDayLessons(dayOfWeek).toArray(new Lesson[11]); //hier Array benutzen, damit Fächer, die nicht gefüllt sind einen Platz in der Liste haben
-        for(Button button : buttons) {
-            if(dayLessons[n] == null) { //keine Stunde vorhanden
+        for (Button button : buttons) {
+            if (dayLessons[n] == null) { //keine Stunde vorhanden
                 //jeder Button wird zurückgestzt
                 button.setText(R.string.stunde_einfuegen);
                 button.setBackgroundColor(getResources().getColor(R.color.light_3));
             } else {
-                //wie würden Buttons sonst aussehen
+                button.setText("");
+                //button.setBackgroundColor();
             }
-        n += 1;
+            n += 1;
         }
     }
 
@@ -192,19 +199,19 @@ public class GalleryFragment extends Fragment {
         String[] daySubjectNames = new String[11];
         String[] dayRoomNames = new String[11];
 
-        for(Lesson lesson : dayLessons) { //namen der Fächer werden in einer Liste gespeichert
-            if(lesson != null) {
+        for (Lesson lesson : dayLessons) { //namen der Fächer werden in einer Liste gespeichert
+            if (lesson != null) {
                 daySubjectNames[n] = String.valueOf(lesson.subject); //TODO: namen der Fächer, nicht nur id verwenden
             }
-            if(lesson != null) {
+            if (lesson != null) {
                 dayRoomNames[n] = String.valueOf(lesson.room); //TODO: das selbe, wie oben
             }
             n += 1;
         }
 
         n = 0;
-        for(TextView subject : subjects) {
-            if(dayLessons[n] == null) { //keine Stunde vorhanden
+        for (TextView subject : subjects) {
+            if (dayLessons[n] == null) { //keine Stunde vorhanden
                 //jedes Textview wird zurückgestzt
                 subject.setText("");
             } else {
@@ -214,8 +221,8 @@ public class GalleryFragment extends Fragment {
         }
 
         n = 0;
-        for(TextView room : rooms) {
-            if(dayLessons[n] == null) { //keine Stunde vorhanden
+        for (TextView room : rooms) {
+            if (dayLessons[n] == null) { //keine Stunde vorhanden
                 //jedes Textview wird zurückgestzt
                 room.setText("");
             } else {
@@ -228,8 +235,16 @@ public class GalleryFragment extends Fragment {
     public static int getSelectedLesson() {
         return selectedLesson;
     }
+
     public static int getSelectedDayOfWeek() {
         return selectedDayOfWeek;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateTextViews(selectedDayOfWeek);
+        updateButtons(selectedDayOfWeek);
     }
 
     @Override

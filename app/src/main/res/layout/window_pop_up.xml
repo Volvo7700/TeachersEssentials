@@ -2,53 +2,53 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/headline"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tag, Stunde"
-            android:textSize="22sp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="8dp"/>
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/headline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:text="@string/day_lesson"
+                android:textSize="22sp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
-            <TextView
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/fach" />
+                    android:text="@string/fach"
+                    android:textSize="18sp" />
 
                 <Spinner
                     android:id="@+id/select_subject"
-                    android:layout_width="100dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/add_subject"/>
+                    android:layout_toStartOf="@+id/add_subject" />
 
                 <Button
                     android:id="@+id/add_subject"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:padding="0dp"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/round_add_button"
-                    android:textColor="@color/white_darken"
-                    android:text="+"/>
+                    android:padding="0dp"
+                    android:text="@string/plus"
+                    android:textColor="@color/white_darken" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -56,15 +56,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/raum" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/raum"
+                    android:textSize="18sp" />
 
                 <Spinner
                     android:id="@+id/select_room"
-                    android:layout_width="100dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/add_room" />
 
@@ -75,7 +75,7 @@
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/round_add_button"
                     android:padding="0dp"
-                    android:text="+"
+                    android:text="@string/plus"
                     android:textColor="@color/white_darken"
                     tools:ignore="TouchTargetSizeCheck" />
             </RelativeLayout>
@@ -85,37 +85,56 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="@string/klasse" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/klasse"
+                    android:textSize="18sp" />
 
                 <Spinner
                     android:id="@+id/select_class"
-                    android:layout_width="100dp"
+                    android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/add_class"/>
+                    android:layout_toStartOf="@+id/add_class" />
+
                 <Button
                     android:id="@+id/add_class"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:padding="0dp"
                     android:layout_alignParentEnd="true"
                     android:background="@drawable/round_add_button"
-                    android:textColor="@color/white_darken"
-                    android:text="+"/>
+                    android:padding="0dp"
+                    android:text="@string/plus"
+                    android:textColor="@color/white_darken" />
             </RelativeLayout>
 
-        <Button
-            android:id="@+id/save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/dark_2"
-            android:textColor="@color/white_darken"
-            android:text="@string/speichern"
-            android:layout_gravity="center" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/red"
+                    android:text="@string/loeschen" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/dark_3"
+                    android:text="@string/speichern"
+                    android:textColor="@color/white_darken" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

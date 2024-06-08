@@ -1,11 +1,11 @@
 package de.teachersessentials.ui.gallery;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import de.teachersessentials.R;
@@ -18,49 +18,64 @@ public class PopUpAdd extends Activity {
             R.id.add_class
     };
     private final int addId = PopUp.getAddId();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.window_pop_up_add);
 
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        getWindow().setLayout(740, 655);
 
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
+        TextView head = findViewById(R.id.head);
 
-        getWindow().setLayout((int) (width * 0.666), (int) (height * 0.3));
+        EditText textAdd = findViewById(R.id.text_add);
+        textAdd.setMinimumWidth(600);
 
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView head = findViewById(R.id.head);
-
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) EditText textAdd = findViewById(R.id.text_add);
-        textAdd.setMinimumWidth((int) (width * 0.5));
-        textAdd.setAutofillHints("Eingabe");
+        TextView error = findViewById(R.id.error_input);
 
         Button save = findViewById(R.id.save);
-        save.setOnClickListener(v -> finish());
 
         //TODO: fertig machen, wenn vom Database team gefixt
         if (addId == addButtonIds[0]) { //Fach hinzufügen
             head.setText("Fach Hinzufügen");
-            textAdd.setAutofillHints("Neues Fach");
-        } else if (addId == addButtonIds[1]){ //Raum hinzufügen
-            head.setText("Raum Hinzufügen");
-            textAdd.setAutofillHints("Neuer Raum");
-            String newRoom = String.valueOf(textAdd.getText());
-            /*save.setOnClickListener(v -> {
-                Timetable.setRoom(newRoom);
-                System.out.println(Timetable.getAllRooms());
-                    });*/
-        } else { //Klasse hinzufügen
-            String newClass = String.valueOf(textAdd.getText());
-            textAdd.setAutofillHints("Neue Klasse");
+            Spinner spinner = findViewById(R.id.select_color);
+            spinner.setVisibility(View.VISIBLE);
+            spinner.setMinimumWidth(600);
+
             save.setOnClickListener(v -> {
-                        Timetable.setClass(newClass);
-                        finish();
-                    });
+                String newSubject = String.valueOf(textAdd.getText());
+                if (newSubject.isEmpty()) {
+                    error.setText("Bitte Name des Fachs eingeben");
+                } else {
+                    Timetable.setSubject(newSubject, "", 1); //Placeholder für shortage und color
+                    finish();
+                }
+            });
+        } else if (addId == addButtonIds[1]) { //Raum hinzufügen
+            head.setText("Raum Hinzufügen");
+
+            save.setOnClickListener(v -> {
+                String newRoom = String.valueOf(textAdd.getText());
+                if (newRoom.isEmpty()) {
+                    error.setText("Bitte Name des Raums eingeben");
+                } else {
+                    Timetable.setRoom(newRoom);
+                    finish();
+                }
+            });
+        } else { //Klasse hinzufügen
             head.setText("Klasse hinzufügen");
+
+            save.setOnClickListener(v -> {
+                String newClass = String.valueOf(textAdd.getText());
+                if (newClass.isEmpty()) {
+                    error.setText("Bitte Name der Klasse eingeben");
+                } else {
+                    Timetable.setClass(newClass);
+                    finish();
+                }
+            });
         }
     }
 }

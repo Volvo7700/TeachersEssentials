@@ -80,6 +80,22 @@ public class Timetable {
         Database.subjects.add(subject);
     }
 
+    public static void setSubject(String name, String shortage, int color){
+        for (TimetableSubject current : Database.subjects) {
+            if (current.name == name) {
+                return;
+            }
+        }
+        int id;
+        if (Database.subjects.isEmpty()) { //erst schauen, ob classes leer ist
+            id = -1;
+        } else {
+            id = Database.subjects.get(Database.subjects.size() - 1).id; //id der letzten Klasse wird ausgelesen
+        }
+        TimetableSubject subject_ = new TimetableSubject(id + 1, shortage, name, color); //id der neuen Klasse ist eins größer
+        Database.subjects.add(subject_);
+    }
+
     // Klasse Bearbeiten
     public static void setClass(TimetableClass class_){
         for (TimetableClass current : Database.classes) {
@@ -130,9 +146,14 @@ public class Timetable {
                 return;
             }
         }
-        int id = Database.rooms.get(Database.rooms.size() - 1).id;
-        TimetableRoom room = new TimetableRoom(id+1,name);
-        Database.rooms.add(room);
+        int id;
+        if (Database.rooms.isEmpty()) {
+            id = -1;
+        } else {
+            id = Database.rooms.get(Database.rooms.size() - 1).id;
+        }
+        TimetableRoom room_ = new TimetableRoom(id + 1, name);
+        Database.rooms.add(room_);
     }
     public static void setRoom(int id, String name ){
         for (TimetableRoom current : Database.rooms) {
