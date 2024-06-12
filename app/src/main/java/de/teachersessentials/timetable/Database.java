@@ -45,13 +45,13 @@ public class Database {
             int id = Integer.parseInt(item[0]);
             String display_name = item[1];
             String name = item[2];
-            int colorint = Color.parseColor(item[3]);
+            int colorint = Integer.parseInt(item[3]);
 
             TimetableSubject subject = new TimetableSubject(id, display_name, name, colorint);
             subjects.add(subject);
         }
 
-        ArrayList<String[]> rawRooms = CsvParser.read("room.csv",context);
+        ArrayList<String[]> rawRooms = CsvParser.read("rooms.csv",context);
         for (String[] item : rawRooms) {
 
             int id = Integer.parseInt(item[0]);
@@ -61,7 +61,7 @@ public class Database {
             rooms.add(room);
         }
 
-        ArrayList<String[]> rawClasses = CsvParser.read("class.csv",context);
+        ArrayList<String[]> rawClasses = CsvParser.read("classes.csv",context);
         for (String[] item : rawClasses) {
 
             int id = Integer.parseInt(item[0]);
@@ -90,7 +90,7 @@ public class Database {
             values[5] = (String.valueOf(lesson.room));
             rawLessons.add(values);
         }
-        CsvParser.write("timetable.csv",rawLessons,headers,"timetable",context);
+        CsvParser.write("timetable.csv",rawLessons,headers,"Stundenplan",context);
 
 
         String[] headers2 = {"id","shortage","name","color"};
@@ -103,7 +103,7 @@ public class Database {
             values[3] = (String.valueOf(subject.color));
             rawLessons.add(values);
         }
-        CsvParser.write("subjects.csv",rawSubjects,headers2,"subjects",context);
+        CsvParser.write("subjects.csv",rawSubjects,headers2,"Fächer",context);
 
 
         String[] headers3 = {"id","room_name"};
@@ -114,7 +114,7 @@ public class Database {
             values[1] = room.room;
             rawLessons.add(values);
         }
-        CsvParser.write("room.csv",rawRooms,headers3,"rooms",context);
+        CsvParser.write("rooms.csv",rawRooms,headers3,"Räume",context);
 
 
         String[] headers4 = {"id","class_name"};
@@ -125,7 +125,7 @@ public class Database {
             values[1] = class_.name;
             rawLessons.add(values);
         }
-        CsvParser.write("class.csv",rawClasses,headers4,"timetable",context);
+        CsvParser.write("classes.csv",rawClasses,headers4,"Klassen",context);
 
 
     }
@@ -159,6 +159,16 @@ public class Database {
                 "Deutsch Int.", "Mathematik Int.", "Französisch Int.", "Latein Int.",
                 "P-Seminar", "Modul zur berufl. Orientierung" };
 
+        String[] shortages = {"D", "M",
+                "E", "F", "L", "Sp",
+                "Ph", "C", "B", "Inf",
+                "K", "Ev", "Eth",
+                "Geo", "G", "PuG",
+                "S", "Ku", "Mu",
+                "PhÜ", "ChÜ",
+                "DInt", "MInt", "FInt", "LInt",
+                "P", "MbO"};
+
         Integer[] colors = { 0xD70000, 0x0080FF,
                 0x00CC00, 0xFFFF00, 0x990000, 0x00CC66,
                 0x0000FF, 0xFF00FF, 0x99FF33, 0x00FFFF,
@@ -184,7 +194,7 @@ public class Database {
             rooms_arr.add(row);
         }
         for (int i = 0; i < subjects.length; i++) {
-            String[] row = { Integer.toString(i), subjects[i], colors[i].toString() };
+            String[] row = { Integer.toString(i), shortages[i], subjects[i], colors[i].toString() };
             subjects_arr.add(row);
         }
 
