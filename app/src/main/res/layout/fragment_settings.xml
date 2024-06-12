@@ -76,14 +76,30 @@
                 android:text="@string/einstellungen_zuruecksetzen"
                 android:textColor="@color/white" />
 
-            <Button
-                android:id="@+id/button_test"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#009688"
-                android:foregroundTint="#FF0000"
-                android:text="[DEV] CSV I/O Test Einfach"
-                android:textColor="@color/white" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button_test"
+                    android:layout_width="185dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#009688"
+                    android:foregroundTint="#FF0000"
+                    android:text="[DEV] CSV I/O Test Einfach"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:id="@+id/button_testAddDefaults"
+                    android:layout_width="185dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="#009688"
+                    android:foregroundTint="#FF0000"
+                    android:text="[DEV] Standard- daten hinzufügen"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView_test"

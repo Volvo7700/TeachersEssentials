@@ -32,6 +32,7 @@ import java.util.List;
 import de.teachersessentials.R;
 import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentSettingsBinding;
+import de.teachersessentials.timetable.Database;
 import de.teachersessentials.util.ConfigFile;
 
 public class SettingsFragment extends Fragment {
@@ -230,6 +231,15 @@ public class SettingsFragment extends Fragment {
                 int s1 = saveContent.getSelectionEnd();
                 saveContent.setText(saveContent.getText().insert(s1, "|"));
                 saveContent.setSelection(s1 + 1);
+            }
+        });
+
+        // Testcode: Standarddaten hinzufügen
+        Button addDefaultsButton = (Button)root.findViewById(R.id.button_testAddDefaults);
+        addDefaultsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Database.generateDefaults(getContext());
             }
         });
 
