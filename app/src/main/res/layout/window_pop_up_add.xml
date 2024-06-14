@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,50 +11,323 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="@string/hinzufuegen"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/text_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+    <ScrollView
+        android:id="@+id/scroll_constraint"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/head"
-        android:autofillHints="Eingabe" />
+        app:layout_constraintTop_toBottomOf="@+id/head">
 
-    <Spinner
-        android:id="@+id/select_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_add" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/error_input"
-        android:textColor="@color/red"
-        android:layout_margin="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/select_color" />
+            <RelativeLayout
+                android:id="@+id/relativ_layout_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Name"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/text_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="80dp"
+                    android:hint="Eingabe"
+                    android:inputType="text" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativ_layout_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/relativ_layout_1">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Kürzel"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/shortage_add"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="80dp"
+                    android:hint="Kürzel"
+                    android:inputType="text" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/error_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/relativ_layout_2" />
+
+            <TextView
+                android:id="@+id/colors_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Farbenwahl"
+                android:visibility="gone"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/error_input" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/button_constraints"
+                android:layout_width="wrap_content"
+                android:layout_height="53dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/colors_text">
+
+                <Button
+                    android:id="@+id/color_1"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/color_2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/color_1" />
+
+                <Button
+                    android:id="@+id/color_3"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/color_4"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_2"
+                    app:layout_constraintTop_toBottomOf="@+id/color_3" />
+
+                <Button
+                    android:id="@+id/color_5"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_3"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/color_6"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_4"
+                    app:layout_constraintTop_toBottomOf="@+id/color_5" />
+
+                <Button
+                    android:id="@+id/color_7"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_5"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/color_8"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_6"
+                    app:layout_constraintTop_toBottomOf="@+id/color_7" />
+
+                <Button
+                    android:id="@+id/color_9"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_7"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/color_10"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_8"
+                    app:layout_constraintTop_toBottomOf="@+id/color_9" />
+
+                <Button
+                    android:id="@+id/color_11"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_9"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/color_12"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_10"
+                    app:layout_constraintTop_toBottomOf="@+id/color_11" />
+
+                <Button
+                    android:id="@+id/color_13"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_11"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/color_14"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_12"
+                    app:layout_constraintTop_toBottomOf="@+id/color_13" />
+
+                <Button
+                    android:id="@+id/color_15"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/white_darken"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_13"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/color_16"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="3dp"
+                    android:background="@drawable/square_button"
+                    android:backgroundTint="@color/black"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toEndOf="@+id/color_14"
+                    app:layout_constraintTop_toBottomOf="@+id/color_15" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:backgroundTint="@color/dark_3"
-        android:text="@string/speichern"
-        android:textColor="@color/white_darken"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/error_input" />
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/scroll_constraint"
+        tools:layout_editor_absoluteX="8dp">
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/light_1"
+            android:text="Abbrechen"
+            android:textColor="@color/black" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/save"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/dark_3"
+            android:text="@string/speichern"
+            android:textColor="@color/white_darken" />
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
