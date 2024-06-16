@@ -18,9 +18,9 @@
                 android:id="@+id/clock_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="32dp"
-                android:textSize="25sp"
-                android:layout_gravity="center" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/time_left_view"
@@ -28,42 +28,43 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/current_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="54dp"
-                android:text="Aktuelles Fach"
-                android:layout_gravity="center" />
+                android:text="Aktuelles Fach" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="300dp"
                 android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="66dp"
                 android:max="3600000"
                 android:progressTint="@color/blue"
                 android:rotation="-90"
-                android:scaleY="50"
-                android:layout_marginTop="66dp"
-                android:layout_gravity="center" />
+                android:scaleY="50" />
             <!--        bei manchen Seitenlängen wird die Progressbar nicht richtig zentriert-->
 
             <TextView
                 android:id="@+id/next_subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="66dp"
-                android:text="Nächstes Fach"
-                android:layout_gravity="center" />
+                android:text="Nächstes Fach" />
 
             <Button
                 android:id="@+id/test"
-                android:text="Test"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="Test" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

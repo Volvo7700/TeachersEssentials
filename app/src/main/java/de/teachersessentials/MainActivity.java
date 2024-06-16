@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import de.teachersessentials.databinding.ActivityMainBinding;
 import de.teachersessentials.timetable.Database;
 import de.teachersessentials.util.ConfigFile;
+import de.teachersessentials.util.notifications.NotificationService;
 import de.teachersessentials.util.notifications.notifications;
 
 public class MainActivity extends AppCompatActivity {
@@ -98,5 +99,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        startService(new Intent(this, NotificationService.class)); //activiert nachricht schicken
+        finish(); //beendet app
     }
 }

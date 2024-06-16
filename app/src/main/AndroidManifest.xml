@@ -30,5 +30,6 @@
         <activity android:name=".ui.gallery.PopUpAdd"
             android:theme="@style/AppTheme.pop_up"/>
         <service android:name=".Background"/>
+        <service android:name=".util.notifications.NotificationService" />
     </application>
 </manifest>
