@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import de.teachersessentials.util.ConfigFile;
 import de.teachersessentials.util.notifications.notifications;
@@ -32,7 +34,6 @@ public class HomeFragment extends Fragment {
     private TextView nextSubject;
     private TextView currentSubject;
     private Handler handler;
-    private int lesson;
     private ProgressBar showProgress;
     private long timeInDay;
     private final ColorStateList colorRed = new ColorStateList(new int[][] {new int[] {} }, new int[] {Color.RED});
@@ -57,6 +58,7 @@ public class HomeFragment extends Fragment {
         //Aktuelles Fach
         currentSubject = root.findViewById(R.id.current_subject);
         currentSubject.setTextSize((float) ((float) fontsize * 0.75)); //Schriftgröße
+
         //Anzeige des aktuellen Fachs einbauen (Timetable Database)
 
         //ProgressBar
@@ -75,7 +77,7 @@ public class HomeFragment extends Fragment {
 
         handler = new Handler();
         updateClock();
-        updateTimeLeft();
+        updateTimeLeftandLessons();
 
         return root;
     }
@@ -96,7 +98,7 @@ public class HomeFragment extends Fragment {
 
     private long getTimeUntilNextLesson() {  //Zeit bis zur nächsten vollen Stunde in Millisekunden
         timeInDay = (System.currentTimeMillis() + 7200000) % 86400000 - 1000; //Zeit des Tages (nur Uhr ohne Datum oder andere Tage); 2 Stunden extra wegen Zeitzonen
-        lesson = Timetable.getLessonNumber(timeInDay);
+        int lesson = Timetable.getLessonNumber(timeInDay);
 
         if (lesson == 12) { //Erst am nächsten Tag wieder Schule
             return -1;
@@ -112,7 +114,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void updateTimeLeft() {
+    private void updateTimeLeftandLessons() {
         if (getTimeUntilNextLesson() == -1) {
             timeLeftView.setText(R.string.feierabend);
         } else {
@@ -123,7 +125,25 @@ public class HomeFragment extends Fragment {
             timeLeftView.setText(TimeLeftText); //Zeit wird ins Widget gefüllt
         }
 
-        handler.postDelayed(this::updateTimeLeft, 1000); //Uhr updated jede Sekunde
+        //Anzeige aktuelle Stunde
+        int currentLessonNumber = Timetable.getLessonNumber((System.currentTimeMillis() + 7200000) % 86400000); //aktuelle Stunde
+
+        Calendar cal = Calendar.getInstance();
+
+        if (Timetable.getDayLessons(cal.get(Calendar.DAY_OF_WEEK)).isEmpty()) { //am entsprechende Tag gar kein Unterricht
+            currentSubject.setText("Heute frei");
+
+        } else {
+            if (currentLessonNumber == 12) { //Schule verbei
+                currentSubject.setText("Nach der Schule");
+            } else if (currentLessonNumber == 11) { //Pause oder vor der Schule
+                currentSubject.setText("Pause");
+            } else { //während einer Stunde
+                currentSubject.setText(String.valueOf(Objects.requireNonNull(Timetable.getLesson(cal.get(Calendar.DAY_OF_WEEK), currentLessonNumber)).subject));
+            }
+        }
+
+        handler.postDelayed(this::updateTimeLeftandLessons, 1000); //Uhr updated jede Sekunde
     }
 
     private void updateProgress() { //Progress bar wird aufgefüllt bzw. leert sich

@@ -144,8 +144,8 @@ public class GalleryFragment extends Fragment {
         }
 
         updateTextViews(selectedDayOfWeek);
-        Button testbutton = (Button) root.findViewById(R.id.button_test);
-        /*testbutton.setOnClickListener(v -> {
+        /*Button testbutton = (Button) root.findViewById(R.id.button_test);
+        testbutton.setOnClickListener(v -> {
             TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
             ArrayList<String[]> data = new ArrayList<>();
             String[] line = new String[4];
@@ -201,10 +201,10 @@ public class GalleryFragment extends Fragment {
 
         for (Lesson lesson : dayLessons) { //namen der Fächer werden in einer Liste gespeichert
             if (lesson != null) {
-                daySubjectNames[n] = String.valueOf(lesson.subject); //TODO: namen der Fächer, nicht nur id verwenden
+                daySubjectNames[n] = String.valueOf(Timetable.getAllSubjects().get(lesson.subject).name);
             }
             if (lesson != null) {
-                dayRoomNames[n] = String.valueOf(lesson.room); //TODO: das selbe, wie oben
+                dayRoomNames[n] = String.valueOf(Timetable.getAllRooms().get(lesson.room).room);
             }
             n += 1;
         }

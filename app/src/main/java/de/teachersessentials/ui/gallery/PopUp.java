@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.teachersessentials.R;
+import de.teachersessentials.timetable.Lesson;
 import de.teachersessentials.timetable.Timetable;
 import de.teachersessentials.timetable.TimetableClass;
 import de.teachersessentials.timetable.TimetableRoom;
@@ -45,6 +46,10 @@ public class PopUp extends Activity {
     private int positionSelectedSubject;
     private int positionSelectedRoom;
     private int positionSelectedClass;
+    private final int selectedDayOfWeek = GalleryFragment.getSelectedDayOfWeek();
+    private final int selectedLesson = GalleryFragment.getSelectedLesson();
+    private final Lesson currentLesson = Timetable.getLesson(selectedDayOfWeek, selectedLesson);
+
 
 
     @Override
@@ -56,7 +61,7 @@ public class PopUp extends Activity {
         getWindow().setLayout(740, 655);
 
         TextView headline = findViewById(R.id.headline);
-        String headlineText = days[GalleryFragment.getSelectedDayOfWeek()] + ", " + (GalleryFragment.getSelectedLesson() + 1) + ". Stunde"; //Anzeige Überschrift, welche Stunde genau
+        String headlineText = days[selectedDayOfWeek] + ", " + (selectedLesson + 1) + ". Stunde"; //Anzeige Überschrift, welche Stunde genau
         headline.setText(headlineText);
 
         for (int id : spinnerIds) {
@@ -87,6 +92,15 @@ public class PopUp extends Activity {
         save.setOnClickListener(v -> {
             if ((positionSelectedRoom != 0 && positionSelectedClass != 0 && positionSelectedSubject != 0)
                     || (positionSelectedRoom == 0 && positionSelectedClass == 0 && positionSelectedSubject == 0)) {
+
+                int id;
+                if (selectedLesson <= 9) {
+                    id = Integer.parseInt(selectedDayOfWeek + "0" + selectedLesson);
+                } else {
+                    id = Integer.parseInt(selectedDayOfWeek + "" + selectedLesson);
+                }
+
+                Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, positionSelectedSubject - 1, positionSelectedClass - 1, positionSelectedRoom - 1)); //ids: 100 bis 110 für Montag, 200 bis 210 für Dienstag, usw
                 finish();
             } else {
                 Toast.makeText(this, "Keine gültige Stunde angegeben", Toast.LENGTH_LONG).show();
@@ -102,19 +116,19 @@ public class PopUp extends Activity {
 
     public void generateStringLists() {
         subjectsName = new ArrayList<>();
-        subjectsName.add("");
+        subjectsName.add("Auswahl");
         for (int i = 0; i < subjects.size(); i += 1) {
             subjectsName.add(subjects.get(i).name);
         }
 
         roomsName = new ArrayList<>();
-        roomsName.add("");
+        roomsName.add("Auswahl");
         for (int i = 0; i < rooms.size(); i += 1) {
             roomsName.add(rooms.get(i).room);
         }
 
         classesName = new ArrayList<>();
-        classesName.add("");
+        classesName.add("Auswahl");
         for (int i = 0; i < classes.size(); i += 1) {
             classesName.add(classes.get(i).name);
         }
@@ -125,6 +139,12 @@ public class PopUp extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, content);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         spinners.get(n).setAdapter(adapter);
+
+        if (currentLesson != null) {
+            spinners.get(0).setSelection(currentLesson.subject + 1);
+            spinners.get(1).setSelection(currentLesson.room + 1);
+            spinners.get(2).setSelection(currentLesson.class_ + 1);
+        }
 
         spinners.get(0).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //Auswahl der Tage
             @Override
