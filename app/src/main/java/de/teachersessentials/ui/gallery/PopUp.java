@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Lesson;
@@ -90,20 +91,49 @@ public class PopUp extends Activity {
 
         Button save = findViewById(R.id.save);
         save.setOnClickListener(v -> {
-            if ((positionSelectedRoom != 0 && positionSelectedClass != 0 && positionSelectedSubject != 0)
-                    || (positionSelectedRoom == 0 && positionSelectedClass == 0 && positionSelectedSubject == 0)) {
+            //ids: 100 bis 110 für Montag, 200 bis 210 für Dienstag, usw
+            int id; // legt id für stunde fest
+            if (selectedLesson <= 9) {
+                id = Integer.parseInt(selectedDayOfWeek + "0" + selectedLesson);
+            } else {
+                id = Integer.parseInt(selectedDayOfWeek + "" + selectedLesson);
+            }
 
-                int id;
-                if (selectedLesson <= 9) {
-                    id = Integer.parseInt(selectedDayOfWeek + "0" + selectedLesson);
-                } else {
-                    id = Integer.parseInt(selectedDayOfWeek + "" + selectedLesson);
+            if ((positionSelectedRoom != 0 && positionSelectedClass != 0 && positionSelectedSubject != 0)) {
+                //Eintragung in Datenbank
+
+                int idSelectedSubject = 0;
+                for (TimetableSubject subject : subjects) {
+                    if (Objects.equals(subject.name, subjectsName.get(positionSelectedSubject))) {
+                        idSelectedSubject = subject.id;
+                    }
                 }
 
-                Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, positionSelectedSubject - 1, positionSelectedClass - 1, positionSelectedRoom - 1)); //ids: 100 bis 110 für Montag, 200 bis 210 für Dienstag, usw
+                int idSelectedClass = 0;
+                for (TimetableClass classs : classes) {
+                    if (Objects.equals(classs.name, classesName.get(positionSelectedClass))) {
+                        idSelectedClass = classs.id;
+                    }
+                }
+
+                int idSelectedRoom = 0;
+                for (TimetableRoom room : rooms) {
+                    if (Objects.equals(room.room, roomsName.get(positionSelectedRoom))) {
+                        idSelectedRoom = room.id;
+                    }
+                }
+
+                Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson,  idSelectedSubject, idSelectedClass, idSelectedRoom));
+                //TODO Fehler: man kann fächer nur anders speichern, wenn man subject mit ändert, die änderung von rom alleine reicht nicht
+                //TODO auch überschreiben funktioniert nicht richtig
                 finish();
+
+            } else if ((positionSelectedRoom == 0 && positionSelectedClass == 0 && positionSelectedSubject == 0)) {
+                Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, 0, 0, 0)); //TODO remove Lesson
+                finish();
+
             } else {
-                Toast.makeText(this, "Keine gültige Stunde angegeben", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Keine gültige Stunde angegeben", Toast.LENGTH_SHORT).show();
             }
         });
 

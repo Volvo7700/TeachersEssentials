@@ -6,13 +6,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Timetable;
@@ -68,38 +64,57 @@ public class PopUpAdd extends Activity {
             save.setOnClickListener(v -> {
                 String newSubject = String.valueOf(textAdd.getText());
                 String shortage = String.valueOf(addShortage.getText());
-                if (newSubject.isEmpty()) {
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Bitte Name des Fachs eingeben");
+
+                if (shortage.length() < 5) {
+                    if (newSubject.isEmpty() || shortage.isEmpty()) {
+                        error.setVisibility(View.VISIBLE);
+                        error.setText("Bitte alles eingeben");
+                    } else {
+                        Timetable.setSubject(newSubject, shortage, 1); //Placeholder für color
+                        finish();
+                    }
                 } else {
-                    Timetable.setSubject(newSubject, shortage, 1); //Placeholder für color
-                    finish();
+                    error.setVisibility(View.VISIBLE);
+                    error.setText("Kürzel zu lang");
                 }
+
             });
+
         } else if (addId == addButtonIds[1]) { //Raum hinzufügen
             head.setText("Raum Hinzufügen");
             textAdd.setHint("Raum");
 
             save.setOnClickListener(v -> {
                 String newRoom = String.valueOf(textAdd.getText());
-                if (newRoom.isEmpty()) {
-                    error.setText("Bitte Name des Raums eingeben");
-                } else {
-                    Timetable.setRoom(newRoom);
-                    finish();
+                if (newRoom.length() < 5) {
+                    if (!newRoom.isEmpty()) {
+                        //Neuer Raum wird gespeichert
+                        Timetable.setRoom(newRoom.toUpperCase());
+                        finish();
+                    } else { //nichts eingegeben
+                        error.setText("Bitte Nummer des Raums eingeben");
+                    }
+                } else { //Name des Raumes zu lang
+                    error.setText("Raumnummer zu lang");
                 }
             });
+
         } else { //Klasse hinzufügen
             head.setText("Klasse hinzufügen");
             textAdd.setHint("Klasse");
 
             save.setOnClickListener(v -> {
                 String newClass = String.valueOf(textAdd.getText());
-                if (newClass.isEmpty()) {
-                    error.setText("Bitte Name der Klasse eingeben");
-                } else {
-                    Timetable.setClass(newClass);
-                    finish();
+                if (newClass.length() < 5) {
+                    if (!newClass.isEmpty()) {
+                        //Neue Klasse wird gespeichert
+                        Timetable.setClass(newClass.toUpperCase());
+                        finish();
+                    } else { //nichts eingegeben
+                        error.setText("Bitte Name des Klasse eingeben");
+                    }
+                } else { //Name der Klasse zu lang
+                    error.setText("Klasse zu lang");
                 }
             });
         }

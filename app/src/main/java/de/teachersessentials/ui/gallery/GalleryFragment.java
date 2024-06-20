@@ -129,8 +129,6 @@ public class GalleryFragment extends Fragment {
             number += 1;
         }
 
-        updateButtons(selectedDayOfWeek);
-
         //TextViews zur Anzeige der Fächer
         for (int id : subjectIds) { //für jeden Listenplatz wird das entsprechende TextView erzeugt
             TextView subject = root.findViewById(id);
@@ -143,7 +141,6 @@ public class GalleryFragment extends Fragment {
             rooms.add(room);
         }
 
-        updateTextViews(selectedDayOfWeek);
         /*Button testbutton = (Button) root.findViewById(R.id.button_test);
         testbutton.setOnClickListener(v -> {
             TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
@@ -176,59 +173,46 @@ public class GalleryFragment extends Fragment {
     }
 
     private void updateButtons(int dayOfWeek) {
-        int n = 0;
+        ArrayList<Lesson> dayLessons = Timetable.getDayLessons(dayOfWeek);
 
-        Lesson[] dayLessons = Timetable.getDayLessons(dayOfWeek).toArray(new Lesson[11]); //hier Array benutzen, damit Fächer, die nicht gefüllt sind einen Platz in der Liste haben
+        //Alle Button zurücksetzen
         for (Button button : buttons) {
-            if (dayLessons[n] == null) { //keine Stunde vorhanden
-                //jeder Button wird zurückgestzt
-                button.setText(R.string.stunde_einfuegen);
-                button.setBackgroundColor(getResources().getColor(R.color.light_3));
-            } else {
-                button.setText("");
-                //button.setBackgroundColor();
-            }
-            n += 1;
+            button.setText(R.string.stunde_einfuegen);
+            button.setBackgroundColor(getResources().getColor(R.color.light_3));
+        }
+
+        for (Lesson lesson : dayLessons) {
+            buttons.get(lesson.hour).setText("");
+            //button.setText(String.valueOf(Timetable.getAllSubjects().get(dayLessons[n].subject).color)); TODO farbig machen, aber wie?
         }
     }
 
     private void updateTextViews(int dayOfWeek) {
-        int n = 0;
+        ArrayList<Lesson> dayLessons = Timetable.getDayLessons(dayOfWeek);
 
-        Lesson[] dayLessons = Timetable.getDayLessons(dayOfWeek).toArray(new Lesson[11]);
-        String[] daySubjectNames = new String[11];
-        String[] dayRoomNames = new String[11];
-
-        for (Lesson lesson : dayLessons) { //namen der Fächer werden in einer Liste gespeichert
-            if (lesson != null) {
-                daySubjectNames[n] = String.valueOf(Timetable.getAllSubjects().get(lesson.subject).name);
-            }
-            if (lesson != null) {
-                dayRoomNames[n] = String.valueOf(Timetable.getAllRooms().get(lesson.room).room);
-            }
-            n += 1;
+        //Alle TextViews Fächer zurücksetzen
+        for (TextView textView : subjects) {
+            textView.setText("");
         }
 
-        n = 0;
-        for (TextView subject : subjects) {
-            if (dayLessons[n] == null) { //keine Stunde vorhanden
-                //jedes Textview wird zurückgestzt
-                subject.setText("");
-            } else {
-                subject.setText(daySubjectNames[n]);
-            }
-            n += 1;
+        //Alle TextViews Räume zurücksetzen
+        for (TextView textView : rooms) {
+            textView.setText("");
         }
 
-        n = 0;
-        for (TextView room : rooms) {
-            if (dayLessons[n] == null) { //keine Stunde vorhanden
-                //jedes Textview wird zurückgestzt
-                room.setText("");
-            } else {
-                room.setText(dayRoomNames[n]);
+        System.out.println(Timetable.getAllSubjects().toString());  //TODO Timetable.getAllSubjects geht nicht richtig
+
+        try {
+            for (Lesson lesson : dayLessons) {
+                if (Timetable.getAllSubjects().get(lesson.subject).name.length() > 16) { //Wenn Name des Fachs zu lang wird Kürzel angezeigt
+                    subjects.get(lesson.hour).setText(String.valueOf(Timetable.getAllSubjects().get(lesson.subject).shortage));
+                } else {
+                    subjects.get(lesson.hour).setText(String.valueOf(Timetable.getAllSubjects().get(lesson.subject).name));
+                }
+                rooms.get(lesson.hour).setText(String.valueOf(Timetable.getAllRooms().get(lesson.room).room));
             }
-            n += 1;
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println(e.getMessage());
         }
     }
 

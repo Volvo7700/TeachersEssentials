@@ -60,7 +60,11 @@ public class MainActivity extends AppCompatActivity {
             //startForegroundService(serviceIntent);
         //}
 
-        Database.load(getApplicationContext());
+        Database.load(this);
+
+        if (ConfigFile.getConfigData(this, 4) == 1) {
+            Database.generateDefaults(this);
+        }
     }
 
 
@@ -106,5 +110,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         startService(new Intent(this, NotificationService.class)); //activiert nachricht schicken
         finish(); //beendet app
+        Database.save(this);
     }
 }
