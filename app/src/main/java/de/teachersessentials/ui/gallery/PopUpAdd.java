@@ -1,6 +1,7 @@
 package de.teachersessentials.ui.gallery;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -9,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Timetable;
@@ -20,11 +22,30 @@ public class PopUpAdd extends Activity {
             R.id.add_class
     };
     private final int addId = PopUp.getAddId();
+    private final int[] colorButtonIds = {
+            R.id.color_1,
+            R.id.color_2,
+            R.id.color_3,
+            R.id.color_4,
+            R.id.color_5,
+            R.id.color_6,
+            R.id.color_7,
+            R.id.color_8,
+            R.id.color_9,
+            R.id.color_10,
+            R.id.color_11,
+            R.id.color_12,
+            R.id.color_13,
+            R.id.color_14,
+            R.id.color_15,
+            R.id.color_16,
+    };
+    int selectedColor = -1;
+    private TextView error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.window_pop_up_add);
 
         getWindow().setLayout(740, 655);
@@ -33,7 +54,7 @@ public class PopUpAdd extends Activity {
 
         EditText textAdd = findViewById(R.id.text_add);
 
-        TextView error = findViewById(R.id.error_input);
+        error = findViewById(R.id.error_input);
 
         Button cancel = findViewById(R.id.cancel);
         cancel.setOnClickListener(v -> finish());
@@ -44,38 +65,83 @@ public class PopUpAdd extends Activity {
         if (addId == addButtonIds[0]) { //Fach hinzufügen
             head.setText("Fach Hinzufügen");
             textAdd.setHint("Fach");
-            EditText addShortage = findViewById(R.id.shortage_add);
 
+            //Kürzel
             RelativeLayout relativeLayout2 = findViewById(R.id.relativ_layout_2);
             relativeLayout2.setVisibility(View.VISIBLE);
+
+            EditText addShortage = findViewById(R.id.shortage_add);
 
             error.setVisibility(View.GONE);
 
             TextView colorsText = findViewById(R.id.colors_text);
             colorsText.setVisibility(View.VISIBLE);
 
+            //Hex Code der Farbe
+            RelativeLayout relativeLayout3 = findViewById(R.id.relativ_layout_3);
+            relativeLayout3.setVisibility(View.VISIBLE);
+
+
+
             ArrayList<Button> color_buttons = new ArrayList<>();
-            for (int n = 1; n <= 16; n += 1) {
-                int id = getResources().getIdentifier("color_" + (n), "id", getPackageName());
+            for (int id : colorButtonIds) {
                 Button button = findViewById(id);
                 button.setVisibility(View.VISIBLE);
+                color_buttons.add(button);
+            }
+
+            EditText hexColorAdd = findViewById(R.id.color_hex_add);
+            hexColorAdd.setOnFocusChangeListener((v, hasFocus) -> {
+                selectedColor = -1;
+                System.out.println("JAAA!");
+            });
+            hexColorAdd.setOnClickListener(v -> {
+                selectedColor = -1;
+                System.out.println("JAAA!");
+            });
+
+            AtomicInteger colorSelection = new AtomicInteger();
+            for (Button button : color_buttons) {
+                button.setOnClickListener(v -> {
+                    color_buttons.get(colorSelection.get()).setVisibility(View.VISIBLE);
+
+                    colorSelection.set(color_buttons.indexOf(button));
+
+                    color_buttons.get(colorSelection.get()).setVisibility(View.INVISIBLE);
+
+                    selectedColor = colorSelection.get();
+                    hexColorAdd.setText("");
+                });
             }
 
             save.setOnClickListener(v -> {
+                //Asulesen der Texteingaben
                 String newSubject = String.valueOf(textAdd.getText());
                 String shortage = String.valueOf(addShortage.getText());
+                String hexcode = String.valueOf(hexColorAdd.getText());
 
-                if (shortage.length() < 5) {
-                    if (newSubject.isEmpty() || shortage.isEmpty()) {
-                        error.setVisibility(View.VISIBLE);
-                        error.setText("Bitte alles eingeben");
+                if (shortage.length() < 5) { //Kürzel darf nicht zu lang sein
+                    if (newSubject.isEmpty() || shortage.isEmpty() || (selectedColor == -1 && hexcode.isEmpty())) { //Alle Parameter müssen angegeben sein
+                        error("Bitte alles eingeben");
                     } else {
-                        Timetable.setSubject(newSubject, shortage, 1); //Placeholder für color
-                        finish();
+                        if (selectedColor == -1) {
+                            try {
+                                //Farbeigabe über Hexcode und textfeld
+                                int  color = Color.parseColor(hexcode);
+                                //TODO hier neue Farbe erstellen
+                                Timetable.setSubject(newSubject, shortage, color); //TODO Farbe
+                                finish();
+                            } catch (IllegalArgumentException e) {
+                                error("Kein gültiger Hexcode");
+                            }
+                        } else {
+                            //Farbeingabe über buttons
+                            Timetable.setSubject(newSubject, shortage, selectedColor); //TODO Farbe
+                            finish();
+                        }
                     }
                 } else {
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Kürzel zu lang");
+                    error("Kürzel zu lang");
                 }
 
             });
@@ -92,10 +158,10 @@ public class PopUpAdd extends Activity {
                         Timetable.setRoom(newRoom.toUpperCase());
                         finish();
                     } else { //nichts eingegeben
-                        error.setText("Bitte Nummer des Raums eingeben");
+                        error("Bitte Nummer des Raums eingeben");
                     }
                 } else { //Name des Raumes zu lang
-                    error.setText("Raumnummer zu lang");
+                    error("Raumnummer zu lang");
                 }
             });
 
@@ -111,12 +177,16 @@ public class PopUpAdd extends Activity {
                         Timetable.setClass(newClass.toUpperCase());
                         finish();
                     } else { //nichts eingegeben
-                        error.setText("Bitte Name des Klasse eingeben");
+                        error("Bitte Name des Klasse eingeben");
                     }
                 } else { //Name der Klasse zu lang
-                    error.setText("Klasse zu lang");
+                    error("Klasse zu lang");
                 }
             });
         }
+    }
+    private void error(String message) {
+        error.setVisibility(View.VISIBLE);
+        error.setText(message);
     }
 }

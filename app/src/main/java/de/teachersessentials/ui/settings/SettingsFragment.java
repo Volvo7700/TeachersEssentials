@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -75,8 +74,10 @@ public class SettingsFragment extends Fragment {
                     writeFontsizeToConfig("25");
                 }
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         messages = root.findViewById(R.id.messages);
@@ -117,12 +118,12 @@ public class SettingsFragment extends Fragment {
         // Temporärer Testcode
 
         // Einfacher Datenbanktest (laden und speichern von ein paar simplen Testdaten automatisiert)
-        Button testbutton = (Button) root.findViewById(R.id.button_test);
+        Button testbutton = root.findViewById(R.id.button_test);
         testbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
+                TextView textView_test = root.findViewById(R.id.textView_test);
                 ArrayList<String[]> data = new ArrayList<>();
                 String[] line0 = new String[4];
                 line0[0] = "hallo";
@@ -148,15 +149,13 @@ public class SettingsFragment extends Fragment {
                 if (loadedData != null) {
                     for (String[] row : loadedData) {
                         String text = "";
-                        for (String s : row)
-                        {
+                        for (String s : row) {
                             text += " | ";
                             text += s;
                         }
                         textView_test.setText(textView_test.getText() + "\n" + text);
                     }
-                }
-                else {
+                } else {
                     textView_test.setText(textView_test.getText() + "\n" + "NULL");
                 }
             }
@@ -165,13 +164,13 @@ public class SettingsFragment extends Fragment {
 
         // Manuelles Laden und Speichern von Daten
         // Objekte definieren
-        Button loadbutton = (Button) root.findViewById(R.id.button_loadDev);
-        EditText loadfilename = (EditText) root.findViewById(R.id.editText_loadDev);
-        TextView loadContent = (TextView) root.findViewById(R.id.textView_loadDevContent);
+        Button loadbutton = root.findViewById(R.id.button_loadDev);
+        EditText loadfilename = root.findViewById(R.id.editText_loadDev);
+        TextView loadContent = root.findViewById(R.id.textView_loadDevContent);
 
-        Button savebutton = (Button) root.findViewById(R.id.button_saveDev);
-        EditText savefilename = (EditText) root.findViewById(R.id.editText_saveDev);
-        EditText saveContent = (EditText) root.findViewById(R.id.editText_saveDevContent);
+        Button savebutton = root.findViewById(R.id.button_saveDev);
+        EditText savefilename = root.findViewById(R.id.editText_saveDev);
+        EditText saveContent = root.findViewById(R.id.editText_saveDevContent);
 
         // Aktion beim Laden
         loadbutton.setOnClickListener(new View.OnClickListener() {
@@ -184,15 +183,13 @@ public class SettingsFragment extends Fragment {
                 if (content != null) {
                     for (String[] row : content) {
                         String text = "";
-                        for (String s : row)
-                        {
+                        for (String s : row) {
                             text += " | ";
                             text += s;
                         }
                         loadContent.setText(loadContent.getText() + "\n" + text);
                     }
-                }
-                else {
+                } else {
                     loadContent.setText(loadContent.getText() + "\n" + "NULL");
                 }
             }
@@ -203,7 +200,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 // TODO: Hier noch nen CSV-Speicheraufruf schreiben, mit Pipe als Trennsymbol
                 //String[] lineData = line.split("\\|");
-                if (saveContent.getText() != null){
+                if (saveContent.getText() != null) {
                     // Text in Zeilen aufteilen
                     List<String> lines = Arrays.asList(saveContent.getText().toString().split("\n"));
 
@@ -235,11 +232,12 @@ public class SettingsFragment extends Fragment {
         });
 
         // Testcode: Standarddaten hinzufügen
-        Button addDefaultsButton = (Button)root.findViewById(R.id.button_testAddDefaults);
+        Button addDefaultsButton = root.findViewById(R.id.button_testAddDefaults);
         addDefaultsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Database.generateDefaults(getContext());
+                Database.load(getContext());
             }
         });
 
@@ -247,28 +245,25 @@ public class SettingsFragment extends Fragment {
     }
 
     private void alertDialogDismiss() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-                builder.setTitle(R.string.alertPermissionHeadline);
-                builder.setMessage(R.string.alertPermissionText);
-                builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-                    //Weiterleitung in die Einstellungen
-                    Intent intent = new Intent();
-                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
-                    intent.setData(uri);
-                    startActivity(intent);
-                });
-                builder.setNegativeButton("Abbrechen", (dialog, which) -> messages.setChecked(false));
-                builder.create().show(); //AlertDialog wird gezeigt
-            }
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setTitle(R.string.alertPermissionHeadline);
+            builder.setMessage(R.string.alertPermissionText);
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                //Weiterleitung in die Einstellungen
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            });
+            builder.setNegativeButton("Abbrechen", (dialog, which) -> messages.setChecked(false));
+            builder.create().show(); //AlertDialog wird gezeigt
         }
     }
 
     private void writeFontsizeToConfig(String fontsize) {
         ConfigFile.writeToFile(fontsize, 1, requireActivity()); //Schriftgröße ins ConfigFile
-        System.out.println("Written succesfully");
     }
 
     @Override

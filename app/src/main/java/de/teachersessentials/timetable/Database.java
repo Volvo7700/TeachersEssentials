@@ -99,7 +99,6 @@ public class Database {
         }
         CsvParser.write("subjects.csv",rawSubjects,headers2,"Fächer",context);
 
-
         String[] headers3 = {"id","room_name"};
         ArrayList<String[]> rawRooms = new ArrayList<>();
         for (TimetableRoom room : rooms){
@@ -163,7 +162,7 @@ public class Database {
                 "DInt", "MInt", "FInt", "LInt",
                 "P", "MbO"};
 
-        Integer[] colors = { 0xD70000, 0x0080FF,
+        Integer[] colors = {0xD70000, 0x0080FF,
                 0x00CC00, 0xFFFF00, 0x990000, 0x00CC66,
                 0x0000FF, 0xFF00FF, 0x99FF33, 0x00FFFF,
                 0x9933FF, 0x9933FF, 0x9933FF,
