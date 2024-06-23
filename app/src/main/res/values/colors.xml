@@ -24,4 +24,37 @@
     <color name="secondaryDarkColor">#ab000d</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
+    <color name="selectColor1">#000000</color>
+    <color name="selectColor2">#404040</color>
+    <color name="selectColor4">#808080</color>
+    <color name="selectColor3">#E0E0E0</color>
+    <color name="selectColor5">#0000FF</color>
+    <color name="selectColor6">#0080FF</color>
+    <color name="selectColor7">#009999</color>
+    <color name="selectColor8">#00CC66</color>
+    <color name="selectColor9">#00CC00</color>
+    <color name="selectColor10">#99FF33</color>
+    <color name="selectColor11">#FFFF00</color>
+    <color name="selectColor12">#FF8000</color>
+    <color name="selectColor13">#D70000</color>
+    <color name="selectColor14">#990000</color>
+    <color name="selectColor15">#FF00FF</color>
+    <color name="selectColor16">#9933FF</color>
+
+    <color name="darkColor_1">#4C4C4C</color>
+    <color name="darkColor_2">#666666</color>
+    <color name="darkColor_4">#8F8F8F</color>
+    <color name="darkColor_3">#B3B3B3</color>
+    <color name="darkColor_5">#4C4C7F</color>
+    <color name="darkColor_6">#5C5C9F</color>
+    <color name="darkColor_7">#5C5C7F</color>
+    <color name="darkColor_8">#5C8F5C</color>
+    <color name="darkColor_9">#5C8F5C</color>
+    <color name="darkColor_10">#7F7F5C</color>
+    <color name="darkColor_11">#8F8F4C</color>
+    <color name="darkColor_12">#8F5C4C</color>
+    <color name="darkColor_13">#7F3F3F</color>
+    <color name="darkColor_14">#7F3F3F</color>
+    <color name="darkColor_15">#8F4C8F</color>
+    <color name="darkColor_16">#7F4C7F</color>
 </resources>

@@ -1,6 +1,5 @@
 package de.teachersessentials.ui.gallery;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,8 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentGalleryBinding;
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Lesson;
@@ -76,7 +78,6 @@ public class GalleryFragment extends Fragment {
             R.id.room_10,
     };
 
-    @SuppressLint("NewApi")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         GalleryViewModel galleryViewModel =
@@ -113,6 +114,21 @@ public class GalleryFragment extends Fragment {
             }
         });
 
+        //Button zum lschen eines ganzen Tages
+        Button deleteDay = root.findViewById(R.id.delete_day);
+        deleteDay.setOnClickListener(v -> {
+            //Nachfrage ob wirklich gelöscht werden soll
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+            builder.setTitle(days[selectedDayOfWeek] + " löschen");
+            builder.setMessage("Soll der komplette am " + days[selectedDayOfWeek] + " eingetragene Stundenplan gelöscht werden?");
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                Toast.makeText(requireActivity(), "Noch nicht fertig", Toast.LENGTH_SHORT).show(); //TODO ganzen Tag löschen
+            });
+            builder.setNegativeButton("Abbrechen", ((dialog, which) -> {
+            }));
+            builder.create().show(); //AlertDialog wird gezeigt
+        });
+
         //Buttons zum eintragen des Stundenplans
         for (int id : buttonIds) { //für jeden Listenplatz wird der entsprechende Button erzeugt
             Button button = root.findViewById(id);
@@ -123,7 +139,8 @@ public class GalleryFragment extends Fragment {
         for (Button button : buttons) {
             int finalNumber = number;
             button.setOnClickListener(v -> {
-                startActivity(new Intent(getActivity(), PopUp.class));
+                Intent intent = new Intent(getActivity(), PopUp.class);
+                startActivity(intent);
                 selectedLesson = finalNumber;
             }); //jeder Button erhält eigene OnClick
             number += 1;
@@ -184,6 +201,7 @@ public class GalleryFragment extends Fragment {
         for (Lesson lesson : dayLessons) {
             buttons.get(lesson.hour).setText("");
             //button.setText(String.valueOf(Timetable.getAllSubjects().get(dayLessons[n].subject).color)); TODO farbig machen, aber wie?
+            //buttons.get(lesson.hour).setBackgroundColor(colors[Timetable.getAllSubjects().get(lesson.subject).color]);
         }
     }
 
@@ -201,6 +219,7 @@ public class GalleryFragment extends Fragment {
         }
 
         System.out.println(Timetable.getAllSubjects().toString());  //TODO Timetable.getAllSubjects geht nicht richtig
+        System.out.println(CsvParser.read("subjects.csv", getContext()));
 
         try {
             for (Lesson lesson : dayLessons) {

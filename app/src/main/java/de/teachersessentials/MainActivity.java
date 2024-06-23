@@ -33,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ConfigFile.createFile(this); //config File wird erstellt
+
+        if (ConfigFile.getConfigData(this, 4) == 1) {
+            Database.generateDefaults(this);
+        }
+
+        //TODO daten werden aus irgendeinem grund immer beim schließen der App gelöscht
+
         ConfigFile.writeToFile("0", 4, this); //App wurde bereits einmal geöffnet
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -61,10 +68,6 @@ public class MainActivity extends AppCompatActivity {
         //}
 
         Database.load(this);
-
-        if (ConfigFile.getConfigData(this, 4) == 1) {
-            Database.generateDefaults(this);
-        }
     }
 
 

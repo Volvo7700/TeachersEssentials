@@ -51,6 +51,10 @@ public class Timetable {
         Database.lessons.add(lesson);
     }
 
+    public static void removeLesson(int day, int hour) {
+        //TODO
+    }
+
     // AUSGABE
     // Alle Fächer ausgeben
     public static ArrayList<TimetableSubject> getAllSubjects() {

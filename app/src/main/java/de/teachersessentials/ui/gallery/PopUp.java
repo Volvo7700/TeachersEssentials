@@ -100,8 +100,6 @@ public class PopUp extends Activity {
             }
 
             if ((positionSelectedRoom != 0 && positionSelectedClass != 0 && positionSelectedSubject != 0)) {
-                //Eintragung in Datenbank
-
                 int idSelectedSubject = 0;
                 for (TimetableSubject subject : subjects) {
                     if (Objects.equals(subject.name, subjectsName.get(positionSelectedSubject))) {
@@ -123,13 +121,13 @@ public class PopUp extends Activity {
                     }
                 }
 
+                //Eintragung in Datenbank
                 Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson,  idSelectedSubject, idSelectedClass, idSelectedRoom));
-                //TODO Fehler: man kann fächer nur anders speichern, wenn man subject mit ändert, die änderung von rom alleine reicht nicht
-                //TODO auch überschreiben funktioniert nicht richtig
                 finish();
 
             } else if ((positionSelectedRoom == 0 && positionSelectedClass == 0 && positionSelectedSubject == 0)) {
-                Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, 0, 0, 0)); //TODO remove Lesson
+                //Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, 0, 0, 0)); //TODO remove Lesson
+                Timetable.removeLesson(selectedDayOfWeek, selectedLesson);
                 finish();
 
             } else {
