@@ -41,11 +41,13 @@ public class Timetable {
         int day = lesson.day;
         int aua = lesson.hour;
 
+        ArrayList<Lesson> lessonToRemove = new ArrayList<>();
         for (Lesson current : Database.lessons) {
             if (current.day == day && current.hour == aua) {
-                Database.lessons.remove(current);
+                lessonToRemove.add(current);
             }
         }
+        Database.lessons.removeAll(lessonToRemove);
         Database.lessons.add(lesson);
     }
 
