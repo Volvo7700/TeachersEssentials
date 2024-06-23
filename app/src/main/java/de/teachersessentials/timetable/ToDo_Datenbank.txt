@@ -10,6 +10,5 @@ Check für Vermeidung von Doppeleinträgen
 
 FEHLER IM INTERFACE
 Stundenplan
-    Solange man keine Stunden manuell erstellt hat: Man kann leere Stunden erstellen, die bei Auswahl die App crashen
-    Wenn man manuell Stunden erstellt hat: Wenn man Stunden löscht, nehmen sie die Werte des jew. ersten Listeneintrags an
-    Klassenangabe fehlt
+    Wenn man Stunden löscht, nehmen sie die Werte des jew. ersten Listeneintrags an
+    Klassenangabe fehlt!
