@@ -7,8 +7,14 @@ Stundenplan
     Stundenraster speichern
     Verweise erstellen
 Check für Vermeidung von Doppeleinträgen
+Datendublikationsbug noch zu beheben
 
 FEHLER IM INTERFACE
 Stundenplan
     Wenn man Stunden löscht, nehmen sie die Werte des jew. ersten Listeneintrags an
+    Anzeige auf Hauptbildschirm
     Klassenangabe fehlt!
+    Fächerverwaltung in den Einstellungen
+
+    Räume werden beim erstellen nicht geschpeichert
+    Remove Methode noch zu tun
