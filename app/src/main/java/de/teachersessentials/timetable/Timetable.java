@@ -52,8 +52,68 @@ public class Timetable {
     }
 
     public static void removeLesson(int day, int hour) {
-        //TODO
+        for (Lesson current : Database.lessons) {
+            if (current.day == day && current.hour == hour) {
+                Database.lessons.remove(current);
+            }
+        }
     }
+
+    public static void removeClass(int id) {
+        for (TimetableClass current : Database.classes) {
+            if (current.id == id) {
+                Database.classes.remove(current);
+            }
+        }
+
+    }
+
+    public static void removeClass(String name) {
+        for (TimetableClass current : Database.classes) {
+            if (current.name == name) {
+                Database.classes.remove(current);
+            }
+        }
+    }
+
+
+    public static void removeRoom(int id) {
+        for (TimetableRoom current : Database.rooms) {
+            if (current.id == id) {
+                Database.rooms.remove(current);
+            }
+        }
+
+    }
+
+    public static void removeRoom(String room) {
+        for (TimetableRoom current : Database.rooms) {
+            if (current.room == room) {
+                Database.rooms.remove(current);
+            }
+        }
+
+    }
+
+    public static void removeSubject(String shortage) {
+        for (TimetableSubject current : Database.subjects) {
+            if (current.shortage == shortage) {
+                Database.subjects.remove(current);
+            }
+        }
+    }
+
+    public static void removeSubject(int id) {
+        for (TimetableSubject current : Database.subjects) {
+            if (current.id == id) {
+                Database.subjects.remove(current);
+            }
+        }
+    }
+    //TO DO (überprüfen ob das da oben sinn macht)
+
+
+
 
     // AUSGABE
     // Alle Fächer ausgeben
