@@ -6,4 +6,9 @@
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:windowBackground">@drawable/rounded_corners</item>
     </style>
+
+    <style name="AppTheme.edit_things" parent="Theme.TeachersEssentials">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+    </style>
 </resources>

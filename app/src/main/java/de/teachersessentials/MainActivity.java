@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
             Database.generateDefaults(this);
         }
 
-        //TODO daten werden aus irgendeinem grund immer beim schließen der App gelöscht
-
         ConfigFile.writeToFile("0", 4, this); //App wurde bereits einmal geöffnet
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());

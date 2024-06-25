@@ -58,11 +58,23 @@
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
 
             <Button
-                android:id="@+id/close_app"
+                android:id="@+id/edit_things"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
+                android:text="Sachen bearbeiten" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fragment_container" />
+
+            <Button
+                android:id="@+id/close_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/app_schliessen"
                 android:textColor="@color/white" />
 
@@ -141,7 +153,7 @@
             <TextView
                 android:id="@+id/textView_loadDevContent"
                 android:layout_width="match_parent"
-                android:layout_height="78dp"
+                android:layout_height="5000dp"
                 android:hint="Geladener Inhalt"
                 android:isScrollContainer="true"
                 android:scrollbars="vertical" />

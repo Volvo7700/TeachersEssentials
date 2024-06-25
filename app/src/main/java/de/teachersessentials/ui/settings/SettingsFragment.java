@@ -94,6 +94,13 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        Button editThings = root.findViewById(R.id.edit_things);
+        editThings.setOnClickListener(v -> {
+            //Activity zum Bearbeiten der voreinstellungen
+            Intent intent = new Intent(getActivity(), EditThings.class);
+            startActivity(intent);
+        });
+
         //App schließen
         Button closeApp = root.findViewById(R.id.close_app);
         closeApp.setOnClickListener(v -> {
