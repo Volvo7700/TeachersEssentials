@@ -32,6 +32,7 @@ import de.teachersessentials.R;
 import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentSettingsBinding;
 import de.teachersessentials.timetable.Database;
+import de.teachersessentials.ui.settings.editthings.EditThings;
 import de.teachersessentials.util.ConfigFile;
 
 public class SettingsFragment extends Fragment {

@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.TeachersEssentials.NoActionBar"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
-            app:title="Sachen Bearbeiten"
             android:id="@+id/edit_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -19,8 +20,162 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/Theme.TeachersEssentials.NoActionBar" />
+            app:popupTheme="@style/Theme.TeachersEssentials.NoActionBar"
+            app:title="Sachen Bearbeiten" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp">
+
+            <Button
+                android:id="@+id/extend_subjects"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/round_add_button"
+                android:backgroundTint="@color/dark_2"
+                android:padding="0dp"
+                android:text="v"
+                android:textColor="@color/white_darken"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Fächer"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/extend_subjects"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/add_subject_settings"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/round_add_button"
+                android:backgroundTint="@color/light_3"
+                android:padding="0dp"
+                android:text="@string/plus"
+                android:textColor="@color/white_darken"
+                app:layout_constraintStart_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ListView
+                android:id="@+id/listView_subjects"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <Button
+                android:id="@+id/extend_rooms"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_add_button"
+                android:backgroundTint="@color/dark_2"
+                android:padding="0dp"
+                android:text="v"
+                android:textColor="@color/white_darken"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listView_subjects" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Räume"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/extend_rooms"
+                app:layout_constraintTop_toBottomOf="@+id/listView_subjects" />
+
+            <Button
+                android:id="@+id/add_room_settings"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/round_add_button"
+                android:backgroundTint="@color/light_3"
+                android:padding="0dp"
+                android:text="@string/plus"
+                android:textColor="@color/white_darken"
+                app:layout_constraintStart_toEndOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/listView_subjects" />
+
+            <ListView
+                android:id="@+id/listView_rooms"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+            <Button
+                android:id="@+id/extend_classes"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/round_add_button"
+                android:backgroundTint="@color/dark_2"
+                android:padding="0dp"
+                android:text="v"
+                android:textColor="@color/white_darken"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/listView_rooms" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Klassen"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/extend_classes"
+                app:layout_constraintTop_toBottomOf="@+id/listView_rooms" />
+
+            <Button
+                android:id="@+id/add_class_settings"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="8dp"
+                android:background="@drawable/round_add_button"
+                android:backgroundTint="@color/light_3"
+                android:padding="0dp"
+                android:text="@string/plus"
+                android:textColor="@color/white_darken"
+                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/listView_rooms" />
+
+            <ListView
+                android:id="@+id/listView_classes"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
