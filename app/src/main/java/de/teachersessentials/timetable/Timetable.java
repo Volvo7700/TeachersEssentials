@@ -145,7 +145,6 @@ public class Timetable {
         }
         Database.subjects.add(subject);
     }
-
     public static void setSubject(String name, String shortage, int color){
         for (TimetableSubject current : Database.subjects) {
             if (current.name == name) {
@@ -159,6 +158,15 @@ public class Timetable {
             id = Database.subjects.get(Database.subjects.size() - 1).id; //id der letzten Klasse wird ausgelesen
         }
         TimetableSubject subject_ = new TimetableSubject(id + 1, shortage, name, color); //id der neuen Klasse ist eins größer
+        Database.subjects.add(subject_);
+    }
+    public static void setSubject(int id, String name, String shortage, int color) {
+        for (TimetableSubject current : Database.subjects) {
+            if (current.id == id) {
+                Database.subjects.remove(current);
+            }
+        }
+        TimetableSubject subject_ = new TimetableSubject(id, shortage, name, color);
         Database.subjects.add(subject_);
     }
 
