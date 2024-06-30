@@ -2,7 +2,10 @@ package de.teachersessentials.timetable;
 
 import android.content.Context;
 
+import java.sql.Time;
 import java.util.ArrayList;
+
+import javax.security.auth.Subject;
 
 import de.teachersessentials.csv.CsvParser;
 
@@ -24,6 +27,10 @@ public class Database {
 
         try {
             ArrayList<String[]> rawLessons = CsvParser.read("timetable.csv",context);
+            // Eine Liste erstellen, zu der die ausgelesenen Objekte hinzugefügt werden.
+            // Danach wird die Liste in der Datenbank auf diese geändert - und dadurch die vorherigen Werte in der Datenbank gelöscht.
+            // Dadurch werden die Objekte nicht direkt an die Liste angehängt und es entstehen keine Doppeleinträge
+            ArrayList<Lesson> objectLessons = new ArrayList<>();
             for (String[] item : rawLessons) {
                 try {
                     int id = Integer.parseInt(item[0]);
@@ -34,12 +41,15 @@ public class Database {
                     int room = Integer.parseInt(item[5]);
 
                     Lesson lesson = new Lesson(id, day, time, subject, class_, room);
-                    lessons.add(lesson);
+                    // Wie oben beschrieben: Erst alles hier sammeln, ...
+                    objectLessons.add(lesson);
                 }
                 catch (Exception ex) {
                     error = true;
                 }
             }
+            // ... und dann hier [lessons] *überschreiben*
+            lessons = objectLessons;
         }
         catch (Exception ex) {
             error = true;
@@ -47,6 +57,7 @@ public class Database {
 
         try {
             ArrayList<String[]> rawSubjects = CsvParser.read("subjects.csv",context);
+            ArrayList<TimetableSubject> objectSubjects = new ArrayList<>();
             for (String[] item : rawSubjects) {
                 try {
                     int id = Integer.parseInt(item[0]);
@@ -55,12 +66,13 @@ public class Database {
                     int colorint = Integer.parseInt(item[3]);
 
                     TimetableSubject subject = new TimetableSubject(id, display_name, name, colorint);
-                    subjects.add(subject);
+                    objectSubjects.add(subject);
                 }
                 catch (Exception ex) {
                     error = true;
                 }
             }
+            subjects = objectSubjects;
         }
         catch (Exception ex) {
             error = true;
@@ -68,18 +80,20 @@ public class Database {
 
         try {
             ArrayList<String[]> rawRooms = CsvParser.read("rooms.csv",context);
+            ArrayList<TimetableRoom> objectRooms = new ArrayList<>();
             for (String[] item : rawRooms) {
                 try {
                     int id = Integer.parseInt(item[0]);
                     String name = item[1];
 
                     TimetableRoom room = new TimetableRoom(id, name);
-                    rooms.add(room);
+                    objectRooms.add(room);
                 }
                 catch (Exception ex) {
                     error = true;
                 }
             }
+            rooms = objectRooms;
         }
         catch (Exception ex) {
             error = true;
@@ -87,18 +101,20 @@ public class Database {
 
         try {
             ArrayList<String[]> rawClasses = CsvParser.read("classes.csv", context);
+            ArrayList<TimetableClass> objectClasses = new ArrayList<>();
             for (String[] item : rawClasses) {
                 try {
                     int id = Integer.parseInt(item[0]);
                     String name = item[1];
 
                     TimetableClass class_ = new TimetableClass(id, name);
-                    classes.add(class_);
+                    objectClasses.add(class_);
                 }
                 catch (Exception ex) {
                     error = true;
                 }
             }
+            classes = objectClasses;
         }
         catch (Exception ex) {
             error = true;

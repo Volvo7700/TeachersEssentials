@@ -109,17 +109,20 @@ public class CsvParser {
                     output += line;
                 }
             }
+            try {
+                context.deleteFile(fileName);
 
-            try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
-                fos.write(output.getBytes(StandardCharsets.UTF_8));
-                // Weil der Vorgang offensichtlich erfolgreich war, Rückgabewert auf true setzen
-                success = true;
-            }
-            catch (IOException e) {
+                try (FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE)) {
+                    fos.write(output.getBytes(StandardCharsets.UTF_8));
+                    // Weil der Vorgang offensichtlich erfolgreich war, Rückgabewert auf true setzen
+                    success = true;
+                }
+                catch (Exception ex)
+                {
 
+                }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
 
             }
             finally {
