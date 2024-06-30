@@ -39,7 +39,8 @@
                     android:id="@+id/select_subject"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/add_subject" />
+                    android:layout_toStartOf="@+id/add_subject"
+                    android:spinnerMode="dialog" />
 
                 <Button
                     android:id="@+id/add_subject"
@@ -69,7 +70,8 @@
                     android:id="@+id/select_room"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/add_room" />
+                    android:layout_toStartOf="@+id/add_room"
+                    android:spinnerMode="dialog" />
 
                 <Button
                     android:id="@+id/add_room"
@@ -100,7 +102,8 @@
                     android:id="@+id/select_class"
                     android:layout_width="130dp"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@+id/add_class" />
+                    android:layout_toStartOf="@+id/add_class"
+                    android:spinnerMode="dialog" />
 
                 <Button
                     android:id="@+id/add_class"
