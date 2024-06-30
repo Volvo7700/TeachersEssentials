@@ -2,19 +2,22 @@ DATENBANK - Noch zu tun
 -----------------------
 SPEICHERN
 OK Dateien laden am Appstart
-Errorhandling beim Parsen hinzufügen
-Stundenplan
-    Stundenraster speichern
-    Verweise erstellen
-Check für Vermeidung von Doppeleinträgen
-Datendublikationsbug noch zu beheben
+OK Errorhandling beim Parsen hinzufügen
+OK Stundenplan
+    OK Stundenraster speichern
+    OK Verweise erstellen
+
+DONE        Check für Vermeidung von Doppeleinträgen
+DONE        Datendublikationsbug noch zu beheben
 
 FEHLER IM INTERFACE
 Stundenplan
-    Wenn man Stunden löscht, nehmen sie die Werte des jew. ersten Listeneintrags an
-    Anzeige auf Hauptbildschirm
-    Klassenangabe fehlt!
-    Fächerverwaltung in den Einstellungen
+DONE        Wenn man Stunden löscht, nehmen sie die Werte des jew. ersten Listeneintrags an
+DONE        Remove Methode noch zu tun
+DONE?       Räume werden beim erstellen nicht geschpeichert
 
-    Räume werden beim erstellen nicht geschpeichert
-    Remove Methode noch zu tun
+In Arbeit   Fächerverwaltung in den Einstellungen
+In Arbeit   Anzeige auf Hauptbildschirm
+
+!           Klassenangabe fehlt!
+VORSCHLAG   Die Spinner-Popups auf DIALOG umstellen
