@@ -2,6 +2,7 @@ package de.teachersessentials.timetable;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 // Zugriffsklasse aus dem GUI auf die Datenbank
 public class Timetable {
@@ -16,6 +17,33 @@ public class Timetable {
             }
         }
         return null;
+    }
+
+    public static TimetableSubject getSubjectById(int id) {
+        for (TimetableSubject subject : getAllSubjects()) {
+            if (id == subject.id) {
+                return subject;
+            }
+        }
+        throw new NullPointerException();
+    }
+
+    public static TimetableRoom getRoomById(int id) {
+        for (TimetableRoom room : getAllRooms()) {
+            if (id == room.id) {
+                return room;
+            }
+        }
+        throw new NullPointerException();
+    }
+
+    public static TimetableClass getClassById(int id) {
+        for (TimetableClass class_ : getAllClasses()) {
+            if (id == class_.id) {
+                return class_;
+            }
+        }
+        throw new NullPointerException();
     }
 
     // gibt uns alle Lessons
@@ -52,63 +80,81 @@ public class Timetable {
     }
 
     public static void removeLesson(int day, int hour) {
+        Lesson lessonToRemove = null;
         for (Lesson current : Database.lessons) {
             if (current.day == day && current.hour == hour) {
-                Database.lessons.remove(current);
+                lessonToRemove = current;
+                break;
             }
         }
+        Database.lessons.remove(lessonToRemove);
     }
 
     public static void removeClass(int id) {
+        TimetableClass classToRemove = null;
         for (TimetableClass current : Database.classes) {
             if (current.id == id) {
-                Database.classes.remove(current);
+                classToRemove = current;
+                break;
             }
         }
-
+        Database.classes.remove(classToRemove);
     }
 
     public static void removeClass(String name) {
+        TimetableClass classToRemove = null;
         for (TimetableClass current : Database.classes) {
-            if (current.name == name) {
-                Database.classes.remove(current);
+            if (Objects.equals(current.name, name)) {
+                classToRemove = current;
+                break;
             }
         }
+        Database.classes.remove(classToRemove);
     }
 
 
     public static void removeRoom(int id) {
+        TimetableRoom roomToRemove = null;
         for (TimetableRoom current : Database.rooms) {
             if (current.id == id) {
-                Database.rooms.remove(current);
+                roomToRemove = current;
+                break;
             }
         }
-
+        Database.rooms.remove(roomToRemove);
     }
 
     public static void removeRoom(String room) {
+        TimetableRoom roomToRemove = null;
         for (TimetableRoom current : Database.rooms) {
-            if (current.room == room) {
-                Database.rooms.remove(current);
+            if (Objects.equals(current.room, room)) {
+                roomToRemove = current;
+                break;
             }
         }
-
+        Database.rooms.remove(roomToRemove);
     }
 
     public static void removeSubject(String shortage) {
+        TimetableSubject subjectToRemove = null;
         for (TimetableSubject current : Database.subjects) {
-            if (current.shortage == shortage) {
-                Database.subjects.remove(current);
+            if (Objects.equals(current.shortage, shortage)) {
+                subjectToRemove = current;
+                break;
             }
         }
+        Database.subjects.remove(subjectToRemove);
     }
 
     public static void removeSubject(int id) {
+        TimetableSubject subjectToRemove = null;
         for (TimetableSubject current : Database.subjects) {
             if (current.id == id) {
-                Database.subjects.remove(current);
+                subjectToRemove = current;
+                break;
             }
         }
+        Database.subjects.remove(subjectToRemove);
     }
     //TO DO (überprüfen ob das da oben sinn macht)
 
@@ -160,6 +206,7 @@ public class Timetable {
         TimetableSubject subject_ = new TimetableSubject(id + 1, shortage, name, color); //id der neuen Klasse ist eins größer
         Database.subjects.add(subject_);
     }
+
     public static void setSubject(int id, String name, String shortage, int color) {
         for (TimetableSubject current : Database.subjects) {
             if (current.id == id) {
@@ -179,6 +226,7 @@ public class Timetable {
         }
         Database.classes.add(class_);
     }
+
     public static void setClass(String name){
         for (TimetableClass current : Database.classes) {
             if (current.name == name) {
@@ -194,6 +242,7 @@ public class Timetable {
         TimetableClass class_ = new TimetableClass(id + 1, name); //id der neuen Klasse ist eins größer
         Database.classes.add(class_);
     }
+
     public static void setClass(int id, String name ){
         for (TimetableClass current : Database.classes) {
             if (current.id == id) {

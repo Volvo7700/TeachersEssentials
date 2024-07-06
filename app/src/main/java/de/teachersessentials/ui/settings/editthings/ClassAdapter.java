@@ -18,16 +18,16 @@ import java.util.List;
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Lesson;
 import de.teachersessentials.timetable.Timetable;
-import de.teachersessentials.timetable.TimetableRoom;
+import de.teachersessentials.timetable.TimetableClass;
 
-public class RoomAdapter extends ArrayAdapter<TimetableRoom> {
+public class ClassAdapter extends ArrayAdapter<TimetableClass> {
     private final Context mContext;
-    private final List<TimetableRoom> mRooms;
+    private final List<TimetableClass> mClasses;
 
-    public RoomAdapter(Context context, List<TimetableRoom> rooms) {
-        super(context, 0, rooms);
+    public ClassAdapter(Context context, List<TimetableClass> classes) {
+        super(context, 0, classes);
         mContext = context;
-        mRooms = rooms;
+        mClasses = classes;
     }
 
     @NonNull
@@ -38,51 +38,53 @@ public class RoomAdapter extends ArrayAdapter<TimetableRoom> {
             view = LayoutInflater.from(mContext).inflate(R.layout.thing_list_item_edit, parent, false);
         }
 
-        TimetableRoom room = mRooms.get(position);
+        TimetableClass class_ = mClasses.get(position);
 
-        TextView roomNameTextView = view.findViewById(R.id.thing_name);
-        roomNameTextView.setText(room.room);
+        //Name Fach wird links angezeigt
+        TextView subjectNameTextView = view.findViewById(R.id.thing_name);
+        subjectNameTextView.setText(class_.name);
 
+        //Button zum bearbeiten wird nict angezeigt
         Button editButton = view.findViewById(R.id.edit_thing);
         editButton.setVisibility(View.INVISIBLE);
 
-
+        //Button zum löschen eines Fachs
         Button deleteButton = view.findViewById(R.id.delete_thing);
         deleteButton.setOnClickListener(v -> {
             //AlertDialog, ob Raum wirklich gelöscht werden soll
-            AlertDialog.Builder builder = getBuilder(room);
+            AlertDialog.Builder builder = getBuilder(class_);
             builder.create().show(); //AlertDialog wird gezeigt
-            });
+        });
 
         return view;
     }
 
     @NonNull
-    private AlertDialog.Builder getBuilder(TimetableRoom room) {
+    private AlertDialog.Builder getBuilder(TimetableClass class_) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
         int n = 0;
-        for (Lesson lesson: Timetable.getAllLessons()) {
-            if (lesson.room == room.id) {
+        for (Lesson lesson : Timetable.getAllLessons()) {
+            if (lesson.class_ == class_.id) {
                 n += 1;
             }
         }
 
-        builder.setTitle(room.room + " löschen");
-        builder.setMessage("Soll der Raum " + room.room + " wirklich gelöscht werden?\n" + n + " eingetragene Stunden mit Raum " + room.room + " werden ebenfalls gelöscht.");
+        builder.setTitle(class_.name + " löschen");
+        builder.setMessage("Soll die Klasse " + class_.name + " wirklich gelöscht werden?\n" + n + " eingetragene Stunden mit Klasse " + class_.name + " werden ebenfalls gelöscht.");
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-            Timetable.removeRoom(room.room);
+            Timetable.removeClass(class_.name);
 
             ArrayList<Lesson> lessonsToRemove = new ArrayList<>();
             for (Lesson lesson : Timetable.getAllLessons()) {
-                if (lesson.room == room.id) {
+                if (lesson.class_ == class_.id) {
                     lessonsToRemove.add(lesson);
                 }
             }
             for (Lesson lesson : lessonsToRemove) {
                 Timetable.removeLesson(lesson.day, lesson.hour);
             }
-            Toast.makeText(getContext(), room.room + " und die entsprechenden Stunden wurden gelöscht", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), class_.name + " und die entsprechenden Stunden wurden gelöscht", Toast.LENGTH_SHORT).show();
 
             EditThings.updateData(getContext());
         });

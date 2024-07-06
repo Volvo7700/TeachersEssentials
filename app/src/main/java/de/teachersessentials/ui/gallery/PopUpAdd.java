@@ -21,7 +21,6 @@ public class PopUpAdd extends Activity {
             R.id.add_room,
             R.id.add_class
     };
-    private final int addId = PopUp.getAddId();
     private final int[] colorButtonIds = {
             R.id.color_1,
             R.id.color_2,
@@ -61,6 +60,12 @@ public class PopUpAdd extends Activity {
 
         Button save = findViewById(R.id.save);
 
+        int addId = getIntent().getIntExtra("addId", -1);
+        String headerInput = getIntent().getStringExtra("header");
+        textAdd.setText(headerInput);
+        String shortageInput = getIntent().getStringExtra("shortage");
+
+
         //TODO: fertig machen, wenn vom Database team gefixt
         if (addId == addButtonIds[0]) { //Fach hinzufügen
             head.setText("Fach Hinzufügen");
@@ -71,6 +76,7 @@ public class PopUpAdd extends Activity {
             relativeLayout2.setVisibility(View.VISIBLE);
 
             EditText addShortage = findViewById(R.id.shortage_add);
+            addShortage.setText(shortageInput);
 
             error.setVisibility(View.GONE);
 
@@ -81,8 +87,6 @@ public class PopUpAdd extends Activity {
             RelativeLayout relativeLayout3 = findViewById(R.id.relativ_layout_3);
             relativeLayout3.setVisibility(View.VISIBLE);
 
-
-
             ArrayList<Button> color_buttons = new ArrayList<>();
             for (int id : colorButtonIds) {
                 Button button = findViewById(id);
@@ -91,14 +95,8 @@ public class PopUpAdd extends Activity {
             }
 
             EditText hexColorAdd = findViewById(R.id.color_hex_add);
-            hexColorAdd.setOnFocusChangeListener((v, hasFocus) -> {
-                selectedColor = -1;
-                System.out.println("JAAA!");
-            });
-            hexColorAdd.setOnClickListener(v -> {
-                selectedColor = -1;
-                System.out.println("JAAA!");
-            });
+            hexColorAdd.setOnFocusChangeListener((v, hasFocus) -> selectedColor = -1);
+            hexColorAdd.setOnClickListener(v -> selectedColor = -1);
 
             AtomicInteger colorSelection = new AtomicInteger();
             for (Button button : color_buttons) {

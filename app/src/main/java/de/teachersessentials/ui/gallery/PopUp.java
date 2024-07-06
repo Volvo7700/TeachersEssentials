@@ -13,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 import de.teachersessentials.R;
+import de.teachersessentials.timetable.Database;
 import de.teachersessentials.timetable.Lesson;
 import de.teachersessentials.timetable.Timetable;
 import de.teachersessentials.timetable.TimetableClass;
@@ -36,7 +38,6 @@ public class PopUp extends Activity {
             R.id.add_room,
             R.id.add_class
     };
-    public static int addId = -1;
     private final String[] days = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"};
     private final ArrayList<TimetableSubject> subjects = Timetable.getAllSubjects();
     private final ArrayList<TimetableRoom> rooms = Timetable.getAllRooms();
@@ -44,13 +45,10 @@ public class PopUp extends Activity {
     public ArrayList<String> subjectsName = new ArrayList<>();
     public ArrayList<String> roomsName = new ArrayList<>();
     public ArrayList<String> classesName = new ArrayList<>();
-    private int positionSelectedSubject;
-    private int positionSelectedRoom;
-    private int positionSelectedClass;
+    private final int[] positionSelectedData = {0, 0, 0};
     private final int selectedDayOfWeek = GalleryFragment.getSelectedDayOfWeek();
     private final int selectedLesson = GalleryFragment.getSelectedLesson();
     private final Lesson currentLesson = Timetable.getLesson(selectedDayOfWeek, selectedLesson);
-
 
 
     @Override
@@ -70,15 +68,12 @@ public class PopUp extends Activity {
             spinners.add(spinner);
         }
 
-        for (Spinner spinner : spinners) {
-            spinner.setMinimumWidth(800);
-        }
-
         for (int id : addButtonIds) {
             Button button = findViewById(id);
             button.setOnClickListener(v -> {
-                startActivity(new Intent(PopUp.this, PopUpAdd.class));
-                addId = id;
+                Intent intent = new Intent(PopUp.this, PopUpAdd.class);
+                intent.putExtra("addId", id);
+                startActivity(intent);
             }); //jeder Button erhält eigene OnClick
         }
 
@@ -99,44 +94,50 @@ public class PopUp extends Activity {
                 id = Integer.parseInt(selectedDayOfWeek + "" + selectedLesson);
             }
 
-            if ((positionSelectedRoom != 0 && positionSelectedClass != 0 && positionSelectedSubject != 0)) {
+            if ((positionSelectedData[1] != 0 && positionSelectedData[2] != 0 && positionSelectedData[0] != 0)) {
                 int idSelectedSubject = 0;
                 for (TimetableSubject subject : subjects) {
-                    if (Objects.equals(subject.name, subjectsName.get(positionSelectedSubject))) {
+                    if (Objects.equals(subject.name, subjectsName.get(positionSelectedData[0]))) {
                         idSelectedSubject = subject.id;
                     }
                 }
 
                 int idSelectedClass = 0;
                 for (TimetableClass classs : classes) {
-                    if (Objects.equals(classs.name, classesName.get(positionSelectedClass))) {
+                    if (Objects.equals(classs.name, classesName.get(positionSelectedData[2]))) {
                         idSelectedClass = classs.id;
                     }
                 }
 
                 int idSelectedRoom = 0;
                 for (TimetableRoom room : rooms) {
-                    if (Objects.equals(room.room, roomsName.get(positionSelectedRoom))) {
+                    if (Objects.equals(room.room, roomsName.get(positionSelectedData[1]))) {
                         idSelectedRoom = room.id;
                     }
                 }
 
                 //Eintragung in Datenbank
-                Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson,  idSelectedSubject, idSelectedClass, idSelectedRoom));
+                Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, idSelectedSubject, idSelectedClass, idSelectedRoom));
                 finish();
+                //Daten werden zur Sicherheit sofort gespeichert
+                Database.save(this);
 
-            } else if ((positionSelectedRoom == 0 && positionSelectedClass == 0 && positionSelectedSubject == 0)) {
-                //Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, 0, 0, 0)); //TODO remove Lesson
+            } else if ((positionSelectedData[1] == 0 && positionSelectedData[2] == 0 && positionSelectedData[0] == 0)) {
+                //Stunde wird gelöscht
                 Timetable.removeLesson(selectedDayOfWeek, selectedLesson);
                 finish();
+                //Daten werden zur Sicherheit sofort gespeichert
+                Database.save(this);
 
             } else {
+                //Nicht alle ausgewählt
                 Toast.makeText(this, "Keine gültige Stunde angegeben", Toast.LENGTH_SHORT).show();
             }
         });
 
         generateStringLists();
 
+        //TODO teils wird code öfter als nötig ausgeführt
         loadSpinnerContent(0, subjectsName, this);
         loadSpinnerContent(1, roomsName, this);
         loadSpinnerContent(2, classesName, this);
@@ -162,54 +163,46 @@ public class PopUp extends Activity {
         }
     }
 
+
     public void loadSpinnerContent(int n, ArrayList<String> content, Context context) {
         //Liste wird in Spinner geladen
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, content);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         spinners.get(n).setAdapter(adapter);
 
+        //Aktuelle werte werden bei den Spinnern ausgewählt
+        //Hardcoded wegen den getById(), wird aber 3 mal aufgerufen TODO Performance
         if (currentLesson != null) {
-            spinners.get(0).setSelection(currentLesson.subject + 1);
-            spinners.get(1).setSelection(currentLesson.room + 1);
-            spinners.get(2).setSelection(currentLesson.class_ + 1);
+            for (String subjectName : subjectsName) {
+                if (Objects.equals(subjectName, Timetable.getSubjectById(currentLesson.subject).name)) {
+                    spinners.get(0).setSelection(subjectsName.indexOf(subjectName));
+                }
+            }
+
+            for (String roomName : roomsName) {
+                if (Objects.equals(roomName, Timetable.getRoomById(currentLesson.room).room)) {
+                    spinners.get(1).setSelection(roomsName.indexOf(roomName));
+                }
+            }
+            for (String className : classesName) {
+                if (Objects.equals(className, Timetable.getClassById(currentLesson.class_).name)) {
+                    spinners.get(2).setSelection(classesName.indexOf(className));
+                }
+            }
         }
 
-        spinners.get(0).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //Auswahl der Tage
+        //Auswahl der Daten der entsprechenden Stunde
+        spinners.get(n).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                positionSelectedSubject = position;
+                positionSelectedData[n] = position;
+                System.out.println(Arrays.toString(positionSelectedData));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        spinners.get(1).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //Auswahl der Tage
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                positionSelectedRoom = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
-        spinners.get(2).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //Auswahl der Tage
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                positionSelectedClass = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-    public static int getAddId() {
-        return addId;
     }
 
     @Override

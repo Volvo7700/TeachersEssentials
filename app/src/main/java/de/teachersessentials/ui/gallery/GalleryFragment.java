@@ -21,11 +21,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentGalleryBinding;
 import de.teachersessentials.R;
+import de.teachersessentials.timetable.Database;
 import de.teachersessentials.timetable.Lesson;
 import de.teachersessentials.timetable.Timetable;
+import de.teachersessentials.timetable.TimetableRoom;
+import de.teachersessentials.timetable.TimetableSubject;
 
 public class GalleryFragment extends Fragment {
     private static int selectedLesson;
@@ -114,7 +116,7 @@ public class GalleryFragment extends Fragment {
             }
         });
 
-        //Button zum lschen eines ganzen Tages
+        //Button zum löschen eines ganzen Tages
         Button deleteDay = root.findViewById(R.id.delete_day);
         deleteDay.setOnClickListener(v -> {
             //Nachfrage ob wirklich gelöscht werden soll
@@ -122,7 +124,19 @@ public class GalleryFragment extends Fragment {
             builder.setTitle(days[selectedDayOfWeek] + " löschen");
             builder.setMessage("Soll der komplette am " + days[selectedDayOfWeek] + " eingetragene Stundenplan gelöscht werden?");
             builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-                Toast.makeText(requireActivity(), "Noch nicht fertig", Toast.LENGTH_SHORT).show(); //TODO ganzen Tag löschen
+                ArrayList<Lesson> dayLessons = Timetable.getDayLessons(selectedDayOfWeek);
+                if (dayLessons.isEmpty()) {
+                    //Keine Stunden am entsprechende Tag eingetragen
+                    Toast.makeText(requireActivity(), "Keine Stunden vorhanden", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Stunden des entsprechenden Tages werden gelöscht
+                    for (Lesson lesson : dayLessons) {
+                        Database.lessons.remove(lesson);
+                    }
+                    updateButtons(selectedDayOfWeek);
+                    updateTextViews(selectedDayOfWeek);
+                    Toast.makeText(requireActivity(), "Alle Stunden am " + days[selectedDayOfWeek] + " gelöscht", Toast.LENGTH_SHORT).show();
+                }
             });
             builder.setNegativeButton("Abbrechen", ((dialog, which) -> {
             }));
@@ -158,34 +172,6 @@ public class GalleryFragment extends Fragment {
             rooms.add(room);
         }
 
-        /*Button testbutton = (Button) root.findViewById(R.id.button_test);
-        testbutton.setOnClickListener(v -> {
-            TextView textView_test = (TextView) root.findViewById(R.id.textView_test);
-            ArrayList<String[]> data = new ArrayList<>();
-            String[] line = new String[4];
-            line[0] = "hallo";
-            line[1] = "test";
-            line[2] = "hier";
-            line[3] = "CSV";
-            data.add(line);
-
-            String[] headers = new String[1];
-            headers[0] = "test";
-
-
-            //CsvParser.save("test.csv", data, headers, "Testtabelle", getActivity().getApplicationContext());
-            ArrayList<String[]> loadedData = CsvParser.read("test.csv", getActivity().getApplicationContext());
-
-
-            textView_test.setText(loadedData.get(0).toString());
-            String text = new String();
-            for (String s : loadedData.get(0) )
-            {
-                text += s;
-            }
-            textView_test.setText(text);
-        });*/
-
         return root;
     }
 
@@ -218,20 +204,28 @@ public class GalleryFragment extends Fragment {
             textView.setText("");
         }
 
-        System.out.println(Timetable.getAllSubjects().toString());  //TODO Timetable.getAllSubjects geht nicht richtig
-        System.out.println(CsvParser.read("subjects.csv", getContext()));
-
-        try {
-            for (Lesson lesson : dayLessons) {
-                if (Timetable.getAllSubjects().get(lesson.subject).name.length() > 16) { //Wenn Name des Fachs zu lang wird Kürzel angezeigt
-                    subjects.get(lesson.hour).setText(String.valueOf(Timetable.getAllSubjects().get(lesson.subject).shortage));
+        for (Lesson lesson : dayLessons) {
+            //TextViews der Stunden werden upgedated
+            //TextViews der Fächer
+            try {
+                TimetableSubject subject = Timetable.getSubjectById(lesson.subject);
+                if (subject.name.length() > 15) {
+                    //Name zu lang
+                    subjects.get(lesson.hour).setText(subject.shortage);
                 } else {
-                    subjects.get(lesson.hour).setText(String.valueOf(Timetable.getAllSubjects().get(lesson.subject).name));
+                    subjects.get(lesson.hour).setText(subject.name);
                 }
-                rooms.get(lesson.hour).setText(String.valueOf(Timetable.getAllRooms().get(lesson.room).room));
+            } catch (NullPointerException e) { //Falls Fach gelöscht wurde
+                System.out.println(e.getMessage());
             }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println(e.getMessage());
+
+            //TextViews der Räume
+            try {
+                TimetableRoom room = Timetable.getRoomById(lesson.room);
+                rooms.get(lesson.hour).setText(String.valueOf(room.room));
+            } catch (NullPointerException e) { //Falls Raum gelöscht wurde
+                System.out.println(e.getMessage());
+            }
         }
     }
 

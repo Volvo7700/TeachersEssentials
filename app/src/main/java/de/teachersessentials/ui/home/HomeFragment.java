@@ -21,7 +21,6 @@ import java.util.Locale;
 import java.util.Objects;
 
 import de.teachersessentials.util.ConfigFile;
-import de.teachersessentials.util.notifications.notifications;
 import de.teachersessentials.databinding.FragmentHomeBinding;
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Timetable;
@@ -59,7 +58,7 @@ public class HomeFragment extends Fragment {
         currentSubject = root.findViewById(R.id.current_subject);
         currentSubject.setTextSize((float) ((float) fontsize * 0.75)); //Schriftgröße
 
-        //Anzeige des aktuellen Fachs einbauen (Timetable Database)
+        //TODO Anzeige des aktuellen Fachs einbauen (Timetable Database)
 
         //ProgressBar
         showProgress = root.findViewById(R.id.progress_bar);
@@ -70,10 +69,7 @@ public class HomeFragment extends Fragment {
         //Anzeige des nächsten Fachs einbauen (Timetable Database) und evt. Raum
 
         Button TestButton = root.findViewById(R.id.test); //Test Buttop links unten
-        TestButton.setOnClickListener(v -> {
-            System.out.println("Dieser Button kann zum Testen benutzt werden");
-            notifications.sendNotification(requireActivity());
-        });
+        TestButton.setOnClickListener(v -> System.out.println("Dieser Button kann zum Testen benutzt werden"));
 
         handler = new Handler();
         updateClock();
