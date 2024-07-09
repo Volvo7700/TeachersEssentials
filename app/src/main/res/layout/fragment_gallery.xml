@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="64dp"
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +53,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,6 +74,7 @@
                     android:layout_centerVertical="true"
                     android:text="08:00"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -98,6 +100,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -127,6 +130,7 @@
                     android:layout_centerVertical="true"
                     android:text="08:45"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -152,6 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -181,6 +186,7 @@
                     android:layout_centerVertical="true"
                     android:text="09:45"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -206,6 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -235,6 +242,7 @@
                     android:layout_centerVertical="true"
                     android:text="10:30"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -260,6 +268,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -289,6 +298,7 @@
                     android:layout_centerVertical="true"
                     android:text="11:30"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -314,6 +324,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -343,6 +354,7 @@
                     android:layout_centerVertical="true"
                     android:text="12:15"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -368,6 +380,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -397,6 +410,7 @@
                     android:layout_centerVertical="true"
                     android:text="13:00"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -422,6 +436,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -451,6 +466,7 @@
                     android:layout_centerVertical="true"
                     android:text="13:45"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -476,6 +492,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -505,6 +522,7 @@
                     android:layout_centerVertical="true"
                     android:text="14:30"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -530,6 +548,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -559,6 +578,7 @@
                     android:layout_centerVertical="true"
                     android:text="15:15"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -584,6 +604,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView
@@ -612,6 +633,7 @@
                     android:layout_centerVertical="true"
                     android:text="16:00"
                     android:textSize="20sp"
+                    android:textColor="@color/white"
                     tools:ignore="RelativeOverlap" />
 
                 <Button
@@ -637,6 +659,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/subject"
+                        android:textColor="@color/white"
                         android:textSize="20sp" />
 
                     <TextView

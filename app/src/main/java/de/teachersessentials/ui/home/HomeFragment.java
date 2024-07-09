@@ -18,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 
 import de.teachersessentials.util.ConfigFile;
 import de.teachersessentials.databinding.FragmentHomeBinding;
@@ -135,7 +134,7 @@ public class HomeFragment extends Fragment {
             } else if (currentLessonNumber == 11) { //Pause oder vor der Schule
                 currentSubject.setText("Pause");
             } else { //während einer Stunde
-                currentSubject.setText(String.valueOf(Objects.requireNonNull(Timetable.getLesson(cal.get(Calendar.DAY_OF_WEEK), currentLessonNumber)).subject));
+                //currentSubject.setText(String.valueOf(Objects.requireNonNull(Timetable.getLesson(cal.get(Calendar.DAY_OF_WEEK), currentLessonNumber)).subject));
             }
         }
 

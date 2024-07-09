@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,7 +56,7 @@ public class PopUp extends Activity {
 
         setContentView(R.layout.window_pop_up);
 
-        getWindow().setLayout(740, 655);
+        getWindow().setLayout(800, 655);
 
         TextView headline = findViewById(R.id.headline);
         String headlineText = days[selectedDayOfWeek] + ", " + (selectedLesson + 1) + ". Stunde"; //Anzeige Überschrift, welche Stunde genau
@@ -196,7 +195,6 @@ public class PopUp extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 positionSelectedData[n] = position;
-                System.out.println(Arrays.toString(positionSelectedData));
             }
 
             @Override

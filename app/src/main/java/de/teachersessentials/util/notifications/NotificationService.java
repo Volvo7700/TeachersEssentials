@@ -13,6 +13,7 @@ import android.util.Log;
 
 import de.teachersessentials.MainActivity;
 import de.teachersessentials.R;
+import de.teachersessentials.util.ConfigFile;
 
 public class NotificationService extends Service {
 
@@ -78,6 +79,8 @@ public class NotificationService extends Service {
         }
 
         //wird gesendet
-        notificationManager.notify(1, notification);
+        if (ConfigFile.getConfigData(getApplicationContext(), 3) == 1) {
+            notificationManager.notify(1, notification);
+        }
     }
 }

@@ -85,8 +85,6 @@ public class ClassAdapter extends ArrayAdapter<TimetableClass> {
                 Timetable.removeLesson(lesson.day, lesson.hour);
             }
             Toast.makeText(getContext(), class_.name + " und die entsprechenden Stunden wurden gelöscht", Toast.LENGTH_SHORT).show();
-
-            EditThings.updateData(getContext());
         });
         builder.setNegativeButton("Abbrechen", ((dialog, which) -> {
         }));

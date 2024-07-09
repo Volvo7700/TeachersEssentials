@@ -12,6 +12,7 @@ import android.Manifest;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import de.teachersessentials.R;
 import de.teachersessentials.util.ConfigFile;
@@ -63,8 +64,8 @@ public class notifications {
 
     public static void askPermission(Context context, Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ConfigFile.getConfigData(context, 4)
-                    != PackageManager.PERMISSION_GRANTED) { //wenn App noch nie geöffnet wurde
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) { //Wenn keine Berechtigung erteilt ist
                 ActivityCompat.requestPermissions(activity,
                         new String[]{Manifest.permission.POST_NOTIFICATIONS},
                         REQUEST_POST_NOTIFICATIONS);

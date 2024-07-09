@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -32,6 +34,8 @@ import de.teachersessentials.R;
 import de.teachersessentials.csv.CsvParser;
 import de.teachersessentials.databinding.FragmentSettingsBinding;
 import de.teachersessentials.timetable.Database;
+import de.teachersessentials.timetable.Lesson;
+import de.teachersessentials.timetable.Timetable;
 import de.teachersessentials.ui.settings.editthings.EditThings;
 import de.teachersessentials.util.ConfigFile;
 
@@ -56,9 +60,14 @@ public class SettingsFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, font_select_size);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         selectFontSize.setAdapter(adapter);
-        selectFontSize.setSelection(2); //normale Auswahl
 
-        //TODO: beim Öffnen der Einstellungen wird automatisch die eingestellte Schriftröße ausgewählt
+        //Automatische Auswahl
+        int[] fontsizes = {15, 20, 25, 30, 40};
+        for (int f = 0; f <= 4; f += 1) {
+            if (fontsizes[f] == ConfigFile.getConfigData(requireActivity(), 1)) {
+                selectFontSize.setSelection(f);
+            }
+        }
 
         selectFontSize.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { //jenachdem, was ausgewählt ist wird fonsize im ConfigFile angepasst
             @Override
@@ -81,36 +90,48 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        //ConstarintLayout in dem die Messages drin sind
+        ConstraintLayout layoutMessages = root.findViewById(R.id.layout_messages);
+        layoutMessages.setOnClickListener(v -> messages.setChecked(!messages.isChecked())); //switch ist auf ganzem Layout cickbar
+
+        //Text zum Anzeigen, ob Berechtigung da ist
+        TextView textMessagesPermission = root.findViewById(R.id.text_messages_permission);
+
         messages = root.findViewById(R.id.messages);
         messages.setChecked(ConfigFile.getConfigData(requireActivity(), 3) == 1);
 
         messages.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                ConfigFile.writeToFile("1", 3, requireActivity()); //ConfigFile änderung
-                alertDialogDismiss();
-
-            } else {
-                ConfigFile.writeToFile("0", 3, requireActivity()); //ConfigFile änderung
+            if (isChecked) { //Aktiviert
+                ConfigFile.writeToFile("1", 3, requireActivity()); //ConfigFile Änderung
+                //Wenn kein Berechtigung vorhanden ist, muss nachgefragt werden
+                if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                    alertDialogDismiss();
+                } else {
+                    Toast.makeText(requireActivity(), "Benachrichtigungen aktiviert", Toast.LENGTH_SHORT).show();
+                }
+            } else { //Deaktiviert
+                ConfigFile.writeToFile("0", 3, requireActivity()); //ConfigFile Änderung
                 Toast.makeText(requireActivity(), R.string.benachrichtigungen_deaktiviert, Toast.LENGTH_SHORT).show();
             }
         });
 
-        Button editThings = root.findViewById(R.id.edit_things);
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            textMessagesPermission.setText("Berechtigung bereits erteilt");
+        } else {
+            textMessagesPermission.setText("Keine Berechtigung");
+            ConfigFile.writeToFile("0", 3, requireActivity()); //ConfigFile Änderung
+            messages.setChecked(false);
+        }
+
+        LinearLayout editThings = root.findViewById(R.id.edit_things);
         editThings.setOnClickListener(v -> {
             //Activity zum Bearbeiten der voreinstellungen
             Intent intent = new Intent(getActivity(), EditThings.class);
             startActivity(intent);
         });
 
-        //App schließen
-        Button closeApp = root.findViewById(R.id.close_app);
-        closeApp.setOnClickListener(v -> {
-            requireActivity().finish();
-            requireActivity().finishAffinity();
-        });
-
         //Einstellungen zurücksetzen
-        Button resetSettings = root.findViewById(R.id.reset_settings);
+        TextView resetSettings = root.findViewById(R.id.reset_settings);
         resetSettings.setOnClickListener(v -> {
             ConfigFile.resetConfigFile(requireActivity());
             selectFontSize.setSelection(2);
@@ -126,8 +147,9 @@ public class SettingsFragment extends Fragment {
         // Temporärer Testcode
 
         // Einfacher Datenbanktest (laden und speichern von ein paar simplen Testdaten automatisiert)
-        Button testbutton = root.findViewById(R.id.button_test);
-        testbutton.setOnClickListener(new View.OnClickListener() {
+        /*Button testbutton = root.findViewById(R.id.button_test);
+        testbutton.setVisibility(View.GONE);*/
+        /*testbutton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -167,8 +189,25 @@ public class SettingsFragment extends Fragment {
                     textView_test.setText(textView_test.getText() + "\n" + "NULL");
                 }
             }
+        });*/
+
+        //App schließen
+        TextView closeApp = root.findViewById(R.id.close_app);
+        closeApp.setOnClickListener(v -> {
+            requireActivity().finish();
+            requireActivity().finishAffinity();
         });
 
+        TextView openSettings = root.findViewById(R.id.open_settings);
+        openSettings.setOnClickListener(v -> {
+            //Weiterleitung in die Einstellungen
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
+            intent.setData(uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
 
         // Manuelles Laden und Speichern von Daten
         // Objekte definieren
@@ -227,7 +266,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        Button seperatorbutton = (Button) root.findViewById(R.id.button_seperator);
+        Button seperatorbutton = root.findViewById(R.id.button_seperator);
 
         seperatorbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,35 +278,75 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Testcode: Standarddaten hinzufügen
-        Button addDefaultsButton = root.findViewById(R.id.button_testAddDefaults);
-        addDefaultsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        //Standarddaten hinzufügen
+        TextView addDefaultsButton = root.findViewById(R.id.button_AddDefaults);
+        addDefaultsButton.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+
+            builder.setTitle("Standarddaten zurücksetzen");
+            builder.setMessage("Die eingestellten Fächer, Räume und Klassen werden zurückgesetzt. Dabei werden benutzerdefinierte Änderungen nicht übernommen und evt. auch Stunden gelöscht.");
+            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                //Daten werden zurükgestzt
                 Database.generateDefaults(getContext());
                 Database.load(getContext());
+                Toast.makeText(getContext(), "Standarddaten wurden hinzugefügt", Toast.LENGTH_SHORT).show();
+            });
+            builder.setNegativeButton("Abbrechen", ((dialog, which) -> {
+            }));
+            builder.create().show();
+        });
+
+        //Button zum löschen des gesamten Stundenplans
+        TextView removeEntireTable = root.findViewById(R.id.delete_entire_table);
+        removeEntireTable.setOnClickListener(v -> {
+            ArrayList<Lesson> allLessons = Timetable.getAllLessons();
+
+            if (!allLessons.isEmpty()) {
+                //AlertDialog zum sichergehen
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setTitle("Stundenplan löschen");
+                builder.setMessage("Der gesamte eingetragene Stundenplan wird gelöscht");
+                builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+                    //Kopie nötig wegen ConcurrentModificationException
+                    ArrayList<Lesson> allLessons_ = (ArrayList<Lesson>) allLessons.clone();
+                    for (Lesson lesson : allLessons_) {
+                        //jede Studnde wird einzeln gelöscht
+                        Timetable.removeLesson(lesson.day, lesson.hour);
+                    }
+                    Database.save(requireActivity());
+                    Toast.makeText(getContext(), "Stundenplan wurde gelöscht", Toast.LENGTH_SHORT).show();
+                });
+                builder.setNegativeButton("Abbrechen", (dialog, which) -> {
+                });
+                builder.create().show(); //AlertDialog wird gezeigt
+            } else {
+                //keine Stunden eingetragen
+                Toast.makeText(getContext(), "Keine Stunden eingetragen", Toast.LENGTH_SHORT).show();
             }
+
         });
 
         return root;
     }
 
     private void alertDialogDismiss() {
-        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-            builder.setTitle(R.string.alertPermissionHeadline);
-            builder.setMessage(R.string.alertPermissionText);
-            builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-                //Weiterleitung in die Einstellungen
-                Intent intent = new Intent();
-                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
-                intent.setData(uri);
-                startActivity(intent);
-            });
-            builder.setNegativeButton("Abbrechen", (dialog, which) -> messages.setChecked(false));
-            builder.create().show(); //AlertDialog wird gezeigt
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        builder.setTitle(R.string.alertPermissionHeadline);
+        builder.setMessage(R.string.alertPermissionText);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            //Weiterleitung in die Einstellungen
+            Intent intent = new Intent();
+            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
+            intent.setData(uri);
+            startActivity(intent);
+        });
+        builder.setNegativeButton("Abbrechen", (dialog, which) -> {
+            messages.setChecked(false);
+            ConfigFile.writeToFile("0", 3, requireActivity()); //ConfigFile Änderung
+        });
+        builder.create().show(); //AlertDialog wird gezeigt
+
     }
 
     private void writeFontsizeToConfig(String fontsize) {

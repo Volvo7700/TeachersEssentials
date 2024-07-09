@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,222 +10,431 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/dark_1a"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:text="@string/schriftgroesse"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Allgemein"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/dark_3" />
+
+                <RelativeLayout
+                    android:id="@+id/layout_fontsize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/schriftgroesse"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        tools:ignore="RelativeOverlap" />
+
+                    <Spinner
+                        android:id="@+id/select_font_size"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/dark_3" />
+
+                <Switch
+                    android:id="@+id/night_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingBottom="16dp"
+                    android:checked="true"
+                    android:text="@string/night_theme"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    tools:ignore="RelativeOverlap" />
+                    tools:ignore="UseSwitchCompatOrMaterialXml" />
 
-                <Spinner
-                    android:id="@+id/select_font_size"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/dark_3" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_messages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:paddingTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingBottom="12dp"
+                    android:clickable="true"
+                    tools:ignore="UseSwitchCompatOrMaterialXml">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/benachrichtigungen"
+                            android:textColor="@color/white"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/text_messages_permission"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="Little text below"
+                            android:textColor="@color/light_1"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <Switch
+                        android:id="@+id/messages"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/dark_3" />
+
+                <TextView
+                    android:id="@+id/reset_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Einstellungen zurücksetzen"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/dark_1a"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true" />
-            </RelativeLayout>
-
-            <Switch
-                android:id="@+id/night_theme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:checked="true"
-                android:text="@string/night_theme"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            <Switch
-                android:id="@+id/messages"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:checked="true"
-                android:text="@string/benachrichtigungen"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-            <Button
-                android:id="@+id/edit_things"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="16dp"
-                android:text="Sachen bearbeiten" />
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/fragment_container" />
-
-            <Button
-                android:id="@+id/close_app"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/app_schliessen"
-                android:textColor="@color/white" />
-
-            <Button
-                android:id="@+id/reset_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:text="@string/einstellungen_zuruecksetzen"
-                android:textColor="@color/white" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/button_test"
-                    android:layout_width="185dp"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#009688"
-                    android:foregroundTint="#FF0000"
-                    android:text="[DEV] CSV I/O Test Einfach"
-                    android:textColor="@color/white" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Daten und Voreinstellungen"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/button_testAddDefaults"
-                    android:layout_width="185dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#009688"
-                    android:foregroundTint="#FF0000"
-                    android:text="[DEV] Standard- daten hinzufügen"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                <LinearLayout
 
-            <TextView
-                android:id="@+id/textView_test"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="Einfacher CSV Test: output hier" />
-
-            <TextView
-                android:id="@+id/textView_loadDevTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="[DEV] Datei laden"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/editText_loadDev"
+                    android:id="@+id/edit_things"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Dateiname"
-                    android:inputType="text|textVisiblePassword|textNoSuggestions" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:clickable="true"
+                    android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/button_loadDev"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#009688"
-                    android:text="Lesen"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/dark_3" />
 
-            <TextView
-                android:id="@+id/textView_loadDevContent"
-                android:layout_width="match_parent"
-                android:layout_height="5000dp"
-                android:hint="Geladener Inhalt"
-                android:isScrollContainer="true"
-                android:scrollbars="vertical" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Sachen bearbeiten"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/textView_saveDevTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="[DEV] Datei speichern"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Fächer - Räume - Klassen"
+                        android:textColor="@color/light_1"
+                        android:textSize="12sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@color/dark_3" />
+                </LinearLayout>
 
-                <EditText
-                    android:id="@+id/editText_saveDev"
+                <TextView
+                    android:id="@+id/button_AddDefaults"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Dateiname"
-                    android:inputType="text|textVisiblePassword|textNoSuggestions" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Standarddaten zurücksetzen"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
-                <Button
-                    android:id="@+id/button_saveDev"
-                    android:layout_width="250dp"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/dark_3" />
+
+                <TextView
+                    android:id="@+id/delete_entire_table"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#009688"
-                    android:text="Schreiben"
-                    android:textColor="@color/white" />
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:focusable="true"
+                    android:text="Stundenplan löschen"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:clickable="true"/>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout6"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingBottom="20dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/dark_1a"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
-                <EditText
-                    android:id="@+id/editText_saveDevContent"
+                <TextView
+                    android:id="@+id/open_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Telefoneinstellungen öffnen"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/dark_3" />
+
+                <TextView
+                    android:id="@+id/close_app"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/app_schliessen"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+                <TextView
+                    android:id="@+id/textView_loadDevTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="[DEV] Datei laden"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Speichereingabe\n\nTitel\nHeader (Wertekette getrennt)\nWerte (mehrere Werteketten getrennt)\nWerte nur mit Trennzeichen-\nButton rechts trennen!"
-                    android:inputType="text|textVisiblePassword|textMultiLine|textNoSuggestions"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editText_loadDev"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Dateiname"
+                        android:inputType="text|textVisiblePassword|textNoSuggestions" />
+
+                    <Button
+                        android:id="@+id/button_loadDev"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#009688"
+                        android:text="Lesen"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView_loadDevContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="1000dp"
+                    android:hint="Geladener Inhalt"
                     android:isScrollContainer="true"
-                    android:lines="8"
-                    android:maxLines="50"
-                    android:minLines="5"
-                    android:scrollbarAlwaysDrawVerticalTrack="false"
                     android:scrollbars="vertical"
-                    android:singleLine="false"
-                    android:textSize="14sp" />
+                    tools:layout_editor_absoluteY="547dp" />
 
-                <Button
-                    android:id="@+id/button_seperator"
-                    android:layout_width="100dp"
+                <TextView
+                    android:id="@+id/textView_saveDevTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="[DEV] Datei speichern"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:backgroundTint="#009688"
-                    android:text="|"
-                    android:textColor="@color/white" />
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/editText_saveDev"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Dateiname"
+                        android:inputType="text|textVisiblePassword|textNoSuggestions" />
+
+                    <Button
+                        android:id="@+id/button_saveDev"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="#009688"
+                        android:text="Schreiben"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingBottom="20dp">
+
+                    <EditText
+                        android:id="@+id/editText_saveDevContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Speichereingabe\n\nTitel\nHeader (Wertekette getrennt)\nWerte (mehrere Werteketten getrennt)\nWerte nur mit Trennzeichen-\nButton rechts trennen!"
+                        android:inputType="text|textVisiblePassword|textMultiLine|textNoSuggestions"
+                        android:isScrollContainer="true"
+                        android:lines="8"
+                        android:maxLines="50"
+                        android:minLines="5"
+                        android:scrollbarAlwaysDrawVerticalTrack="false"
+                        android:scrollbars="vertical"
+                        android:singleLine="false"
+                        android:textSize="14sp" />
+
+                    <Button
+                        android:id="@+id/button_seperator"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:backgroundTint="#009688"
+                        android:text="|"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 

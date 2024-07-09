@@ -2,10 +2,7 @@ package de.teachersessentials.timetable;
 
 import android.content.Context;
 
-import java.sql.Time;
 import java.util.ArrayList;
-
-import javax.security.auth.Subject;
 
 import de.teachersessentials.csv.CsvParser;
 
@@ -228,20 +225,20 @@ public class Database {
                 "P-Seminar", "Modul zur berufl. Orientierung" };
 
         String[] shortages = {"D", "M",
-                "E", "F", "L", "Sp",
-                "Ph", "C", "B", "Inf",
+                "E", "F", "L", "S",
+                "Ph", "Ch", "Bio", "Info",
                 "K", "Ev", "Eth",
                 "Geo", "G", "PuG",
-                "S", "Ku", "Mu",
+                "Sp", "Ku", "Mu",
                 "PhÜ", "ChÜ",
                 "DInt", "MInt", "FInt", "LInt",
                 "P", "MbO"};
 
         Integer[] colors = { 0xD70000, 0x0080FF,
-                0x00CC00, 0xFFFF00, 0x990000, 0x00CC66,
-                0x0000FF, 0xFF00FF, 0x99FF33, 0x00FFFF,
+                0x008000, 0xE7C905, 0x990000, 0x00CC2C,
+                0x6e6e6e, 0x31A5FD, 0x89F022, 0x05E7E7,
                 0x9933FF, 0x9933FF, 0x9933FF,
-                0x994C00, 0x808080, 0xFF8000,
+                0x994C00, 0xFF5900, 0xFF8000,
                 0xE0E0E0, 0x009999, 0xCC0066,
                 0x0000FF, 0xFFFF00,
                 0xD70000, 0x0080FF, 0xFFFF00, 0x990000,

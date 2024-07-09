@@ -24,7 +24,7 @@
         android:backgroundTint="@color/light_3"
         android:padding="0dp"
         android:text="/"
-        android:textColor="@color/white_darken" />
+        android:textColor="@color/white" />
 
     <Button
         android:id="@+id/delete_thing"
@@ -36,6 +36,6 @@
         android:backgroundTint="@color/red"
         android:padding="0dp"
         android:text="-"
-        android:textColor="@color/white_darken" />
+        android:textColor="@color/white" />
 
 </LinearLayout>

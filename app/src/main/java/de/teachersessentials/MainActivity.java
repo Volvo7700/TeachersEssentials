@@ -38,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
             Database.generateDefaults(this);
         }
 
-        ConfigFile.writeToFile("0", 4, this); //App wurde bereits einmal geöffnet
-
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -57,7 +55,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        notifications.askPermission(this, this); //fragt nach Erlaubnis
+        if (ConfigFile.getConfigData(this, 4) == 1) {
+            notifications.askPermission(this, this); //fragt nach Erlaubnis
+        }
+
+        ConfigFile.writeToFile("0", 4, this); //App wurde bereits einmal geöffnet
+
         notifications.createNotificationChannel(this); //NotificationChannel wird erstellt
 
         //if(!foregroundServiceRunning()) {

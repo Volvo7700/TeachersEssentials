@@ -49,12 +49,11 @@ public class SubjectAdapter extends ArrayAdapter<TimetableSubject> {
         //Button zum bearbeiten eines Fachs
         Button editButton = view.findViewById(R.id.edit_thing);
         editButton.setOnClickListener(v -> {
-            Context context = getContext();
-            Intent intent = new Intent(context, PopUpAdd.class);
+            Intent intent = new Intent(getContext(), PopUpAdd.class);
             intent.putExtra("addId", R.id.add_subject);
             intent.putExtra("header", subject.name);
             intent.putExtra("shortage", subject.shortage);
-            context.startActivity(intent);
+            getContext().startActivity(intent);
         });
 
         //Button zum löschen eines Fachs
@@ -94,8 +93,6 @@ public class SubjectAdapter extends ArrayAdapter<TimetableSubject> {
                 Timetable.removeLesson(lesson.day, lesson.hour);
             }
             Toast.makeText(getContext(), subject.name + " und die entsprechenden Stunden wurden gelöscht", Toast.LENGTH_SHORT).show();
-
-            EditThings.updateData(getContext());
         });
         builder.setNegativeButton("Abbrechen", ((dialog, which) -> {
         }));

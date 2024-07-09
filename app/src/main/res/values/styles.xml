@@ -1,10 +1,12 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar" />
+    <style name="AppTheme" parent="Theme.TeachersEssentials" />
 
     <style name="AppTheme.pop_up" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:windowBackground">@drawable/rounded_corners</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
     </style>
 
     <style name="AppTheme.edit_things" parent="Theme.TeachersEssentials">

@@ -1,13 +1,18 @@
 package de.teachersessentials.ui.gallery;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -39,15 +44,22 @@ public class PopUpAdd extends Activity {
             R.id.color_15,
             R.id.color_16,
     };
+    private final int[] selectColors = {
+            0x000000, 0x525252, 0xA8A8A8, 0xEDEDED, 0x0000FF, 0x0080FF,
+            0x009999, 0x008000, 0x00CC2C, 0x89F022, 0xE7C905, 0xFF8000,
+            0xD70000, 0x990000, 0xE415E4, 0x9933FF
+    };
     int selectedColor = -1;
     private TextView error;
+    AtomicInteger colorSelection = new AtomicInteger();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.window_pop_up_add);
 
-        getWindow().setLayout(740, 655);
+        getWindow().setLayout(800, 655);
 
         TextView head = findViewById(R.id.head);
 
@@ -66,10 +78,11 @@ public class PopUpAdd extends Activity {
         String shortageInput = getIntent().getStringExtra("shortage");
 
 
-        //TODO: fertig machen, wenn vom Database team gefixt
         if (addId == addButtonIds[0]) { //Fach hinzufügen
             head.setText("Fach Hinzufügen");
             textAdd.setHint("Fach");
+
+            getWindow().setLayout(800, 1000);
 
             //Kürzel
             RelativeLayout relativeLayout2 = findViewById(R.id.relativ_layout_2);
@@ -78,37 +91,54 @@ public class PopUpAdd extends Activity {
             EditText addShortage = findViewById(R.id.shortage_add);
             addShortage.setText(shortageInput);
 
-            error.setVisibility(View.GONE);
+            ConstraintLayout buttonConstraints = findViewById(R.id.button_constraints);
+            buttonConstraints.setVisibility(View.VISIBLE);
 
-            TextView colorsText = findViewById(R.id.colors_text);
-            colorsText.setVisibility(View.VISIBLE);
+            View showColor = findViewById(R.id.show_color);
 
-            //Hex Code der Farbe
-            RelativeLayout relativeLayout3 = findViewById(R.id.relativ_layout_3);
-            relativeLayout3.setVisibility(View.VISIBLE);
-
+            //Buttons zum auswählen der Farbe
             ArrayList<Button> color_buttons = new ArrayList<>();
             for (int id : colorButtonIds) {
                 Button button = findViewById(id);
-                button.setVisibility(View.VISIBLE);
                 color_buttons.add(button);
             }
 
+            //Hexcode eingabe einer Farbe
             EditText hexColorAdd = findViewById(R.id.color_hex_add);
+            hexColorAdd.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.length() == 7) {
+                        //Eingegebene farbe soll angezeigt werden
+                        try {
+                            showColor.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(String.valueOf(s))));
+                        } catch (NumberFormatException e) {
+                            showColor.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.dark_3)));
+                        }
+                    } else {
+                        showColor.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.dark_3)));
+                    }
+                }
+            });
+
+            //Farbwahl der Buttons egal
+            //TODO alle Buttons zeigen (grau machen)
             hexColorAdd.setOnFocusChangeListener((v, hasFocus) -> selectedColor = -1);
             hexColorAdd.setOnClickListener(v -> selectedColor = -1);
 
-            AtomicInteger colorSelection = new AtomicInteger();
             for (Button button : color_buttons) {
                 button.setOnClickListener(v -> {
-                    color_buttons.get(colorSelection.get()).setVisibility(View.VISIBLE);
-
                     colorSelection.set(color_buttons.indexOf(button));
-
-                    color_buttons.get(colorSelection.get()).setVisibility(View.INVISIBLE);
-
                     selectedColor = colorSelection.get();
-                    hexColorAdd.setText("");
+
+                    //Farbe von Button wird in Textfeld eingtragen
+                    hexColorAdd.setText(String.format("#%06X", selectColors[selectedColor]));
                 });
             }
 
@@ -119,29 +149,33 @@ public class PopUpAdd extends Activity {
                 String hexcode = String.valueOf(hexColorAdd.getText());
 
                 if (shortage.length() < 5) { //Kürzel darf nicht zu lang sein
-                    if (newSubject.isEmpty() || shortage.isEmpty() || (selectedColor == -1 && hexcode.isEmpty())) { //Alle Parameter müssen angegeben sein
+                    if (newSubject.isEmpty() || shortage.isEmpty()) { //Alle Parameter müssen angegeben sein
                         error("Bitte alles eingeben");
                     } else {
-                        if (selectedColor == -1) {
-                            try {
-                                //Farbeigabe über Hexcode und textfeld
-                                int  color = Color.parseColor(hexcode);
-                                //TODO hier neue Farbe erstellen
-                                Timetable.setSubject(newSubject, shortage, color); //TODO Farbe
+                        if (!(selectedColor == -1 && hexcode.isEmpty())) {
+                            if (selectedColor == -1) {
+                                try {
+                                    //Farbeigabe über Hexcode und textfeld
+                                    int  color = Color.parseColor(hexcode);
+                                    Timetable.setSubject(newSubject, shortage, color);
+                                    finish();
+                                } catch (IllegalArgumentException e) {
+                                    error("Kein gültiger Hexcode");
+                                }
+                            } else {
+                                //Farbeingabe über buttons
+                                Timetable.setSubject(newSubject, shortage, selectColors[selectedColor]);
                                 finish();
-                            } catch (IllegalArgumentException e) {
-                                error("Kein gültiger Hexcode");
                             }
                         } else {
-                            //Farbeingabe über buttons
-                            Timetable.setSubject(newSubject, shortage, selectedColor); //TODO Farbe
+                            //bei keiner Farbe wird grau als Farbe genommen
+                            Timetable.setSubject(newSubject, shortage, getResources().getColor(R.color.light_3));
                             finish();
                         }
                     }
                 } else {
                     error("Kürzel zu lang");
                 }
-
             });
 
         } else if (addId == addButtonIds[1]) { //Raum hinzufügen
@@ -183,6 +217,7 @@ public class PopUpAdd extends Activity {
             });
         }
     }
+
     private void error(String message) {
         error.setVisibility(View.VISIBLE);
         error.setText(message);

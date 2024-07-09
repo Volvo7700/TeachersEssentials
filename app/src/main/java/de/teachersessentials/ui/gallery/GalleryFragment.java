@@ -1,6 +1,7 @@
 package de.teachersessentials.ui.gallery;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -131,8 +132,9 @@ public class GalleryFragment extends Fragment {
                 } else {
                     //Stunden des entsprechenden Tages werden gelöscht
                     for (Lesson lesson : dayLessons) {
-                        Database.lessons.remove(lesson);
+                        Timetable.removeLesson(lesson.day, lesson.hour);
                     }
+                    Database.save(requireActivity());
                     updateButtons(selectedDayOfWeek);
                     updateTextViews(selectedDayOfWeek);
                     Toast.makeText(requireActivity(), "Alle Stunden am " + days[selectedDayOfWeek] + " gelöscht", Toast.LENGTH_SHORT).show();
@@ -143,33 +145,24 @@ public class GalleryFragment extends Fragment {
             builder.create().show(); //AlertDialog wird gezeigt
         });
 
-        //Buttons zum eintragen des Stundenplans
-        for (int id : buttonIds) { //für jeden Listenplatz wird der entsprechende Button erzeugt
-            Button button = root.findViewById(id);
-            buttons.add(button);
-        }
-
-        int number = 0;
-        for (Button button : buttons) {
-            int finalNumber = number;
-            button.setOnClickListener(v -> {
-                Intent intent = new Intent(getActivity(), PopUp.class);
-                startActivity(intent);
-                selectedLesson = finalNumber;
-            }); //jeder Button erhält eigene OnClick
-            number += 1;
-        }
-
-        //TextViews zur Anzeige der Fächer
-        for (int id : subjectIds) { //für jeden Listenplatz wird das entsprechende TextView erzeugt
-            TextView subject = root.findViewById(id);
+        for (int i = 0; i <= 10; i += 1) {
+            //TextViews zur Anzeige der Fächer
+            TextView subject = root.findViewById(subjectIds[i]);
             subjects.add(subject);
-        }
 
-        //TextViews zur Anzeige der Räume
-        for (int id : roomIds) { //für jeden Listenplatz wird das entsprechende TextView erzeugt
-            TextView room = root.findViewById(id);
+            //TextViews zur Anzeige der Räume
+            TextView room = root.findViewById(roomIds[i]);
             rooms.add(room);
+
+            //Buttons zum eintragen des Stundenplans
+            Button button = root.findViewById(buttonIds[i]);
+            int finalI = i;
+            button.setOnClickListener(v -> {
+                        Intent intent = new Intent(getActivity(), PopUp.class);
+                        startActivity(intent);
+                        selectedLesson = finalI;
+                    });
+            buttons.add(button);
         }
 
         return root;
@@ -185,9 +178,22 @@ public class GalleryFragment extends Fragment {
         }
 
         for (Lesson lesson : dayLessons) {
-            buttons.get(lesson.hour).setText("");
-            //button.setText(String.valueOf(Timetable.getAllSubjects().get(dayLessons[n].subject).color)); TODO farbig machen, aber wie?
-            //buttons.get(lesson.hour).setBackgroundColor(colors[Timetable.getAllSubjects().get(lesson.subject).color]);
+            int hour = lesson.hour;
+
+            try {
+                String colorButtonHex = String.format("#%06X", Timetable.getSubjectById(lesson.subject).color);
+                //Buttons werden eingefärbt
+                buttons.get(hour).setText("");
+                buttons.get(hour).setBackgroundColor(Color.parseColor(colorButtonHex));
+
+                int colorTextViews = getResources().getColor(getContrastColor(colorButtonHex));
+                //TextViews werden je nach Hintergrundfarbe der Button eingefärbt
+                subjects.get(hour).setTextColor(colorTextViews);
+                rooms.get(hour).setTextColor(colorTextViews);
+
+            } catch (NullPointerException e) { //Fach wurde gelöscht
+                buttons.get(hour).setBackgroundColor(getResources().getColor(R.color.light_3));
+            }
         }
     }
 
@@ -216,7 +222,7 @@ public class GalleryFragment extends Fragment {
                     subjects.get(lesson.hour).setText(subject.name);
                 }
             } catch (NullPointerException e) { //Falls Fach gelöscht wurde
-                System.out.println(e.getMessage());
+                Timetable.removeLesson(lesson.day, lesson.hour);
             }
 
             //TextViews der Räume
@@ -224,9 +230,33 @@ public class GalleryFragment extends Fragment {
                 TimetableRoom room = Timetable.getRoomById(lesson.room);
                 rooms.get(lesson.hour).setText(String.valueOf(room.room));
             } catch (NullPointerException e) { //Falls Raum gelöscht wurde
-                System.out.println(e.getMessage());
+                Timetable.removeLesson(lesson.day, lesson.hour);
             }
         }
+    }
+
+    public static int getContrastColor(String bgColor) {
+        int bgR, bgG, bgB;
+        //int werte der einzelnen Farben werden berechnet
+        bgR = Integer.parseInt(bgColor.substring(1, 3), 16);
+        bgG = Integer.parseInt(bgColor.substring(3, 5), 16);
+        bgB = Integer.parseInt(bgColor.substring(5, 7), 16);
+        double bgLuminance = relativeLuminance(bgR / 255.0, bgG / 255.0, bgB / 255.0);
+
+        //besser passende Farbe wird zurückgegeben
+        if (bgLuminance > 0.5) {
+            return R.color.black;
+        } else {
+            return R.color.white;
+        }
+    }
+
+    private static double relativeLuminance(double r, double g, double b) {
+        //Berechnung
+        r = r <= 0.03928 ? r / 12.92 : Math.pow((r + 0.055) / 1.055, 2.4);
+        g = g <= 0.03928 ? g / 12.92 : Math.pow((g + 0.055) / 1.055, 2.4);
+        b = b <= 0.03928 ? b / 12.92 : Math.pow((b + 0.055) / 1.055, 2.4);
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
     }
 
     public static int getSelectedLesson() {

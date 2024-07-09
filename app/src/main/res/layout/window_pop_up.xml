@@ -51,7 +51,7 @@
                     android:backgroundTint="@color/light_3"
                     android:padding="0dp"
                     android:text="@string/plus"
-                    android:textColor="@color/white_darken" />
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -82,7 +82,7 @@
                     android:backgroundTint="@color/light_3"
                     android:padding="0dp"
                     android:text="@string/plus"
-                    android:textColor="@color/white_darken"
+                    android:textColor="@color/white"
                     tools:ignore="TouchTargetSizeCheck" />
             </RelativeLayout>
 
@@ -114,7 +114,7 @@
                     android:backgroundTint="@color/light_3"
                     android:padding="0dp"
                     android:text="@string/plus"
-                    android:textColor="@color/white_darken" />
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <LinearLayout
@@ -142,7 +142,7 @@
                     android:layout_weight="1"
                     android:backgroundTint="@color/dark_3"
                     android:text="@string/speichern"
-                    android:textColor="@color/white_darken" />
+                    android:textColor="@color/white" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
