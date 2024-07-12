@@ -27,15 +27,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageButton
             android:id="@+id/delete_day"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="4dp"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/round_add_button"
-            android:theme="@style/buttonRed"/>
-
+            android:src="@drawable/icon_trash_can_large"
+            android:background="@drawable/round"
+            android:backgroundTint="@color/red"/>
 
     </RelativeLayout>
 
@@ -85,8 +85,7 @@
                     android:layout_marginStart="64dp"
                     android:backgroundTint="@color/light_3"
                     android:text="@string/stunde_einfuegen"
-                    android:textColor="@color/black"
-                    android:visibility="visible" />
+                    android:textColor="@color/black" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"

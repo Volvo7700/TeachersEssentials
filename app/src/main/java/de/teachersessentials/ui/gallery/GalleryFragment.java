@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -118,7 +119,7 @@ public class GalleryFragment extends Fragment {
         });
 
         //Button zum löschen eines ganzen Tages
-        Button deleteDay = root.findViewById(R.id.delete_day);
+        ImageButton deleteDay = root.findViewById(R.id.delete_day);
         deleteDay.setOnClickListener(v -> {
             //Nachfrage ob wirklich gelöscht werden soll
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
@@ -158,10 +159,10 @@ public class GalleryFragment extends Fragment {
             Button button = root.findViewById(buttonIds[i]);
             int finalI = i;
             button.setOnClickListener(v -> {
-                        Intent intent = new Intent(getActivity(), PopUp.class);
-                        startActivity(intent);
-                        selectedLesson = finalI;
-                    });
+                Intent intent = new Intent(getActivity(), PopUp.class);
+                startActivity(intent);
+                selectedLesson = finalI;
+            });
             buttons.add(button);
         }
 

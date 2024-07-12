@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,7 +57,7 @@ public class PopUp extends Activity {
 
         setContentView(R.layout.window_pop_up);
 
-        getWindow().setLayout(800, 655);
+        getWindow().setLayout(800, 715);
 
         TextView headline = findViewById(R.id.headline);
         String headlineText = days[selectedDayOfWeek] + ", " + (selectedLesson + 1) + ". Stunde"; //Anzeige Überschrift, welche Stunde genau
@@ -68,7 +69,7 @@ public class PopUp extends Activity {
         }
 
         for (int id : addButtonIds) {
-            Button button = findViewById(id);
+            ImageButton button = findViewById(id);
             button.setOnClickListener(v -> {
                 Intent intent = new Intent(PopUp.this, PopUpAdd.class);
                 intent.putExtra("addId", id);
@@ -202,6 +203,7 @@ public class PopUp extends Activity {
             }
         });
     }
+
 
     @Override
     protected void onResume() {

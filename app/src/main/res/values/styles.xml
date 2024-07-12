@@ -9,8 +9,8 @@
         <item name="colorControlNormal">@color/white</item>
     </style>
 
-    <style name="AppTheme.edit_things" parent="Theme.TeachersEssentials">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowCloseOnTouchOutside">true</item>
+    <style name="AppTheme.edit_things" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 </resources>

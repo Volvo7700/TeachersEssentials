@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStop(){
         super.onStop();
         startService(new Intent(this, NotificationService.class)); //aktiviert nachricht schicken
-        finish(); //beendet app
+        //Activity darf hier nicht beendet werden (finish())
         Database.save(this);
     }
 }

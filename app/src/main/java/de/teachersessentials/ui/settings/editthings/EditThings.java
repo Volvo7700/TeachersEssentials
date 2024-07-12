@@ -1,14 +1,20 @@
 package de.teachersessentials.ui.settings.editthings;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.teachersessentials.R;
@@ -19,31 +25,38 @@ import de.teachersessentials.timetable.TimetableRoom;
 import de.teachersessentials.timetable.TimetableSubject;
 import de.teachersessentials.ui.gallery.PopUpAdd;
 
-public class EditThings extends Activity {
+public class EditThings extends AppCompatActivity {
     private final int[] listViewIds = {R.id.listView_subjects, R.id.listView_rooms, R.id.listView_classes};
     private final int[] extendButtonIds = {R.id.extend_subjects, R.id.extend_rooms, R.id.extend_classes};
     private final int[] settingsAddButtonIds = {R.id.add_subject_settings, R.id.add_room_settings, R.id.add_class_settings};
     static ArrayList<ListView> listViewsThings = new ArrayList<>();
+    private final ArrayList<Integer> collapsedExtended = new ArrayList<>(Arrays.asList(0, 0, 0));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_things);
 
+        //Zurück Pfeil
+        Toolbar toolbar = findViewById(R.id.edit_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon_back_arrow);
+
         for (int id : listViewIds) {
             ListView newListView = findViewById(id);
 
             //Größe des ListViews wird angepasst
             ViewGroup.LayoutParams params = newListView.getLayoutParams();
-            params.height = 400;
+            params.height = -100;
             newListView.setLayoutParams(params);
 
             listViewsThings.add(newListView);
         }
 
-        ArrayList<Button> settingsAddButtons = new ArrayList<>();
+        ArrayList<ImageButton> settingsAddButtons = new ArrayList<>();
         for (int id : settingsAddButtonIds) {
-            Button addButton = findViewById(id);
+            ImageButton addButton = findViewById(id);
             settingsAddButtons.add(addButton);
         }
 
@@ -64,54 +77,105 @@ public class EditThings extends Activity {
             this.startActivity(intent);
         });
 
-        updateData(this);
+        updateDataAll(this);
 
-        for (int n = 0; n < 3; n += 1) {
-            int finalN = n;
-            Button extendButton = findViewById(extendButtonIds[n]);
-            extendButton.setOnClickListener(v -> {
+        //Buttons zum ausklappen/verstecken
+        ArrayList<ImageButton> extendButtons = new ArrayList<>();
+        for (int Id : extendButtonIds) {
+            ImageButton extendButton = findViewById(Id);
+            extendButtons.add(extendButton);
+        }
 
-                //Alle ListViews werden versteckt
-                for (ListView listView : listViewsThings) {
+        for (ImageButton button : extendButtons) {
+            int n = extendButtons.indexOf(button);
+
+            //OnClick für jeden Button
+            button.setOnClickListener(v -> {
+                ListView listView = listViewsThings.get(n);
+
+                if (collapsedExtended.get(n) == 0) { //ausgewählte List view ist versteckt und soll ausgeklappt werden
+                    ListAdapter mAdapter = listView.getAdapter();
+                    //Höhe eines einzelnen Items wird gemessen
+                    View mView = mAdapter.getView(0, null, listView);
+                    mView.measure(
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                    );
+                    int heightSingular = mView.getMeasuredHeight();
+
                     ViewGroup.LayoutParams params = listView.getLayoutParams();
-                    params.height = 0;
+                    //Höhe wird so angepasst, dass alles genausichtbar ist
+                    params.height = heightSingular * mAdapter.getCount() + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
                     listView.setLayoutParams(params);
+
+                    collapsedExtended.set(n, 1);
+                    button.setRotation(180);
+                } else { //ausgewählte List view ist ausgeklappt und soll versteckt werden
+                    ViewGroup.LayoutParams params = listView.getLayoutParams();
+                    params.height = -50;
+                    listView.setLayoutParams(params);
+
+                    collapsedExtended.set(n, 0);
+                    button.setRotation(90);
                 }
-
-                //TODO richtig anpassen, performanceeffizient
-
-                /*int heightInDp = listViewsThings.get(finalN).getCount() * 40; // desired height in dp
-                float density = getResources().getDisplayMetrics().density;
-                int heightInPixels = (int) (heightInDp * density);
-
-                ViewGroup.LayoutParams params = listViewsThings.get(finalN).getLayoutParams();
-                params.height = heightInPixels;
-                listViewsThings.get(finalN).setLayoutParams(params);*/
             });
         }
     }
 
-    public static void updateData(Context context) {
-        //Listview wir mit Daten befüllt
-        List<TimetableRoom> rooms = Timetable.getAllRooms();
-        RoomAdapter roomAdapter = new RoomAdapter(context, rooms);
-        listViewsThings.get(1).setAdapter(roomAdapter);
+    public static void updateDataAll(Context context) {
+        updateDataSingle(context, Timetable.getAllSubjects(), 0);
+        updateDataSingle(context, Timetable.getAllRooms(), 1);
+        updateDataSingle(context, Timetable.getAllClasses(), 2);
+    }
+
+    public static void updateDataSingle(Context context, ArrayList<?> contentList, int index) {
+        int firstVisiblePosition = 0;
+        int topPixel = 0;
 
         //Listview wir mit Daten befüllt
-        List<TimetableClass> classes = Timetable.getAllClasses();
-        ClassAdapter classAdapter = new ClassAdapter(context, classes);
-        listViewsThings.get(2).setAdapter(classAdapter);
+        ListView listView = listViewsThings.get(index);
+        ListAdapter adapter = getAdapter(index, contentList, context);
+        try {
+            //Aktuelle Position der Scrollleiste
+            firstVisiblePosition = listView.getFirstVisiblePosition();
+            View firstVisibleView = listView.getChildAt(0);
+            topPixel = firstVisibleView.getTop();
+        } catch (RuntimeException ignored) {
+        }
+        //Neue Daten
+        listView.setAdapter(adapter);
+        //Position Scrollleiste
+        listView.setSelectionFromTop(firstVisiblePosition, topPixel);
+    }
 
-        //Listview wir mit Daten befüllt
-        List<TimetableSubject> subjects = Timetable.getAllSubjects();
-        SubjectAdapter subjectApadter = new SubjectAdapter(context, subjects);
-        listViewsThings.get(0).setAdapter(subjectApadter);
+    private static ListAdapter getAdapter(int index, List<?> data, Context context) {
+        switch (index) {
+            case 0:
+                return new SubjectAdapter(context, (List<TimetableSubject>) data);
+            case 1:
+                return new RoomAdapter(context, (List<TimetableRoom>) data);
+            case 2:
+                return new ClassAdapter(context, (List<TimetableClass>) data);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getSupportFragmentManager().popBackStack();
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateData(this);
+        updateDataAll(this);
     }
 
     @Override

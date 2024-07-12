@@ -59,7 +59,7 @@ public class PopUpAdd extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.window_pop_up_add);
 
-        getWindow().setLayout(800, 655);
+        getWindow().setLayout(800, 715);
 
         TextView head = findViewById(R.id.head);
 
@@ -82,7 +82,7 @@ public class PopUpAdd extends Activity {
             head.setText("Fach Hinzufügen");
             textAdd.setHint("Fach");
 
-            getWindow().setLayout(800, 1000);
+            getWindow().setLayout(800, 1076);
 
             //Kürzel
             RelativeLayout relativeLayout2 = findViewById(R.id.relativ_layout_2);
@@ -209,7 +209,7 @@ public class PopUpAdd extends Activity {
                         Timetable.setClass(newClass.toUpperCase());
                         finish();
                     } else { //nichts eingegeben
-                        error("Bitte Name des Klasse eingeben");
+                        error("Bitte Name der Klasse eingeben");
                     }
                 } else { //Name der Klasse zu lang
                     error("Klasse zu lang");
