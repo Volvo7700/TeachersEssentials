@@ -133,7 +133,7 @@ public class GalleryFragment extends Fragment {
                 } else {
                     //Stunden des entsprechenden Tages werden gelöscht
                     for (Lesson lesson : dayLessons) {
-                        Timetable.removeLesson(lesson.day, lesson.hour);
+                        Database.lessons.remove(lesson);
                     }
                     Database.save(requireActivity());
                     updateButtons(selectedDayOfWeek);
@@ -222,8 +222,8 @@ public class GalleryFragment extends Fragment {
                 } else {
                     subjects.get(lesson.hour).setText(subject.name);
                 }
-            } catch (NullPointerException e) { //Falls Fach gelöscht wurde
-                Timetable.removeLesson(lesson.day, lesson.hour);
+            } catch (NullPointerException e) {
+                Database.lessons.remove(lesson);//Falls Fach gelöscht wurde
             }
 
             //TextViews der Räume
@@ -231,7 +231,7 @@ public class GalleryFragment extends Fragment {
                 TimetableRoom room = Timetable.getRoomById(lesson.room);
                 rooms.get(lesson.hour).setText(String.valueOf(room.room));
             } catch (NullPointerException e) { //Falls Raum gelöscht wurde
-                Timetable.removeLesson(lesson.day, lesson.hour);
+                Database.lessons.remove(lesson);
             }
         }
     }

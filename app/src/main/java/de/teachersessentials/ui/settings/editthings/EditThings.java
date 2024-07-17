@@ -15,14 +15,10 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import de.teachersessentials.R;
 import de.teachersessentials.timetable.Database;
 import de.teachersessentials.timetable.Timetable;
-import de.teachersessentials.timetable.TimetableClass;
-import de.teachersessentials.timetable.TimetableRoom;
-import de.teachersessentials.timetable.TimetableSubject;
 import de.teachersessentials.ui.gallery.PopUpAdd;
 
 public class EditThings extends AppCompatActivity {
@@ -30,7 +26,8 @@ public class EditThings extends AppCompatActivity {
     private final int[] extendButtonIds = {R.id.extend_subjects, R.id.extend_rooms, R.id.extend_classes};
     private final int[] settingsAddButtonIds = {R.id.add_subject_settings, R.id.add_room_settings, R.id.add_class_settings};
     static ArrayList<ListView> listViewsThings = new ArrayList<>();
-    private final ArrayList<Integer> collapsedExtended = new ArrayList<>(Arrays.asList(0, 0, 0));
+    private static final ArrayList<Integer> collapsedExtended = new ArrayList<>(Arrays.asList(0, 0, 0));
+    static ArrayList<ImageButton> extendButtons = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +77,6 @@ public class EditThings extends AppCompatActivity {
         updateDataAll(this);
 
         //Buttons zum ausklappen/verstecken
-        ArrayList<ImageButton> extendButtons = new ArrayList<>();
         for (int Id : extendButtonIds) {
             ImageButton extendButton = findViewById(Id);
             extendButtons.add(extendButton);
@@ -88,53 +84,57 @@ public class EditThings extends AppCompatActivity {
 
         for (ImageButton button : extendButtons) {
             int n = extendButtons.indexOf(button);
-
             //OnClick für jeden Button
-            button.setOnClickListener(v -> {
-                ListView listView = listViewsThings.get(n);
+            //TODO listen beim erneuten öffnen richtig machen
+            button.setOnClickListener(v -> updateSize(n, button, true));
+        }
+    }
 
-                if (collapsedExtended.get(n) == 0) { //ausgewählte List view ist versteckt und soll ausgeklappt werden
-                    ListAdapter mAdapter = listView.getAdapter();
-                    //Höhe eines einzelnen Items wird gemessen
-                    View mView = mAdapter.getView(0, null, listView);
-                    mView.measure(
-                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                    );
-                    int heightSingular = mView.getMeasuredHeight();
+    public static void updateSize(int n, ImageButton button, boolean change) {
+        ListView listView = listViewsThings.get(n);
+        updateDataSingle(listView.getContext(), n);
 
-                    ViewGroup.LayoutParams params = listView.getLayoutParams();
-                    //Höhe wird so angepasst, dass alles genausichtbar ist
-                    params.height = heightSingular * mAdapter.getCount() + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
-                    listView.setLayoutParams(params);
+        if (collapsedExtended.get(n) == 0 || !change) { //ausgewählte List view ist versteckt und soll ausgeklappt werden
+            ListAdapter mAdapter = listView.getAdapter();
+            //Höhe eines einzelnen Items wird gemessen
+            View mView = mAdapter.getView(0, null, listView);
+            mView.measure(
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            );
+            int heightSingular = mView.getMeasuredHeight();
 
-                    collapsedExtended.set(n, 1);
-                    button.setRotation(180);
-                } else { //ausgewählte List view ist ausgeklappt und soll versteckt werden
-                    ViewGroup.LayoutParams params = listView.getLayoutParams();
-                    params.height = -50;
-                    listView.setLayoutParams(params);
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            //Höhe wird so angepasst, dass alles genausichtbar ist
+            //TODO  evt. performance
+            params.height = heightSingular * mAdapter.getCount() + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
+            listView.setLayoutParams(params);
 
-                    collapsedExtended.set(n, 0);
-                    button.setRotation(90);
-                }
-            });
+            collapsedExtended.set(n, 1);
+            button.setRotation(180);
+        } else { //ausgewählte List view ist ausgeklappt und soll versteckt werden
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = -50;
+            listView.setLayoutParams(params);
+
+            collapsedExtended.set(n, 0);
+            button.setRotation(90);
         }
     }
 
     public static void updateDataAll(Context context) {
-        updateDataSingle(context, Timetable.getAllSubjects(), 0);
-        updateDataSingle(context, Timetable.getAllRooms(), 1);
-        updateDataSingle(context, Timetable.getAllClasses(), 2);
+        for (int i = 0; i <= 2; i++) {
+            updateDataSingle(context, i);
+        }
     }
 
-    public static void updateDataSingle(Context context, ArrayList<?> contentList, int index) {
+    public static void updateDataSingle(Context context, int index) {
         int firstVisiblePosition = 0;
         int topPixel = 0;
 
         //Listview wir mit Daten befüllt
         ListView listView = listViewsThings.get(index);
-        ListAdapter adapter = getAdapter(index, contentList, context);
+        ListAdapter adapter = getAdapter(index, context);
         try {
             //Aktuelle Position der Scrollleiste
             firstVisiblePosition = listView.getFirstVisiblePosition();
@@ -148,14 +148,14 @@ public class EditThings extends AppCompatActivity {
         listView.setSelectionFromTop(firstVisiblePosition, topPixel);
     }
 
-    private static ListAdapter getAdapter(int index, List<?> data, Context context) {
+    private static ListAdapter getAdapter(int index, Context context) {
         switch (index) {
             case 0:
-                return new SubjectAdapter(context, (List<TimetableSubject>) data);
+                return new SubjectAdapter(context, Timetable.getAllSubjects());
             case 1:
-                return new RoomAdapter(context, (List<TimetableRoom>) data);
+                return new RoomAdapter(context, Timetable.getAllRooms());
             case 2:
-                return new ClassAdapter(context, (List<TimetableClass>) data);
+                return new ClassAdapter(context, Timetable.getAllClasses());
             default:
                 return null;
         }
@@ -172,16 +172,26 @@ public class EditThings extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static void resume() { //eigene Methode, damit auch von außerhalb aktiv gecalled werden kann
+        //Größe, falls etwas hinzugefügt wurde wird angepasst
+        for (int j = 0; j < 3; j++) {
+            if (collapsedExtended.get(j) == 1) {
+                updateSize(j, extendButtons.get(j), false);
+            }
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        updateDataAll(this);
+        resume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         listViewsThings.clear();
+
         Database.save(this);
     }
 }

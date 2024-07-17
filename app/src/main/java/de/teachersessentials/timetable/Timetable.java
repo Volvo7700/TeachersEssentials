@@ -90,7 +90,7 @@ public class Timetable {
         Database.lessons.remove(lessonToRemove);
     }
 
-    public static void removeClass(int id) {
+/*    public static void removeClass(int id) {
         TimetableClass classToRemove = null;
         for (TimetableClass current : Database.classes) {
             if (current.id == id) {
@@ -155,7 +155,7 @@ public class Timetable {
             }
         }
         Database.subjects.remove(subjectToRemove);
-    }
+    }*/
     //TO DO (überprüfen ob das da oben sinn macht)
 
 
@@ -183,7 +183,6 @@ public class Timetable {
     // EINGABE
     // Fächer Bearbeiten
     public static void setSubject(TimetableSubject subject){
-
         for (TimetableSubject current : Database.subjects) {
             if (current.id == subject.id) {
                 Database.subjects.remove(current);
@@ -191,9 +190,11 @@ public class Timetable {
         }
         Database.subjects.add(subject);
     }
+
     public static void setSubject(String name, String shortage, int color){
         for (TimetableSubject current : Database.subjects) {
             if (current.name == name) {
+                Database.subjects.remove(current);
                 return;
             }
         }
@@ -278,6 +279,7 @@ public class Timetable {
         TimetableRoom room_ = new TimetableRoom(id + 1, name);
         Database.rooms.add(room_);
     }
+
     public static void setRoom(int id, String name ){
         for (TimetableRoom current : Database.rooms) {
             if (current.id == id) {

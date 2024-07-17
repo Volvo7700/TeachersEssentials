@@ -30,7 +30,8 @@
         <activity android:name=".ui.gallery.PopUpAdd"
             android:theme="@style/AppTheme.pop_up"/>
         <activity android:name=".ui.settings.editthings.EditThings"
-            android:theme="@style/AppTheme.edit_things"/>
+            android:theme="@style/AppTheme.edit_things"
+            android:screenOrientation="portrait"/>
         <service android:name=".Background"/>
         <service android:name=".util.notifications.NotificationService" />
     </application>

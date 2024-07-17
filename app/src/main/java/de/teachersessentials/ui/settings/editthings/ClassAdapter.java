@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import java.util.List;
 
+import de.teachersessentials.timetable.Timetable;
 import de.teachersessentials.timetable.TimetableClass;
 
 public class ClassAdapter extends Adapter<TimetableClass> {
@@ -31,9 +32,17 @@ public class ClassAdapter extends Adapter<TimetableClass> {
 
         editButton.setVisibility(View.INVISIBLE);
 
-        buttonUp.setOnClickListener(v -> moveUpDown(1, 2, class_, position));
+        buttonUp.setOnClickListener(v -> moveUpDown(1, 2, mClasses, position));
+        buttonUp.setOnLongClickListener(v -> {
+            moveUpDown(Timetable.getAllClasses().size() - 1, 2, mClasses, position);
+            return true;
+        });
 
-        buttonDown.setOnClickListener(v -> moveUpDown(-1, 2, class_, position));
+        buttonDown.setOnClickListener(v -> moveUpDown(-1, 2, mClasses, position));
+        buttonDown.setOnLongClickListener(v -> {
+            moveUpDown(-(Timetable.getAllClasses().size() - 1), 2, mClasses, position);
+            return true;
+        });
 
         deleteButton.setOnClickListener(v -> {
             //AlertDialog, ob Raum wirklich gelöscht werden soll

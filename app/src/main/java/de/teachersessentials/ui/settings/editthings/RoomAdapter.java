@@ -11,6 +11,7 @@ import java.util.List;
 
 import de.teachersessentials.R;
 
+import de.teachersessentials.timetable.Timetable;
 import de.teachersessentials.timetable.TimetableRoom;
 
 public class RoomAdapter extends Adapter<TimetableRoom> {
@@ -32,9 +33,17 @@ public class RoomAdapter extends Adapter<TimetableRoom> {
 
         editButton.setVisibility(View.INVISIBLE);
 
-        buttonUp.setOnClickListener(v -> moveUpDown(1, 1, room, position));
+        buttonUp.setOnClickListener(v -> moveUpDown(1, 1, mRooms, position));
+        buttonUp.setOnLongClickListener(v -> {
+            moveUpDown(Timetable.getAllRooms().size() - 1, 1, mRooms, position);
+            return true;
+        });
 
-        buttonDown.setOnClickListener(v -> moveUpDown(-1, 1, room, position));
+        buttonDown.setOnClickListener(v -> moveUpDown(-1, 1, mRooms, position));
+        buttonDown.setOnLongClickListener(v -> {
+            moveUpDown(-(Timetable.getAllRooms().size() - 1), 1, mRooms, position);
+            return true;
+        });
 
         deleteButton = view.findViewById(R.id.delete_thing);
         deleteButton.setOnClickListener(v -> {

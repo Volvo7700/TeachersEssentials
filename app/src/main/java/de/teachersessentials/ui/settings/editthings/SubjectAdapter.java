@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog;
 import java.util.List;
 
 import de.teachersessentials.R;
+import de.teachersessentials.timetable.Timetable;
 import de.teachersessentials.timetable.TimetableSubject;
 import de.teachersessentials.ui.gallery.PopUpAdd;
 
@@ -43,12 +44,22 @@ public class SubjectAdapter extends Adapter<TimetableSubject> {
             intent.putExtra("addId", R.id.add_subject);
             intent.putExtra("header", subject.name);
             intent.putExtra("shortage", subject.shortage);
+            intent.putExtra("color", subject.color);
+            intent.putExtra("id", subject.id);
             mContext.startActivity(intent);
         });
 
-        buttonUp.setOnClickListener(v -> moveUpDown(1, 0, subject, position));
+        buttonUp.setOnClickListener(v -> moveUpDown(1, 0, mSubjects, position));
+        buttonUp.setOnLongClickListener(v -> {
+            moveUpDown(Timetable.getAllSubjects().size() - 1, 0, mSubjects, position);
+            return true;
+        });
 
-        buttonDown.setOnClickListener(v -> moveUpDown(-1, 0, subject, position));
+        buttonDown.setOnClickListener(v -> moveUpDown(-1, 0, mSubjects, position));
+        buttonDown.setOnLongClickListener(v -> {
+            moveUpDown(- (Timetable.getAllSubjects().size() - 1), 0, mSubjects, position);
+            return true;
+        });
 
         //Button zum löschen eines Fachs
         deleteButton = view.findViewById(R.id.delete_thing);

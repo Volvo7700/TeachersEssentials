@@ -27,7 +27,6 @@ import de.teachersessentials.timetable.TimetableSubject;
 
 public class Adapter<T> extends ArrayAdapter<T> {
     private final Context mContext;
-    private final List<T> mContent;
     TextView thingNameTextView;
     ImageView buttonDown;
     ImageView buttonUp;
@@ -37,7 +36,6 @@ public class Adapter<T> extends ArrayAdapter<T> {
     public Adapter(Context context, List<T> content) {
         super(context, 0, content);
         mContext = context;
-        mContent = content;
     }
 
     @NonNull
@@ -74,7 +72,6 @@ public class Adapter<T> extends ArrayAdapter<T> {
         String name = (String) data[0];
         int id = (int) data[1];
         String type = "";
-
         switch (index) {
             case 0:
                 type = "das Fach ";
@@ -88,6 +85,7 @@ public class Adapter<T> extends ArrayAdapter<T> {
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
         //Zu entfernende Stunden werden gesucht
         ArrayList<Lesson> lessonsToRemove = new ArrayList<>();
         for (Lesson lesson : Timetable.getAllLessons()) {
@@ -114,24 +112,27 @@ public class Adapter<T> extends ArrayAdapter<T> {
             //Je nach indexx werden die jeweiligen Daten gelöscht
             switch (index) {
                 case 0:
-                    //subjectwird mit shortage entfernt
-                    Timetable.removeSubject((String) data[2]);
+                    Database.subjects.remove(content);
                     break;
                 case 1:
-                    Timetable.removeRoom(name);
+                    Database.rooms.remove(content);
                     break;
                 case 2:
-                    Timetable.removeClass(name);
+                    Database.classes.remove(content);
                     break;
             }
 
             for (Lesson lesson : lessonsToRemove) {
-                Timetable.removeLesson(lesson.day, lesson.hour);
+                Database.lessons.remove(lesson);
             }
             Database.save(getContext());
 
             //Daten werden upgedated
-            EditThings.updateDataSingle(getContext(), getAll(index), index);
+            EditThings.updateDataSingle(getContext(), index);
+
+            //resume Methode: Größe und Content der ListViews
+            EditThings.resume();
+
             Toast.makeText(mContext, name + " und die entsprechenden Stunden wurden gelöscht", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("Abbrechen", ((dialog, which) -> {
@@ -140,20 +141,30 @@ public class Adapter<T> extends ArrayAdapter<T> {
         return builder;
     }
 
-    public void moveUpDown(int upDown, int index, T content, int position) {
-        try {
-            ArrayList<T> all = (ArrayList<T>) getAll(index);
-            all.remove(content);
-            all.add(position - upDown, content);
+    public void moveUpDown(int upDown, int index, List<T> contentAll, int position) {
+        //Sache, die verschoben werden soll
+        T content = contentAll.get(position);
 
-            writeToDatabase(index, all);
-            Database.save(getContext());
+        //Sache wird aus Liste entfernt
+        contentAll.remove(content);
 
-            EditThings.updateDataSingle(getContext(), getAll(index), index);
-        } catch (IndexOutOfBoundsException ignore) {
+        int newPosition = position - upDown;
+        //newPosition ist absolute Position, an der content wieder eingefügt wird
+        while (newPosition < 0 || newPosition > contentAll.size()) {
+            if (upDown > 0) {
+                newPosition++;
+            } else {
+                newPosition--;
+            }
         }
-    }
 
+        //wird wieder an neuer Position eingefügt
+        contentAll.add(newPosition, content);
+        //Updates von Database und EditThings
+        writeToDatabase(index, (ArrayList<T>) contentAll);
+        Database.save(getContext());
+        EditThings.updateDataSingle(getContext(), index);
+    }
 
     private Object[] getData(T content, int index) {
         switch (index) {
@@ -185,19 +196,6 @@ public class Adapter<T> extends ArrayAdapter<T> {
                 return lesson.class_;
             } default:
                 return -1;
-        }
-    }
-
-    private ArrayList<?> getAll(int index) {
-        switch (index) {
-            case 0:
-                return Timetable.getAllSubjects();
-            case 1:
-                return Timetable.getAllRooms();
-            case 2:
-                return Timetable.getAllClasses();
-            default:
-                return null;
         }
     }
 

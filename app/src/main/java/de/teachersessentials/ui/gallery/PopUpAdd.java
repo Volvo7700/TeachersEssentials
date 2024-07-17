@@ -18,7 +18,9 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import de.teachersessentials.R;
+import de.teachersessentials.timetable.Database;
 import de.teachersessentials.timetable.Timetable;
+import de.teachersessentials.timetable.TimetableSubject;
 
 public class PopUpAdd extends Activity {
     private final int[] addButtonIds = {
@@ -72,11 +74,13 @@ public class PopUpAdd extends Activity {
 
         Button save = findViewById(R.id.save);
 
+        //evt. werden inputs ausgelesen
         int addId = getIntent().getIntExtra("addId", -1);
         String headerInput = getIntent().getStringExtra("header");
         textAdd.setText(headerInput);
         String shortageInput = getIntent().getStringExtra("shortage");
-
+        int colorInput = getIntent().getIntExtra("color", -1);
+        int inputId = getIntent().getIntExtra("id", -1);
 
         if (addId == addButtonIds[0]) { //Fach hinzufügen
             head.setText("Fach Hinzufügen");
@@ -107,10 +111,12 @@ public class PopUpAdd extends Activity {
             EditText hexColorAdd = findViewById(R.id.color_hex_add);
             hexColorAdd.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
 
                 @Override
                 public void afterTextChanged(Editable s) {
@@ -127,10 +133,13 @@ public class PopUpAdd extends Activity {
                 }
             });
 
-            //Farbwahl der Buttons egal
-            //TODO alle Buttons zeigen (grau machen)
-            hexColorAdd.setOnFocusChangeListener((v, hasFocus) -> selectedColor = -1);
-            hexColorAdd.setOnClickListener(v -> selectedColor = -1);
+            //wert muss angegeben sein
+            if (colorInput != -1) {
+                hexColorAdd.setText(String.format("#%06X", colorInput));
+            } else {
+                //sonst Standartwert dunkelgrau
+                showColor.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.dark_3)));
+            }
 
             for (Button button : color_buttons) {
                 button.setOnClickListener(v -> {
@@ -152,24 +161,34 @@ public class PopUpAdd extends Activity {
                     if (newSubject.isEmpty() || shortage.isEmpty()) { //Alle Parameter müssen angegeben sein
                         error("Bitte alles eingeben");
                     } else {
-                        if (!(selectedColor == -1 && hexcode.isEmpty())) {
-                            if (selectedColor == -1) {
-                                try {
-                                    //Farbeigabe über Hexcode und textfeld
-                                    int  color = Color.parseColor(hexcode);
+                        if (!hexcode.isEmpty()) {
+                            try {
+                                //Farbeigabe über Hexcode und textfeld
+                                int color = Color.parseColor(hexcode);
+                                if (inputId == -1) {
                                     Timetable.setSubject(newSubject, shortage, color);
-                                    finish();
-                                } catch (IllegalArgumentException e) {
-                                    error("Kein gültiger Hexcode");
+                                } else {
+                                    ArrayList<TimetableSubject> subjects = Timetable.getAllSubjects();
+                                    //An der gleiche Stelle wird das Fach ersetzt
+                                    int index = Database.subjects.indexOf(Timetable.getSubjectById(inputId));
+                                    subjects.set(index, new TimetableSubject(inputId, shortage, newSubject, color));
+                                    Database.subjects = subjects;
                                 }
-                            } else {
-                                //Farbeingabe über buttons
-                                Timetable.setSubject(newSubject, shortage, selectColors[selectedColor]);
                                 finish();
+                            } catch (IllegalArgumentException e) {
+                                error("Kein gültiger Hexcode");
                             }
                         } else {
                             //bei keiner Farbe wird grau als Farbe genommen
-                            Timetable.setSubject(newSubject, shortage, getResources().getColor(R.color.light_3));
+                            if (inputId == -1) {
+                                Timetable.setSubject(newSubject, shortage, getResources().getColor(R.color.light_3));
+                            } else {
+                                ArrayList<TimetableSubject> subjects = Timetable.getAllSubjects();
+                                //An der gleiche Stelle wird das Fach ersetzt
+                                int index = Database.subjects.indexOf(Timetable.getSubjectById(inputId));
+                                subjects.set(index, new TimetableSubject(inputId, shortage, newSubject, getResources().getColor(R.color.light_3)));
+                                Database.subjects = subjects;
+                            }
                             finish();
                         }
                     }
@@ -203,7 +222,7 @@ public class PopUpAdd extends Activity {
 
             save.setOnClickListener(v -> {
                 String newClass = String.valueOf(textAdd.getText());
-                if (newClass.length() < 5) {
+                if (newClass.length() <= 5) {
                     if (!newClass.isEmpty()) {
                         //Neue Klasse wird gespeichert
                         Timetable.setClass(newClass.toUpperCase());

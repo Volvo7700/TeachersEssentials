@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
     private Switch messages;
+    TextView textMessagesPermission;
     private final String[] font_select_size = {"winzig", "klein", "normal", "groß", "riesig"};
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -56,12 +58,16 @@ public class SettingsFragment extends Fragment {
         //Spinner zur Auswahl der Fontsize
         Spinner selectFontSize = root.findViewById(R.id.select_font_size);
 
+        //Layout, in dem die Schriftröße ausgewählt wird
+        RelativeLayout layoutFontsize = root.findViewById(R.id.layout_fontsize);
+        layoutFontsize.setOnClickListener(v -> selectFontSize.performClick());
+
         //Liste wird in Spinner geladen
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(), android.R.layout.simple_spinner_item, font_select_size);
         adapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         selectFontSize.setAdapter(adapter);
 
-        //Automatische Auswahl
+        //Automatische Auswahl der Schriftgröße
         int[] fontsizes = {15, 20, 25, 30, 40};
         for (int f = 0; f <= 4; f += 1) {
             if (fontsizes[f] == ConfigFile.getConfigData(requireActivity(), 1)) {
@@ -95,7 +101,7 @@ public class SettingsFragment extends Fragment {
         layoutMessages.setOnClickListener(v -> messages.setChecked(!messages.isChecked())); //switch ist auf ganzem Layout cickbar
 
         //Text zum Anzeigen, ob Berechtigung da ist
-        TextView textMessagesPermission = root.findViewById(R.id.text_messages_permission);
+        textMessagesPermission = root.findViewById(R.id.text_messages_permission);
 
         messages = root.findViewById(R.id.messages);
         messages.setChecked(ConfigFile.getConfigData(requireActivity(), 3) == 1);
@@ -106,12 +112,12 @@ public class SettingsFragment extends Fragment {
                 //Wenn kein Berechtigung vorhanden ist, muss nachgefragt werden
                 if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                     alertDialogDismiss();
-                } else {
-                    Toast.makeText(requireActivity(), "Benachrichtigungen aktiviert", Toast.LENGTH_SHORT).show();
-                }
+                } //else {
+                    //Toast.makeText(requireActivity(), "Benachrichtigungen aktiviert", Toast.LENGTH_SHORT).show();
+                //}
             } else { //Deaktiviert
                 ConfigFile.writeToFile("0", 3, requireActivity()); //ConfigFile Änderung
-                Toast.makeText(requireActivity(), R.string.benachrichtigungen_deaktiviert, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(requireActivity(), R.string.benachrichtigungen_deaktiviert, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -125,7 +131,7 @@ public class SettingsFragment extends Fragment {
 
         LinearLayout editThings = root.findViewById(R.id.edit_things);
         editThings.setOnClickListener(v -> {
-            //Activity zum Bearbeiten der voreinstellungen
+            //Activity zum Bearbeiten der Voreinstellungen
             Intent intent = new Intent(getActivity(), EditThings.class);
             startActivity(intent);
         });
@@ -141,55 +147,8 @@ public class SettingsFragment extends Fragment {
                 messages.setChecked(false);
                 ConfigFile.writeToFile("0", 3, requireActivity());
             }
+            Toast.makeText(requireActivity(), "Einstellungen zurückgesetzt", Toast.LENGTH_SHORT).show();
         });
-
-
-        // Temporärer Testcode
-
-        // Einfacher Datenbanktest (laden und speichern von ein paar simplen Testdaten automatisiert)
-        /*Button testbutton = root.findViewById(R.id.button_test);
-        testbutton.setVisibility(View.GONE);*/
-        /*testbutton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                TextView textView_test = root.findViewById(R.id.textView_test);
-                ArrayList<String[]> data = new ArrayList<>();
-                String[] line0 = new String[4];
-                line0[0] = "hallo";
-                line0[1] = "test";
-                line0[2] = "hier";
-                line0[3] = "CSV";
-                data.add(line0);
-                String[] line1 = new String[4];
-                line1[0] = "und eine supertolle";
-                line1[1] = "zweite Zeile";
-                line1[2] = "mit Sonderzeichen:";
-                line1[3] = "!\"§$%&/()=?²³{[]}\\@€+*~#'-_,.;:<>|^°";
-                data.add(line1);
-
-                String[] headers = new String[1];
-                headers[0] = "test";
-
-                Boolean saveresult = CsvParser.write("test.csv", data, headers, "Testtabelle", getContext());
-                textView_test.setText("Speichervorgang erfolgreich: " + saveresult.toString());
-
-                ArrayList<String[]> loadedData = CsvParser.read("test.csv", getContext());
-
-                if (loadedData != null) {
-                    for (String[] row : loadedData) {
-                        String text = "";
-                        for (String s : row) {
-                            text += " | ";
-                            text += s;
-                        }
-                        textView_test.setText(textView_test.getText() + "\n" + text);
-                    }
-                } else {
-                    textView_test.setText(textView_test.getText() + "\n" + "NULL");
-                }
-            }
-        });*/
 
         //App schließen
         TextView closeApp = root.findViewById(R.id.close_app);
@@ -311,7 +270,7 @@ public class SettingsFragment extends Fragment {
                     ArrayList<Lesson> allLessons_ = (ArrayList<Lesson>) allLessons.clone();
                     for (Lesson lesson : allLessons_) {
                         //jede Studnde wird einzeln gelöscht
-                        Timetable.removeLesson(lesson.day, lesson.hour);
+                        Database.lessons.remove(lesson);
                     }
                     Database.save(requireActivity());
                     Toast.makeText(getContext(), "Stundenplan wurde gelöscht", Toast.LENGTH_SHORT).show();
@@ -352,6 +311,22 @@ public class SettingsFragment extends Fragment {
     private void writeFontsizeToConfig(String fontsize) {
         ConfigFile.writeToFile(fontsize, 1, requireActivity()); //Schriftgröße ins ConfigFile
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (ConfigFile.getConfigData(requireActivity(), 3) == 1
+                && ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            messages.setChecked(true);
+            textMessagesPermission.setText("Berechtigung bereits erteilt");
+
+        } else {
+            ConfigFile.writeToFile("0", 3, requireActivity()); //ConfigFile Änderung
+            messages.setChecked(false);
+            textMessagesPermission.setText("Keine Berechtigung");
+        }
+    }
+
 
     @Override
     public void onDestroyView() {
