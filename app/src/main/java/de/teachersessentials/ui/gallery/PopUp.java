@@ -85,55 +85,7 @@ public class PopUp extends Activity {
         });
 
         Button save = findViewById(R.id.save);
-        save.setOnClickListener(v -> {
-            //ids: 100 bis 110 für Montag, 200 bis 210 für Dienstag, usw
-            int id; // legt id für stunde fest
-            if (selectedLesson <= 9) {
-                id = Integer.parseInt(selectedDayOfWeek + "0" + selectedLesson);
-            } else {
-                id = Integer.parseInt(selectedDayOfWeek + "" + selectedLesson);
-            }
-
-            if ((positionSelectedData[1] != 0 && positionSelectedData[2] != 0 && positionSelectedData[0] != 0)) {
-                int idSelectedSubject = 0;
-                for (TimetableSubject subject : subjects) {
-                    if (Objects.equals(subject.name, subjectsName.get(positionSelectedData[0]))) {
-                        idSelectedSubject = subject.id;
-                    }
-                }
-
-                int idSelectedClass = 0;
-                for (TimetableClass classs : classes) {
-                    if (Objects.equals(classs.name, classesName.get(positionSelectedData[2]))) {
-                        idSelectedClass = classs.id;
-                    }
-                }
-
-                int idSelectedRoom = 0;
-                for (TimetableRoom room : rooms) {
-                    if (Objects.equals(room.room, roomsName.get(positionSelectedData[1]))) {
-                        idSelectedRoom = room.id;
-                    }
-                }
-
-                //Eintragung in Datenbank
-                Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, idSelectedSubject, idSelectedClass, idSelectedRoom));
-                finish();
-                //Daten werden zur Sicherheit sofort gespeichert
-                Database.save(this);
-
-            } else if ((positionSelectedData[1] == 0 && positionSelectedData[2] == 0 && positionSelectedData[0] == 0)) {
-                //Stunde wird gelöscht
-                Timetable.removeLesson(selectedDayOfWeek, selectedLesson);
-                finish();
-                //Daten werden zur Sicherheit sofort gespeichert
-                Database.save(this);
-
-            } else {
-                //Nicht alle ausgewählt
-                Toast.makeText(this, "Keine gültige Stunde angegeben", Toast.LENGTH_SHORT).show();
-            }
-        });
+        save.setOnClickListener(v -> save());
 
         generateStringLists();
 
@@ -204,6 +156,64 @@ public class PopUp extends Activity {
         });
     }
 
+    private void save() {
+        //ids: 100 bis 110 für Montag, 200 bis 210 für Dienstag, usw
+        int id; // legt id für stunde fest
+        if (selectedLesson <= 9) {
+            id = Integer.parseInt(selectedDayOfWeek + "0" + selectedLesson);
+        } else {
+            id = Integer.parseInt(selectedDayOfWeek + "" + selectedLesson);
+        }
+
+        if ((positionSelectedData[1] != 0 && positionSelectedData[2] != 0 && positionSelectedData[0] != 0)) {
+            int idSelectedSubject = 0;
+            for (TimetableSubject subject : subjects) {
+                if (Objects.equals(subject.name, subjectsName.get(positionSelectedData[0]))) {
+                    idSelectedSubject = subject.id;
+                }
+            }
+
+            int idSelectedClass = 0;
+            for (TimetableClass classs : classes) {
+                if (Objects.equals(classs.name, classesName.get(positionSelectedData[2]))) {
+                    idSelectedClass = classs.id;
+                }
+            }
+
+            int idSelectedRoom = 0;
+            for (TimetableRoom room : rooms) {
+                if (Objects.equals(room.room, roomsName.get(positionSelectedData[1]))) {
+                    idSelectedRoom = room.id;
+                }
+            }
+
+            //Eintragung in Datenbank
+            Timetable.setLesson(new Lesson(id, selectedDayOfWeek, selectedLesson, idSelectedSubject, idSelectedClass, idSelectedRoom));
+            finish();
+            //Daten werden zur Sicherheit sofort gespeichert
+            Database.save(this);
+
+        } else if ((positionSelectedData[1] == 0 && positionSelectedData[2] == 0 && positionSelectedData[0] == 0)) {
+            //Stunde wird gelöscht
+            Timetable.removeLesson(selectedDayOfWeek, selectedLesson);
+            finish();
+            //Daten werden zur Sicherheit sofort gespeichert
+            Database.save(this);
+
+        } else {
+            //Nicht alle ausgewählt
+            Toast.makeText(this, "Keine gültige Stunde angegeben", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        save();
+        //TODO braucht man das?
+        GalleryFragment.updateButtons(GalleryFragment.getSelectedDayOfWeek(), getApplicationContext());
+        GalleryFragment.updateTextViews(GalleryFragment.getSelectedDayOfWeek());
+    }
 
     @Override
     protected void onResume() {

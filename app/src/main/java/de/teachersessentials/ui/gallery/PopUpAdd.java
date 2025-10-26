@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -23,7 +24,7 @@ import de.teachersessentials.timetable.Timetable;
 import de.teachersessentials.timetable.TimetableSubject;
 
 public class PopUpAdd extends Activity {
-    private final int[] addButtonIds = {
+    public static int[] addButtonIds = {
             R.id.add_subject,
             R.id.add_room,
             R.id.add_class
@@ -52,7 +53,6 @@ public class PopUpAdd extends Activity {
             0xD70000, 0x990000, 0xE415E4, 0x9933FF
     };
     int selectedColor = -1;
-    private TextView error;
     AtomicInteger colorSelection = new AtomicInteger();
 
 
@@ -67,7 +67,7 @@ public class PopUpAdd extends Activity {
 
         EditText textAdd = findViewById(R.id.text_add);
 
-        error = findViewById(R.id.error_input);
+        //TextView error = findViewById(R.id.error_input);
 
         Button cancel = findViewById(R.id.cancel);
         cancel.setOnClickListener(v -> finish());
@@ -86,7 +86,7 @@ public class PopUpAdd extends Activity {
             head.setText("Fach Hinzufügen");
             textAdd.setHint("Fach");
 
-            getWindow().setLayout(800, 1076);
+            getWindow().setLayout(800, 900);
 
             //Kürzel
             RelativeLayout relativeLayout2 = findViewById(R.id.relativ_layout_2);
@@ -238,7 +238,8 @@ public class PopUpAdd extends Activity {
     }
 
     private void error(String message) {
-        error.setVisibility(View.VISIBLE);
-        error.setText(message);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        //error.setVisibility(View.VISIBLE);
+        //error.setText(message);
     }
 }

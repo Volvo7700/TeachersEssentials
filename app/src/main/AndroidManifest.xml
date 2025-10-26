@@ -32,7 +32,7 @@
         <activity android:name=".ui.settings.editthings.EditThings"
             android:theme="@style/AppTheme.edit_things"
             android:screenOrientation="portrait"/>
-        <service android:name=".Background"/>
-        <service android:name=".util.notifications.NotificationService" />
+        <service android:name=".util.notifications.Notifications"/>
+        <service android:name=".Background" />
     </application>
 </manifest>
