@@ -1,60 +1,88 @@
 package de.teachersessentials;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import static de.teachersessentials.ui.home.HomeFragment.updateTimeAndDay;
+import static de.teachersessentials.ui.home.HomeFragment.currentDay;
+import static de.teachersessentials.ui.home.HomeFragment.timeInDay;
+
+
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
-import androidx.annotation.Nullable;
+import de.teachersessentials.timetable.Lesson;
+import de.teachersessentials.timetable.Timetable;
+import de.teachersessentials.ui.home.HomeFragment;
+import de.teachersessentials.util.notifications.Notifications;
 
 public class Background extends Service {
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        while (true) {
-                            System.out.println("system running");
-                            try {
-                                Thread.sleep(2000);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }
-                }
-        ).start();
 
-        //TODO: Verschieben der nötigen Stundentafel in Background
-        //TODO: Background wird nach Reboot neu gestartet
-        //TODO: Listener, dass änderungen der Einstellungen registriert werde auch, wenn die App geschlossen ist
-        //TODO: richtige notifications senden lassen
-        //TODO: Durch DummyBackgroundKlasse benachrichtigung entfernen
+    private static final String TAG = "NotificationService";
+    private final static int DELAY = 5000;
 
-        final String CHANNEL_ID = "foreground_service";
-        NotificationChannel channel = new NotificationChannel(
-                CHANNEL_ID,
-                CHANNEL_ID,
-                NotificationManager.IMPORTANCE_LOW
-        );
+    private Handler handler;
+    private Runnable runnable;
 
-        getSystemService(NotificationManager.class).createNotificationChannel(channel);
-        Notification.Builder notification = new Notification.Builder(this, CHANNEL_ID)
-                .setContentText("Running...")
-                .setContentTitle("Foreground Service")
-                .setSmallIcon(R.drawable.ic_launcher_foreground);
-
-        startForeground(999, notification.build());
-
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e(TAG, "onStartCommand");
+        handler = new Handler();
+        runnable = () -> Notifications.sendNotificationDEV(getApplicationContext());
+        System.out.println("Started");
+
+        //erst nach delay starten
+        handler.postDelayed(runnable, DELAY);
+
+        updateTimeAndDay();
+        updateClock();
+
+        //restarted service falls beendet wird
+        return START_STICKY;
+    }
+
+/*    private Lesson getCurrentLesson() {
+        int currentLesson = Timetable.getLessonNumber(timeInDay); //Aktuelle Stunde
+
+        return Timetable.getLesson(currentDay, currentLesson);
+    }*/
+
+    private Lesson getNextLesson() {
+        int currentLesson = Timetable.getLessonNumber(timeInDay); //Nächste Stunde
+
+        return Timetable.getLesson(currentDay, currentLesson + 1);
+    }
+
+    private void updateClock() {
+        updateTimeAndDay();
+        updateProgress();
+
+        System.out.println("updateClock");
+
+        Handler handler = new Handler();
+        handler.postDelayed(this::updateClock, 1000); //Uhr updated jede Sekunde
+    }
+
+    private void updateProgress() { //Progress bar wird aufgefüllt bzw. leert sich
+        long timeUntilNextLesson = HomeFragment.getTimeUntilNextLesson();
+
+        System.out.println(timeUntilNextLesson);
+
+        //Benachrichtigung
+        if (timeUntilNextLesson >= 350000 && timeUntilNextLesson <= 351000) {
+            Notifications.sendNotification(getApplicationContext(), getNextLesson());
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e(TAG, "onDestroy");
+        handler.removeCallbacks(runnable);
+        super.onDestroy();
     }
 }
