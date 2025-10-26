@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -39,140 +38,186 @@
             android:layout_margin="16dp"
             android:paddingBottom="16dp">
 
-            <ImageButton
-                android:id="@+id/extend_subjects"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:backgroundTint="@color/dark_1"
-                android:src="@drawable/icon_up"
-                android:rotation="90"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="Fächer"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toEndOf="@id/extend_subjects"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/add_subject_settings"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="110dp"
-                android:background="@drawable/round"
-                android:backgroundTint="@color/light_3"
-                android:padding="0dp"
-                android:src="@drawable/icon_add"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="@+id/extend_subjects"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ListView
-                android:id="@+id/listView_subjects"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constrain_0"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-            <ImageButton
-                android:id="@+id/extend_rooms"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/dark_1"
-                android:src="@drawable/icon_up"
-                android:rotation="90"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listView_subjects" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp"
-                android:text="Räume"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toEndOf="@id/extend_rooms"
-                app:layout_constraintTop_toBottomOf="@+id/listView_subjects" />
-
-            <ImageButton
-                android:id="@+id/add_room_settings"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="110dp"
-                android:background="@drawable/round"
-                android:backgroundTint="@color/light_3"
-                android:padding="0dp"
-                android:src="@drawable/icon_add"
-                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/dark_1a"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listView_subjects" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ListView
-                android:id="@+id/listView_rooms"
+                <ImageButton
+                    android:id="@+id/extend_subjects"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/dark_1a"
+                    android:rotation="90"
+                    android:src="@drawable/icon_up"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Fächer"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/extend_subjects"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/add_subject_settings"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="@color/light_3"
+                    android:padding="0dp"
+                    android:src="@drawable/icon_add"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toEndOf="@+id/textView5"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ListView
+                    android:id="@+id/listView_subjects"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingBottom="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constrain_1"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-            <ImageButton
-                android:id="@+id/extend_classes"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/dark_1"
-                android:src="@drawable/icon_up"
-                android:rotation="90"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/listView_rooms" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp"
-                android:text="Klassen"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toEndOf="@id/extend_classes"
-                app:layout_constraintTop_toBottomOf="@+id/listView_rooms" />
-
-            <ImageButton
-                android:id="@+id/add_class_settings"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="110dp"
-                android:background="@drawable/round"
-                android:backgroundTint="@color/light_3"
-                android:padding="0dp"
-                android:src="@drawable/icon_add"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="@+id/extend_classes"
-                app:layout_constraintTop_toBottomOf="@+id/listView_rooms" />
-
-            <ListView
-                android:id="@+id/listView_classes"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/dark_1a"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                app:layout_constraintTop_toBottomOf="@id/constrain_0">
+
+                <ImageButton
+                    android:id="@+id/extend_rooms"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/dark_1a"
+                    android:rotation="90"
+                    android:src="@drawable/icon_up"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Räume"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/extend_rooms"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/add_room_settings"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="@color/light_3"
+                    android:padding="0dp"
+                    android:src="@drawable/icon_add"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toEndOf="@+id/textView6"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ListView
+                    android:id="@+id/listView_rooms"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingBottom="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constrain_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_corners"
+                android:backgroundTint="@color/dark_1a"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/constrain_1">
+
+                <ImageButton
+                    android:id="@+id/extend_classes"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="12dp"
+                    android:backgroundTint="@color/dark_1a"
+                    android:rotation="90"
+                    android:src="@drawable/icon_up"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Klassen"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/extend_classes"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/add_class_settings"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/round"
+                    android:backgroundTint="@color/light_3"
+                    android:padding="0dp"
+                    android:src="@drawable/icon_add"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toEndOf="@+id/textView7"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ListView
+                    android:id="@+id/listView_classes"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:paddingBottom="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

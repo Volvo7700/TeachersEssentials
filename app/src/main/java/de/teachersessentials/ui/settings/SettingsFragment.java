@@ -150,6 +150,12 @@ public class SettingsFragment extends Fragment {
             Toast.makeText(requireActivity(), "Einstellungen zurückgesetzt", Toast.LENGTH_SHORT).show();
         });
 
+        TextView export = root.findViewById(R.id.export);
+        export.setOnClickListener(v -> {
+            //Export wird erstellt
+            Export.mkExport(requireContext());
+        });
+
         //App schließen
         TextView closeApp = root.findViewById(R.id.close_app);
         closeApp.setOnClickListener(v -> {

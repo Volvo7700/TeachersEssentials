@@ -1,7 +1,5 @@
 package de.teachersessentials;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -18,11 +16,12 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.File;
+
 import de.teachersessentials.databinding.ActivityMainBinding;
 import de.teachersessentials.timetable.Database;
 import de.teachersessentials.util.ConfigFile;
-import de.teachersessentials.util.notifications.NotificationService;
-import de.teachersessentials.util.notifications.notifications;
+import de.teachersessentials.util.notifications.Notifications;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (ConfigFile.getConfigData(this, 4) == 1) {
             Database.generateDefaults(this);
+
+        }
+        File backupsDir = new File(getFilesDir(), "backups");
+        if (!backupsDir.exists()) {
+            backupsDir.mkdirs();
         }
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -56,12 +60,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         if (ConfigFile.getConfigData(this, 4) == 1) {
-            notifications.askPermission(this, this); //fragt nach Erlaubnis
+            Notifications.askPermission(this, this); //fragt nach Erlaubnis
         }
 
         ConfigFile.writeToFile("0", 4, this); //App wurde bereits einmal geöffnet
 
-        notifications.createNotificationChannel(this); //NotificationChannel wird erstellt
+        Notifications.createNotificationChannel(this); //NotificationChannel wird erstellt
 
         //if(!foregroundServiceRunning()) {
           //  Intent serviceIntent = new Intent(this, Background.class);
@@ -72,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public boolean foregroundServiceRunning() {
+    /*public boolean foregroundServiceRunning() {
         ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for(ActivityManager.RunningServiceInfo service: activityManager.getRunningServices(Integer.MAX_VALUE)) {
             if(Background.class.getName().equals(service.service.getClassName())) {
@@ -80,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
-    }
+    }*/
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //sagt dem Config File ob Berechtigung gegeben wurde oder nicht
-        if (requestCode == notifications.REQUEST_POST_NOTIFICATIONS) { //nur wenn es um Berechtigung für Nachrichtengeht
+        if (requestCode == Notifications.REQUEST_POST_NOTIFICATIONS) { //nur wenn es um Berechtigung für Nachrichtengeht
             int granted = grantResults[0];
             ConfigFile.writeToFile(String.valueOf(granted + 1), 3, this); //ConfigFile wird entsprechend der Auswahl geändert
         }
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop(){
         super.onStop();
-        startService(new Intent(this, NotificationService.class)); //aktiviert nachricht schicken
+        startService(new Intent(this, Background.class)); //aktiviert nachricht schicken
         //Activity darf hier nicht beendet werden (finish())
         Database.save(this);
     }

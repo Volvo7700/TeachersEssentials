@@ -110,7 +110,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/relativ_layout_2">
 
-                <TextView
+              <!--  <TextView
                     android:id="@+id/colors_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                     android:layout_margin="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />-->
 
                 <RelativeLayout
                     android:id="@+id/relativ_layout_3"
@@ -130,7 +130,7 @@
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/rounded_corners"
                     android:backgroundTint="@color/dark_3"
-                    app:layout_constraintTop_toBottomOf="@id/colors_text">
+                    app:layout_constraintTop_toTopOf="@id/relativ_layout_2">
 
                     <TextView
                         android:id="@+id/textView4"
@@ -273,7 +273,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginTop="8dp"
                     android:paddingBottom="8dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -1,12 +1,15 @@
 package de.teachersessentials.timetable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
+import java.util.List;
 
 // Zugriffsklasse aus dem GUI auf die Datenbank
 public class Timetable {
     private static final int[] lessonGrid = {28800000, 31500000, 35100000, 37800000, 41400000, 44100000, 46800000, 49500000, 52200000, 54900000, 57600000, 60300000};
+    private static final List<String> days = new ArrayList<>(Arrays.asList("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag"));
+
 
     // FÄCHER FÜR PLAN
     // Eine bestimmte Lesson ausgeben
@@ -326,12 +329,14 @@ public class Timetable {
         int lessonNumber;
         if (lessonGrid[0] <= timeInMillis && timeInMillis < lessonGrid[1]) {
             lessonNumber = 0; //Erste Stunde von 08:00 bis 08:45
-        } else if (lessonGrid[1] <= timeInMillis && timeInMillis < lessonGrid[2]) {
+        } else if (lessonGrid[1] <= timeInMillis && timeInMillis < (lessonGrid[2] - 900000)) {
             lessonNumber = 1; //Zweite Stunde von 08:45 bis 09:30
+            //Pause
         } else if (lessonGrid[2] <= timeInMillis && timeInMillis < lessonGrid[3]) {
             lessonNumber = 2; //Dritte Stunde von 09:45 bis 10:30
-        } else if (lessonGrid[3] <= timeInMillis && timeInMillis < lessonGrid[4]) {
+        } else if (lessonGrid[3] <= timeInMillis && timeInMillis < (lessonGrid[4] - 900000)) {
             lessonNumber = 3; //Vierte Stunde von 10:30 bis 11:15
+            //Pause
         } else if (lessonGrid[4] <= timeInMillis && timeInMillis < lessonGrid[5]) {
             lessonNumber = 4; //Fünfte Stunde von 11:30 bis 12:15
         } else if (lessonGrid[5] <= timeInMillis && timeInMillis < lessonGrid[6]) {
@@ -361,5 +366,24 @@ public class Timetable {
         end.setTime(startLesson + 2700000); //Stunde ist immer 45 Minuten lang -> Endzeit ist Startzeit + 45 Minuten
 
         return end;
+    }
+
+    public static String mkTxtFile() {
+        String content = "";
+        for (String day : days) {
+            ArrayList<Lesson> lessons = getDayLessons(days.indexOf(day));
+
+            content = content + day + "\n";
+
+            List<String> dayStringLessons = new ArrayList<>(Arrays.asList("1.\n", "2.\n", "3.\n", "4.\n", "5.\n", "6.\n", "7.\n", "8.\n", "9.\n", "10.\n", "11.\n"));
+            for (Lesson lesson : lessons) {
+                dayStringLessons.set(lesson.hour, (lesson.hour + 1) + ". " + getSubjectById(lesson.subject).name + ", " + getRoomById(lesson.room).room + ", " + getClassById(lesson.class_).name + "\n");
+            }
+            for (String lessonString : dayStringLessons) {
+                content = content + lessonString;
+            }
+        }
+
+        return content;
     }
 }

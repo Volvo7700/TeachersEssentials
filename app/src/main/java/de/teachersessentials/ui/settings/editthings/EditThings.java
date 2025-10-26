@@ -51,43 +51,31 @@ public class EditThings extends AppCompatActivity {
             listViewsThings.add(newListView);
         }
 
-        ArrayList<ImageButton> settingsAddButtons = new ArrayList<>();
-        for (int id : settingsAddButtonIds) {
-            ImageButton addButton = findViewById(id);
-            settingsAddButtons.add(addButton);
-        }
 
-        //OnClicks der addButtons
-        settingsAddButtons.get(0).setOnClickListener(v -> {
-            Intent intent = new Intent(this, PopUpAdd.class);
-            intent.putExtra("addId", R.id.add_subject);
-            this.startActivity(intent);
-        });
-        settingsAddButtons.get(1).setOnClickListener(v -> {
-            Intent intent = new Intent(this, PopUpAdd.class);
-            intent.putExtra("addId", R.id.add_room);
-            this.startActivity(intent);
-        });
-        settingsAddButtons.get(2).setOnClickListener(v -> {
-            Intent intent = new Intent(this, PopUpAdd.class);
-            intent.putExtra("addId", R.id.add_class);
-            this.startActivity(intent);
-        });
+        //Buttons zum hinzufügen von Sachen
+        ArrayList<ImageButton> settingsAddButtons = new ArrayList<>();
+
+        //Alle Buttons, die es drei mal braucht
+        for(int i = 0; i <= 2; i++) {
+            //Buttons zum hinzufügen von Sachen
+            int finalI = i;
+            ImageButton addButton = findViewById(settingsAddButtonIds[finalI]);
+            settingsAddButtons.add(addButton);
+
+            settingsAddButtons.get(i).setOnClickListener(v -> {
+                Intent intent = new Intent(this, PopUpAdd.class);
+                intent.putExtra("addId", PopUpAdd.addButtonIds[finalI]);
+                this.startActivity(intent);
+            });
+
+            //buttons zum ausfahren/einklappen
+            ImageButton extendButton = findViewById(extendButtonIds[i]);
+            extendButtons.add(extendButton);
+
+            extendButton.setOnClickListener(v -> updateSize(finalI, extendButton, true));
+        }
 
         updateDataAll(this);
-
-        //Buttons zum ausklappen/verstecken
-        for (int Id : extendButtonIds) {
-            ImageButton extendButton = findViewById(Id);
-            extendButtons.add(extendButton);
-        }
-
-        for (ImageButton button : extendButtons) {
-            int n = extendButtons.indexOf(button);
-            //OnClick für jeden Button
-            //TODO listen beim erneuten öffnen richtig machen
-            button.setOnClickListener(v -> updateSize(n, button, true));
-        }
     }
 
     public static void updateSize(int n, ImageButton button, boolean change) {
@@ -107,7 +95,7 @@ public class EditThings extends AppCompatActivity {
             ViewGroup.LayoutParams params = listView.getLayoutParams();
             //Höhe wird so angepasst, dass alles genausichtbar ist
             //TODO  evt. performance
-            params.height = heightSingular * mAdapter.getCount() + (listView.getDividerHeight() * (mAdapter.getCount() - 1));
+            params.height = heightSingular * mAdapter.getCount() + (listView.getDividerHeight() * (mAdapter.getCount() - 1) + 16);
             listView.setLayoutParams(params);
 
             collapsedExtended.set(n, 1);
@@ -191,6 +179,7 @@ public class EditThings extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         listViewsThings.clear();
+        extendButtons.clear();
 
         Database.save(this);
     }
